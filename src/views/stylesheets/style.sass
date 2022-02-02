@@ -1,3 +1,60 @@
+@import "fonts"
+
+$font_stack: "Space Mono", monospace
+$bg_clr: #f2f5f7
+// #e7ecef
+$bg_alt_clr: #fffcf7
+$fg_clr: #262526
+$fg_alt_clr: #fff
+
+$shadow_clr: #ccc
+
+$special_btn_clr: #4776C1
+
+\:root
+  display: border-box
+  margin: 0
+  padding: 0
+  font-family: $font_stack
+  font-size: 16px
+
 html 
-	background-color: red
+  background-color: $bg_clr 
+
+
+body
+  margin: 0
+  header
+    background-color: $bg_alt_clr
+    border-bottom: 1px solid $shadow_clr
+    nav
+      max-width: 80rem
+      margin: 0 auto
+      padding: 8px 
+      
+      ul
+        margin: 0
+        display: flex
+        flex-direction: row 
+        list-style-type: none
+        justify-content: flex-end
+
+        li   
+          margin: 0 8px
+
+
+#login
+  color: $fg_alt_clr
+  background-color: $special_btn_clr 
+
+a.button
+  display: inline-block
+  text-decoration: none
+  padding: .4rem 1rem 
+  color: $fg_clr
+  border-radius: .25rem
+  transition: opacity .2s
+
+a.button:hover
+  opacity: .8
 
