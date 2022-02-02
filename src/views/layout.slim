@@ -7,14 +7,18 @@ html lang="en"
     title The Auction House 
   body
     header
-      nav
-        ul
-          li
-            a.button#register href="/register" target="_self"
-              | Register
-          li
-            a.button#login href="/login" target="_self"
-              | Log in
+      div
+        div#logo_container
+          h1 = "The Auction House"
+          h2 = get_random_subtitle
+        nav
+          ul
+            li
+              a.button#register href="/register" target="_self"
+                | Register
+            li
+              a.button#login href="/login" target="_self"
+                | Log in
     ==yield
   
 

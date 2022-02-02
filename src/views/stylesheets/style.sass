@@ -27,20 +27,44 @@ body
   header
     background-color: $bg_alt_clr
     border-bottom: 1px solid $shadow_clr
-    nav
+    padding: .2rem 0 .6rem 0
+
+    div
+      display: flex
       max-width: 80rem
       margin: 0 auto
-      padding: 8px 
-      
-      ul
-        margin: 0
-        display: flex
-        flex-direction: row 
-        list-style-type: none
-        justify-content: flex-end
 
-        li   
-          margin: 0 8px
+      div#logo_container
+        display: flex
+        flex-direction: column 
+        margin: 0
+        h1
+          margin: 0
+          opacity: .5
+          font-size: 2rem
+          font-weight: bold
+
+        h2 
+          padding-left: 6px
+          margin: 0
+          opacity: .28
+          font-size: .8rem
+          font-style: italic
+          font-weight: normal
+
+      nav
+        margin: 0 0 0 auto
+        padding: 8px 
+        
+        ul
+          margin: 0
+          display: flex
+          flex-direction: row 
+          list-style-type: none
+          justify-content: flex-end
+
+          li   
+            margin: 0 8px
 
 
 #login
