@@ -1,7 +1,8 @@
 V2FpdCwgbW9uZXkgaGFzIG5vIHZhbHVlPyEK
 No such place like 127.0.0.1!
 Fourty-two? What do you mean? Tell me!
-I use Arch btw
-They glow in the dark...
 What sort of executable format do you intend to support for apps running under your OS?
 I would just like to interject for a moment...
+68747470733a2f2f777963682e6465762f6369706865722e747874
+CSRF? No, I do not think so.
+shred -uzn99 $(which shred)
