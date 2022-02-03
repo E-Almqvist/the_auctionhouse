@@ -7,12 +7,7 @@ require "sqlite3"
 require "sassc"
 
 require_relative "database.rb"
-
-def get_random_subtitle
-	subtitles = File.readlines "misc/subtitles.txt"
-	subtitles.sample.chomp
-end
-
+require_relative "func.rb"
 
 get "/" do
 	slim :index
