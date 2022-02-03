@@ -19,3 +19,6 @@ end
 get "/style.css" do
 	sass :"stylesheets/style", style: :compressed
 end
+
+
+
