@@ -2,8 +2,60 @@ DEFAULT_DB_PATH = "db/main.db"
 
 require_relative "db_models.rb"
 
-def db_handle 
-	db = SQLite3::Database.new DEFAULT_DB_PATH
-	db.results_as_hash = true
-	return db
+class Database # Database class
+	attr_reader :path 
+	def initialize(table_structure, db_path=DEFAULT_DB_PATH)
+		@path = db_path
+		# generate table_structure if it doesn't exist
+	end
+
+	private def db
+		dbbuf = SQLite3::Database.new @path 
+		dbbuf.results_as_hash = true
+		dbbuf
+	end
+
+	private def gen_update_query(vars) # generates part of the update query string
+		vars.join "= ?, "
+	end
+
+	private def gen_insert_query(vars) # generates part of the insert query string
+		entstr = "(#{vars.join ", "})"
+		valstr = "(#{(["?"] * vars.length).join ", "})"
+
+		return entstr, valstr
+	end
+
+	def query(q, *args) # query table with query string
+		db.execute( q, *args )
+	end
+
+	def get(table, filter="") # get data from table
+		query = "SELECT #{table} FROM #{table} " # create the query string
+		if filter != "" then query += "WHERE #{filter}" end
+
+		self.query query # execute query
+	end
+
+	def update(table, data, filter="")
+		self.query( "UPDATE #{table} SET #{ self.gen_update_query(data.keys) } WHERE #{filter}", *data.values )
+	end
+
+	def insert(table, data, filter="")
+		entstr, valstr = gen_insert_query data.keys
+		self.query( "INSERT INTO #{table} #{entstr} VALUES #{valstr}", *data.values )
+	end
+
+	# sets or updates a specific field in the table
+	def set(table, data={}, filter="") # slow, shouldn't really be used
+		if self.get(table, filter).length > 0 then
+			self.update(table, data, filter)
+		else
+			self.insert(table, data, filter)
+		end
+	end
+end
+
+class TableModel
+
 end
