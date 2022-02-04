@@ -29,3 +29,14 @@ end
 get "/register" do
 	slim :"user/register"
 end
+
+# API stuff
+post "/user/login" do
+	# login user
+	redirect "/"
+end
+
+post "/user/new" do
+	# create user
+	redirect "/login"
+end
