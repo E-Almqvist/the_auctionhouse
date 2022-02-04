@@ -7,6 +7,7 @@ require "sqlite3"
 require "sassc"
 
 require_relative "database.rb"
+require_relative "db_models.rb"
 require_relative "func.rb"
 
 enable :sessions
