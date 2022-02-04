@@ -1,7 +1,9 @@
 #!/usr/bin/ruby -w
 
+DEBUG = ARGV[0] == "debug"
+
 require "sinatra"
-require "sinatra/reloader" if ARGV[0] == "debug"
+require "sinatra/reloader" if DEBUG
 require "slim"
 require "sqlite3"
 require "sassc"
