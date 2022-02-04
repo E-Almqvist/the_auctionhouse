@@ -4,7 +4,13 @@ class TableModel  # Base model
 		@table_name = table_name
 	end
 
-	private def gen_update_query(vars, values)
+	private def gen_update_query(varhash, values)
+		qstr = ""
+		varhash.each do |val, var|
+			qstr += "#{var} = #{val}, "
+		end
+
+		return qstr 
 	end
 
 	private def get(attr, filter="")
