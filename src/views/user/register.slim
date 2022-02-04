@@ -1,0 +1,15 @@
+.form-container
+  form action="/user/new" method="post"
+    h2 Register Account
+    input type="text" name="email" placeholder="Email"
+    input type="text" name="name" placeholder="Name"
+    input type="password" name="password" placeholder="Password"
+    input type="password" name="password_confirm" placeholder="Confirm Password"
+    input type="submit" value="Register"
+
+    a.button href="/login" target="_self"
+      | Log in instead
+
+    a.button href="https://en.wikipedia.org/wiki/Bcrypt" target="_blank"
+      | How we store passwords 
+
