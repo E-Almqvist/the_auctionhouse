@@ -7,6 +7,24 @@ class Table
 	def initialize(db, name, sql_file)
 		@db = db
 		@name = name
+		@sql_file = sql_file
+	end
+
+	def create_table
+		begin
+			q = File.read @sql_file # get SQL script
+			@db.query q # run query
+		rescue Errno::ENOENT => err
+			error "#{err}"	
+		end
+	end
+
+	def get(attr, filter="")
+		@db.get(@name, attr, filter)
+	end
+
+	def insert(data, filter="")
+		@db.insert(@name, data, filter)
 	end
 end
 
@@ -40,19 +58,27 @@ class Database # Database class
 		return entstr, valstr
 	end
 
+	private def apply_filter(query, filter)
+		if filter != "" then query += " WHERE #{filter}" end
+		query
+	end
+
 	def query(q, *args) # query table with query string
 		db.execute( q, *args )
 	end
 
-	def get(table, filter="") # get data from table
-		query = "SELECT #{table} FROM #{table} " # create the query string
-		if filter != "" then query += "WHERE #{filter}" end
+	def get(table, attr, filter="") # get data from table
+		q = "SELECT #{attr} FROM #{table}" # create the query string
+		q = apply_filter(q, filter)
 
 		self.query query # execute query
 	end
 
 	def update(table, data, filter="") # Updates the table with specified data hash 
-		self.query( "UPDATE #{table} SET #{ self.gen_update_query(data.keys) } WHERE #{filter}", *data.values )
+		q = "UPDATE #{table} SET #{self.gen_update_query(data.keys)}" 
+		q = apply_filter(q, filter)
+
+		self.query(q, *data.values )
 	end
 
 	def insert(table, data, filter="") # Inserts new data into the table
@@ -61,8 +87,8 @@ class Database # Database class
 	end
 
 	# sets or updates a specific field in the table
-	def set(table, data, filter="") # slower but more lazy
-		if self.get(table, filter).length > 0 then
+	def set(table, attr, data, filter="") # slower but more lazy
+		if self.get(table, attr, filter).length > 0 then
 			self.update(table, data, filter)
 		else
 			self.insert(table, data, filter)

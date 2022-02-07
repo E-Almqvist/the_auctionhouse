@@ -7,7 +7,9 @@ require "sinatra/reloader" if DEBUG
 require "slim"
 require "sqlite3"
 require "sassc"
+require "colorize"
 
+require_relative "debug.rb"
 require_relative "database.rb"
 require_relative "db_models.rb"
 require_relative "func.rb"
