@@ -1,0 +1,11 @@
+CREATE TABLE "User" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"email"			TEXT NOT NULL UNIQUE,
+	"pw_hash"		TEXT NOT NULL UNIQUE,
+	"name"			TEXT NOT NULL DEFAULT 'Unknown',
+	"bio_text"		TEXT,
+	"balance"		REAL NOT NULL DEFAULT 0,
+	"avatar_url"	TEXT NOT NULL DEFAULT '/avatars/default.png',
+	"reputation"	INTEGER NOT NULL DEFAULT 100,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);

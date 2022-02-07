@@ -1,7 +1,5 @@
 DEFAULT_DB_PATH = "db/main.db"
 
-require_relative "db_models.rb"
-
 class Table
 	attr_reader :name
 	attr_accessor :db
@@ -11,6 +9,8 @@ class Table
 		@name = name
 	end
 end
+
+require_relative "db_models.rb"
 
 class Database # Database class
 	attr_reader :name, :path 
