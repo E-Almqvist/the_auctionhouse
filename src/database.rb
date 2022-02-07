@@ -5,7 +5,8 @@ require_relative "db_models.rb"
 class Table
 	attr_reader :name
 	attr_accessor :db
-	def initialize(db, name)
+
+	def initialize(db, name, sql_file)
 		@db = db
 		@name = name
 	end
@@ -13,12 +14,12 @@ end
 
 class Database # Database class
 	attr_reader :name, :path 
-	def initialize(name, table_structure, db_path=DEFAULT_DB_PATH)
+	attr_accessor :tables
+	def initialize(name, tables_names=[], db_path=DEFAULT_DB_PATH)
 		@name = name
 		@path = db_path
-		# generate table_structure if it doesn't exist
 
-		@tables = {}
+		@tables = []
 		# generate table objects
 	end
 
