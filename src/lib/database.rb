@@ -8,9 +8,7 @@ class Table
 		@db = db
 		@name = name
 		@sql_file = "sql/tables/#{name}.sql"
-	end
 
-	def create_table
 		begin
 			q = File.read @sql_file # get SQL script
 			@db.query q # run query

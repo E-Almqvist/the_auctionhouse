@@ -30,7 +30,8 @@ class User < Table
 					pw_hash: pw_hash
 				}
 
-				self.insert(@name, data) # insert into the db
+				resp = self.insert(@name, data) # insert into the db
+				return true, resp
 			else
 				return false, "Password mismatch!"
 			end

@@ -14,15 +14,11 @@ require_relative "debug.rb"
 require_relative "lib/database.rb"
 require_relative "func.rb"
 
+require_relative "db_init.rb"
 require_relative "db_models.rb"
 
-load_tables = [
-	"User",
-	"Role"
-]
-db = Database.new("main", load_tables)
-
 enable :sessions
+db = db_init
 
 def init_params(params={})
 	g = Hash.new ""
