@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    bcrypt (3.1.16)
     colorize (0.8.1)
     ffi (1.15.5)
     multi_json (1.15.0)
@@ -36,6 +37,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  bcrypt
   colorize
   sassc
   sinatra

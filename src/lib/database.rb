@@ -4,10 +4,10 @@ class Table
 	attr_reader :name
 	attr_accessor :db
 
-	def initialize(db, name, sql_file)
+	def initialize(db, name)
 		@db = db
 		@name = name
-		@sql_file = sql_file
+		@sql_file = "sql/tables/#{name}.sql"
 	end
 
 	def create_table
@@ -19,20 +19,24 @@ class Table
 		end
 	end
 
-	def get(attr, filter="")
+	# these methods are private because they
+	# are intended to be accessed through a
+	# "Table Model".
+	# See "db_models.rb"
+	private def get(attr, filter="")
 		@db.get(@name, attr, filter)
 	end
 
-	def insert(data, filter="")
+	private def insert(data, filter="")
 		@db.insert(@name, data, filter)
 	end
 
-	def update(data, filter="")
+	private def update(data, filter="")
 		@db.update(@name, data, filter)
 	end
 
 	# sets or updates a specific field in the table
-	def set(attr, data, filter="") # slower but more lazy
+	private def set(attr, data, filter="") # slower but more lazy
 		if @db.get(@name, attr, filter).length > 0 then
 			@db.update(@name, data, filter)
 		else
@@ -51,7 +55,7 @@ class Database # Database class
 		@tables = []
 		# generate table objects
 		tables_names.each do |name|
-			tbl = Table.new(self, name, "sql/tables/#{name}.sql")
+			tbl = Table.new(self, name)
 			@tables << tbl
 		end
 	end
@@ -96,7 +100,7 @@ class Database # Database class
 		self.query(q, *data.values )
 	end
 
-	def insert(table, data, filter="") # Inserts new data into the table
+	def insert(table, data) # Inserts new data into the table
 		entstr, valstr = gen_insert_query data.keys
 		self.query( "INSERT INTO #{table} #{entstr} VALUES #{valstr}", *data.values )
 	end
