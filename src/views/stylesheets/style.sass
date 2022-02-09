@@ -1,11 +1,11 @@
 @import "fonts"
 
-
 $font_stack: "Space Mono", monospace
 $bg_clr: #272a34
 $bg_alt_clr: #232730
 $fg_clr: #fff
 $fg_alt_clr: #eee
+$fg_error: #f00
 
 $shadow_clr: #4b5263 
 
@@ -88,6 +88,11 @@ a.button
 
 a.button:hover
   opacity: .6
+
+label.error_msg
+  color: $fg_error
+  font-size: 1.2rem
+  font-weight: bold
 
 .form-container
   display: flex

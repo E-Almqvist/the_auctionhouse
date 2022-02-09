@@ -10,9 +10,14 @@ require "sassc"
 require "colorize"
 
 require_relative "debug.rb"
-require_relative "database.rb"
-require_relative "db_models.rb"
+require_relative "lib/database.rb"
 require_relative "func.rb"
+
+load_tables = [
+	"User",
+	"Role"
+]
+db = Database.new("main", load_tables)
 
 enable :sessions
 
@@ -33,12 +38,13 @@ get "/register" do
 end
 
 # API stuff
+post "/user" do
+	# create user
+	redirect "/login"
+end
+
 post "/user/login" do
 	# login user
 	redirect "/"
 end
 
-post "/user/new" do
-	# create user
-	redirect "/login"
-end

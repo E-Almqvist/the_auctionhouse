@@ -26,9 +26,20 @@ class Table
 	def insert(data, filter="")
 		@db.insert(@name, data, filter)
 	end
-end
 
-require_relative "db_models.rb"
+	def update(data, filter="")
+		@db.update(@name, data, filter)
+	end
+
+	# sets or updates a specific field in the table
+	def set(attr, data, filter="") # slower but more lazy
+		if @db.get(@name, attr, filter).length > 0 then
+			@db.update(@name, data, filter)
+		else
+			@db.insert(@name, data, filter)
+		end
+	end
+end
 
 class Database # Database class
 	attr_reader :name, :path 
@@ -39,6 +50,10 @@ class Database # Database class
 
 		@tables = []
 		# generate table objects
+		tables_names.each do |name|
+			tbl = Table.new(self, name, "sql/tables/#{name}.sql")
+			@tables << tbl
+		end
 	end
 
 	private def db
@@ -84,14 +99,5 @@ class Database # Database class
 	def insert(table, data, filter="") # Inserts new data into the table
 		entstr, valstr = gen_insert_query data.keys
 		self.query( "INSERT INTO #{table} #{entstr} VALUES #{valstr}", *data.values )
-	end
-
-	# sets or updates a specific field in the table
-	def set(table, attr, data, filter="") # slower but more lazy
-		if self.get(table, attr, filter).length > 0 then
-			self.update(table, data, filter)
-		else
-			self.insert(table, data, filter)
-		end
 	end
 end
