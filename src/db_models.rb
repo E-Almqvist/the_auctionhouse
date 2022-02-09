@@ -6,21 +6,22 @@ class User < Table
 	# Find user by ID, returns multiple results if multiple IDs exist
 	# (which wont happen since IDs are unique)
 	def find_by_id(id)
-		self.get("*", "id = #{id}")
+		resp = self.get("*", "id = ?", id)
 	end
 
 	# Find user by email, same as above but for emails.
 	# Also unique
 	def find_by_email(email)
-		self.get("*", "email = #{email}")
+		resp = self.get("*", "email = ?", email)
 	end
 
 	# Register a new user
 	# Returns: success?, data
 	def register(email, name, password, password_confirm)
-		if( self.find_by_email(email).length > 0 ) then
+		check_email = self.find_by_email(email)
+		if( check_email.length > 0 ) then
 			# Email taken
-			return false, "Email already in use!"
+			return false, {error_msg: "Email already in use!"}
 		else
 			if( password == password_confirm ) then
 				pw_hash = BCrypt::Password.create(password) 
@@ -30,10 +31,10 @@ class User < Table
 					pw_hash: pw_hash
 				}
 
-				resp = self.insert(@name, data) # insert into the db
-				return true, resp
+				resp = self.insert(data) # insert into the db
+				return true, {resp: resp}
 			else
-				return false, "Password mismatch!"
+				return false, {error_msg: "Password mismatch!"}
 			end
 		end
 	end

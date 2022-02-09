@@ -21,12 +21,12 @@ class Table
 	# are intended to be accessed through a
 	# "Table Model".
 	# See "db_models.rb"
-	private def get(attr, filter="")
-		@db.get(@name, attr, filter)
+	private def get(attr, filter="", *args)
+		@db.get(@name, attr, filter, *args)
 	end
 
-	private def insert(data, filter="")
-		@db.insert(@name, data, filter)
+	private def insert(data)
+		@db.insert(@name, data)
 	end
 
 	private def update(data, filter="")
@@ -84,11 +84,11 @@ class Database # Database class
 		db.execute( q, *args )
 	end
 
-	def get(table, attr, filter="") # get data from table
+	def get(table, attr, filter="", *args) # get data from table
 		q = "SELECT #{attr} FROM #{table}" # create the query string
 		q = apply_filter(q, filter)
 
-		self.query query # execute query
+		self.query q, *args # execute query
 	end
 
 	def update(table, data, filter="") # Updates the table with specified data hash 
@@ -101,5 +101,9 @@ class Database # Database class
 	def insert(table, data) # Inserts new data into the table
 		entstr, valstr = gen_insert_query data.keys
 		self.query( "INSERT INTO #{table} #{entstr} VALUES #{valstr}", *data.values )
+	end
+
+	def get_table(tablesym)
+		@tables[tablesym]
 	end
 end

@@ -20,11 +20,6 @@ require_relative "db_models.rb"
 enable :sessions
 db = db_init
 
-def init_params(params={})
-	g = Hash.new ""
-	g.merge(params)
-end
-
 
 # Routes
 get "/style.css" do
@@ -32,26 +27,33 @@ get "/style.css" do
 end
 
 get "/" do
-	slim :index, locals: {params: init_params}
+	slim :index, locals: {data: init_data}
 end
 
 get "/login" do
-	slim :"user/login", locals: {params: init_params}
+	slim :"user/login", locals: {data: init_data}
 end
 
 get "/register" do
-	slim :"user/register", locals: {params: init_params}
+	slim :"user/register", locals: {data: init_data}
 end
 
 # API stuff
 post "/user" do
 	# create user
+	user = db.get_table :User
+
 	email = params[:email]
 	name = params[:name]
 	password = params[:password]
 	password_confirm = params[:password_confirm]
 
-	redirect "/login"
+	status, data = user.register(email, name, password, password_confirm)
+	if !status then # if something went wrong then return to 0
+		redirect "/register", locals: {data: init_data(data)}	
+	else # if everything went right then continue
+		redirect "/login", locals: {data: init_data(data)}
+	end
 end
 
 post "/user/login" do
