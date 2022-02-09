@@ -17,6 +17,7 @@ class User < Table
 
 	# Register a new user
 	# Returns: success?, data
+	# TODO: input checks & ERRORS!
 	def register(email, name, password, password_confirm)
 		check_email = self.find_by_email(email)
 		if( check_email.length > 0 ) then

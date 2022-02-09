@@ -27,15 +27,15 @@ get "/style.css" do
 end
 
 get "/" do
-	slim :index, locals: {data: init_data}
+	slim :index, locals: {info: init_info}
 end
 
 get "/login" do
-	slim :"user/login", locals: {data: init_data}
+	slim :"user/login", locals: {info: init_info}
 end
 
 get "/register" do
-	slim :"user/register", locals: {data: init_data}
+	slim :"user/register", locals: {info: init_info}
 end
 
 # API stuff
@@ -48,11 +48,11 @@ post "/user" do
 	password = params[:password]
 	password_confirm = params[:password_confirm]
 
-	status, data = user.register(email, name, password, password_confirm)
+	status, info = user.register(email, name, password, password_confirm)
 	if !status then # if something went wrong then return to 0
-		redirect "/register", locals: {data: init_data(data)}	
+		redirect "/register", locals: {info: init_info(info)}	
 	else # if everything went right then continue
-		redirect "/login", locals: {data: init_data(data)}
+		redirect "/login", locals: {info: init_info(info)}
 	end
 end
 

@@ -3,8 +3,9 @@ def get_random_subtitle
 	subtitles.sample.chomp
 end
 
-def init_data(data={})
+def init_info(info={})
 	g = Hash.new ""
-	g.merge(data)
+	info = g.merge(info)
+	return info
 end
 
