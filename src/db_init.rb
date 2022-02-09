@@ -1,6 +1,7 @@
+require_relative "db_models.rb"
+
 LOAD_TABLES = [
-	"User",
-	"Role"
+	User
 ]
 
 def db_init

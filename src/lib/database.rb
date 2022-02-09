@@ -46,15 +46,15 @@ end
 class Database # Database class
 	attr_reader :name, :path 
 	attr_accessor :tables
-	def initialize(name, tables_names=[], db_path=DEFAULT_DB_PATH)
+	def initialize(name, load_tables=[], db_path=DEFAULT_DB_PATH)
 		@name = name
 		@path = db_path
 
-		@tables = []
+		@tables = {}
 		# generate table objects
-		tables_names.each do |name|
-			tbl = Table.new(self, name)
-			@tables << tbl
+		load_tables.each do |table_model|
+			tblobj = table_model.new(self)
+			@tables[tblobj.name.to_sym] = tblobj
 		end
 	end
 

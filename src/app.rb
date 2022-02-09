@@ -46,6 +46,11 @@ end
 # API stuff
 post "/user" do
 	# create user
+	email = params[:email]
+	name = params[:name]
+	password = params[:password]
+	password_confirm = params[:password_confirm]
+
 	redirect "/login"
 end
 
