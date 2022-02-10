@@ -49,6 +49,7 @@ post "/user" do
 	password_confirm = params[:password_confirm]
 
 	status, info = user.register(email, name, password, password_confirm)
+	Console::debug "STATUS: #{status}", info
 	if !status then # if something went wrong then return to 0
 		redirect "/register", locals: {info: init_info(info)}	
 	else # if everything went right then continue

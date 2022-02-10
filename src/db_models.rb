@@ -15,6 +15,19 @@ class User < Table
 		resp = self.get("*", "email = ?", email)
 	end
 
+	private def validate_credentials(email, name, password, password_confirm)
+		# Check email
+		check_email_dupe = self.find_by_email(email).length <= 0
+		check_email_valid = email.match(EMAIL_REGEX) != nil 
+
+		# Name
+		check_name_len = name.length >= MIN_NAME_LEN
+
+		# Password
+		check_pass_equals = password == password_confirm
+		check_pass_len = password.length >= MIN_PASSWORD_LEN 
+	end
+
 	# Register a new user
 	# Returns: success?, data
 	# TODO: input checks & ERRORS!
@@ -33,7 +46,7 @@ class User < Table
 				}
 
 				resp = self.insert(data) # insert into the db
-				return true, {resp: resp}
+				return true, resp 
 			else
 				return false, {error_msg: "Password mismatch!"}
 			end
