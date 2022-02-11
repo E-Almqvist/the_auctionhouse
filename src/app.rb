@@ -10,6 +10,7 @@ require "sassc"
 require "colorize"
 require "bcrypt"
 
+require_relative "config.rb"
 require_relative "debug.rb"
 require_relative "lib/database.rb"
 require_relative "func.rb"
@@ -27,15 +28,17 @@ get "/style.css" do
 end
 
 get "/" do
-	slim :index, locals: {info: init_info}
+	serve :index
 end
 
 get "/login" do
-	slim :"user/login", locals: {info: init_info}
+	serve :"user/login"
 end
 
 get "/register" do
-	slim :"user/register", locals: {info: init_info}
+	info = session[:error_msg] != nil ? {error_msg: session[:error_msg]} : {}
+	session[:error_msg] = nil
+	serve :"user/register", info
 end
 
 # API stuff
@@ -48,12 +51,13 @@ post "/user" do
 	password = params[:password]
 	password_confirm = params[:password_confirm]
 
-	status, info = user.register(email, name, password, password_confirm)
-	Console::debug "STATUS: #{status}", info
+	status, ret = user.register(email, name, password, password_confirm)
+	Console::debug "STATUS: #{status}", ret
 	if !status then # if something went wrong then return to 0
-		redirect "/register", locals: {info: init_info(info)}	
+		session[:error_msg] = ret
+		redirect "/register"
 	else # if everything went right then continue
-		redirect "/login", locals: {info: init_info(info)}
+		redirect "/login"
 	end
 end
 

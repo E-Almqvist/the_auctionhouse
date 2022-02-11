@@ -9,3 +9,7 @@ def init_info(info={})
 	return info
 end
 
+def serve(template, info={})
+	slim( template, locals: {info: init_info(info)} )
+end
+
