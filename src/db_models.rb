@@ -31,27 +31,17 @@ class User < Table
 		check_pass_len = password.length >= MIN_PASSWORD_LEN 
 
 		# This code is really ugly
-		# TODO: refactor 
-		if not check_all_fields then
-			return false, REGISTER_ERRORS[:fields]
-		elsif not check_email_dupe then
-			return false, REGISTER_ERRORS[:email_dupe]
-		elsif not check_email_valid then
-			return false, REGISTER_ERRORS[:email_fake]
-		elsif not check_name_len then
-			return false, REGISTER_ERRORS[:name_len]
-		elsif not check_pass_equals then
-			return false, REGISTER_ERRORS[:pass_notequals]
-		elsif not check_pass_len then
-			return false, REGISTER_ERRORS[:pass_len]
-		else
-			return true, ""
-		end
+		return false, REGISTER_ERRORS[:fields] unless check_all_fields
+		return false, REGISTER_ERRORS[:email_dupe] unless check_email_dupe
+		return false, REGISTER_ERRORS[:email_fake] unless check_email_valid
+		return false, REGISTER_ERRORS[:name_len] unless check_name_len
+		return false, REGISTER_ERRORS[:pass_notequals] unless check_pass_equals
+		return false, REGISTER_ERRORS[:pass_len] unless check_pass_len
+		return true, ""
 	end
 
 	# Register a new user
 	# Returns: success?, data
-	# TODO: input checks & ERRORS!
 	def register(email, name, password, password_confirm)
 		check, errorstr = self.validate_credentials(email, name, password, password_confirm)
 

@@ -22,14 +22,22 @@ $special_btn_clr: #4776C1
 html 
   background-color: $bg_clr 
 
+.content-container
+  display: flex
+  flex-direction: column
+  justify-content: center
+  width: auto 
+  height: 90% 
 
 body
   margin: 0
+  height: 100% 
+
   header
-    background-color: $bg_alt_clr
-    border-bottom: 1px solid $shadow_clr
+    background-color: $bg_clr
+    // border-bottom: 1px solid $shadow_clr
     padding: .1rem .8rem .4rem .8rem
-    margin-bottom: 1rem
+    white-space: nowrap
 
     div
       display: flex
@@ -52,7 +60,7 @@ body
         h2 
           padding-left: 6px
           margin: 0
-          opacity: .5
+          opacity: .2
           font-size: .8rem
           font-style: italic
           font-weight: normal
@@ -101,10 +109,11 @@ label.error_msg
   form
     display: flex
     flex-direction: column
+    justify-content: center
     padding: 2rem
     margin: 0
     width: 60%
-    max-width: 600px
+    max-width: 400px
     border-radius: .4rem
 
     a

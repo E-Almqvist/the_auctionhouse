@@ -12,10 +12,17 @@ html lang="en"
           h2 = get_random_subtitle
         nav
           ul
-            li
-              a.button#register href="/register" target="_self"
-                | Register
-            li
-              a.button#login href="/login" target="_self"
-                | Log in
-    ==yield
+            - unless session[:auth_token] 
+              li
+                a.button#register href="/register" target="_self"
+                  | Register
+              li
+                a.button#login href="/login" target="_self"
+                  | Log in
+            - else
+              li
+                a.button#profile href="/profile" target="_self"
+                  | Profile
+
+    .content-container
+      ==yield
