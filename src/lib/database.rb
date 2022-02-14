@@ -41,14 +41,14 @@ class Entity
 	end
 
 	private def get(attr, filter="", *args) # get data from table
-		q = "SELECT #{attr} FROM #{self.class.table_name}" # create the query string
+		q = "SELECT #{attr} FROM #{self.class.name}" # create the query string
 		q = apply_filter(q, filter)
 
 		self.query q, *args # execute query
 	end
 
 	private def update(data, filter="") # Updates the table with specified data hash 
-		q = "UPDATE #{self.class.table_name} SET #{self.gen_update_query(data.keys)}" 
+		q = "UPDATE #{self.class.name} SET #{self.gen_update_query(data.keys)}" 
 		q = apply_filter(q, filter)
 
 		self.query(q, *data.values )
@@ -56,14 +56,14 @@ class Entity
 
 	private def insert(data) # Inserts new data into the table
 		entstr, valstr = gen_insert_query data.keys
-		self.query( "INSERT INTO #{self.class.table_name} #{entstr} VALUES #{valstr}", *data.values )
+		self.query( "INSERT INTO #{self.class.name} #{entstr} VALUES #{valstr}", *data.values )
 	end
 
 	private def set(attr, data, filter="") # slower but more lazy
-		if db.get(self.class.table_name, attr, filter).length > 0 then
-			db.update(self.class.table_name, data, filter)
+		if db.get(self.class.name, attr, filter).length > 0 then
+			db.update(self.class.name, data, filter)
 		else
-			db.insert(self.class.table_name, data, filter)
+			db.insert(self.class.name, data, filter)
 		end
 	end
 end
