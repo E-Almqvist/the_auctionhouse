@@ -16,3 +16,7 @@ REGISTER_ERRORS = {
 	email_fake: "Please use a valid email address"
 }
 
+LOGIN_ERRORS = {
+	fields: "Please fill all of the fields",
+	fail: "Wrong password and/or email"
+}

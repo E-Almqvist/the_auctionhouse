@@ -1,6 +1,6 @@
 V2FpdCwgbW9uZXkgaGFzIG5vIHZhbHVlPyEK
 No such place like 127.0.0.1!
-Fourty-two? What do you mean? Tell me!
+Fourty-two? That's not much for an answer...
 I would just like to interject for a moment...
 68747470733a2f2f777963682e6465762f6369706865722e747874
 CSRF? No, I do not think so.

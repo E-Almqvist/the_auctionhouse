@@ -1,3 +1,4 @@
+# User table model
 class User < Table
 	def initialize(db)
 		super db, "User" 
@@ -6,16 +7,16 @@ class User < Table
 	# Find user by ID, returns multiple results if multiple IDs exist
 	# (which wont happen since IDs are unique)
 	def find_by_id(id)
-		resp = self.get("*", "id = ?", id)
+		self.get("*", "id = ?", id)
 	end
 
 	# Find user by email, same as above but for emails.
 	# Also unique
 	def find_by_email(email)
-		resp = self.get("*", "email = ?", email)
+		self.get("*", "email = ?", email)
 	end
 
-	private def validate_credentials(email, name, password, password_confirm)
+	private def validate_register_creds(email, name, password, password_confirm)
 		# Field check
 		check_all_fields = email != "" && name != "" && password != "" && password_confirm != ""
 
@@ -43,7 +44,7 @@ class User < Table
 	# Register a new user
 	# Returns: success?, data
 	def register(email, name, password, password_confirm)
-		check, errorstr = self.validate_credentials(email, name, password, password_confirm)
+		check, errorstr = self.validate_register_creds(email, name, password, password_confirm)
 
 		if( check ) then
 			pw_hash = BCrypt::Password.create(password) 
@@ -57,6 +58,16 @@ class User < Table
 			return check, resp
 		else
 			return check, errorstr
+		end
+	end
+
+	# Log in user
+	# Returns: success?, auth token
+	def login(email, password)
+		user_query = self.find_by_email email # get the user info
+
+		if user_query.length >= 1 then
+			user_info = user_query.first	
 		end
 	end
 end

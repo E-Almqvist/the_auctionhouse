@@ -1,48 +1,5 @@
 DEFAULT_DB_PATH = "db/main.db"
 
-class Table
-	attr_reader :name
-	attr_accessor :db
-
-	def initialize(db, name)
-		@db = db
-		@name = name
-		@sql_file = "sql/tables/#{name}.sql"
-
-		begin
-			q = File.read @sql_file # get SQL script
-			@db.query q # run query
-		rescue Errno::ENOENT => err
-			error "#{err}"	
-		end
-	end
-
-	# these methods are private because they
-	# are intended to be accessed through a
-	# "Table Model".
-	# See "db_models.rb"
-	private def get(attr, filter="", *args)
-		@db.get(@name, attr, filter, *args)
-	end
-
-	private def insert(data)
-		@db.insert(@name, data)
-	end
-
-	private def update(data, filter="")
-		@db.update(@name, data, filter)
-	end
-
-	# sets or updates a specific field in the table
-	private def set(attr, data, filter="") # slower but more lazy
-		if @db.get(@name, attr, filter).length > 0 then
-			@db.update(@name, data, filter)
-		else
-			@db.insert(@name, data, filter)
-		end
-	end
-end
-
 class Database # Database class
 	attr_reader :name, :path 
 	attr_accessor :tables
@@ -105,5 +62,48 @@ class Database # Database class
 
 	def get_table(tablesym)
 		@tables[tablesym]
+	end
+end
+
+class Table
+	attr_reader :name
+	attr_accessor :db
+
+	def initialize(db, name)
+		@db = db
+		@name = name
+		@sql_file = "sql/tables/#{name}.sql"
+
+		begin
+			q = File.read @sql_file # get SQL script
+			@db.query q # run query
+		rescue Errno::ENOENT => err
+			error "#{err}"	
+		end
+	end
+
+	# these methods are private because they
+	# are intended to be accessed through a
+	# "Table Model".
+	# See "db_models.rb"
+	private def get(attr, filter="", *args)
+		@db.get(@name, attr, filter, *args)
+	end
+
+	private def insert(data)
+		@db.insert(@name, data)
+	end
+
+	private def update(data, filter="")
+		@db.update(@name, data, filter)
+	end
+
+	# sets or updates a specific field in the table
+	private def set(attr, data, filter="") # slower but more lazy
+		if @db.get(@name, attr, filter).length > 0 then
+			@db.update(@name, data, filter)
+		else
+			@db.insert(@name, data, filter)
+		end
 	end
 end
