@@ -8,9 +8,9 @@ class Entity
 	attr_reader :name, :path 
 	attr_accessor :tables
 
-	# Template
-	private def create_table
-		sql_file = "sql/tables/#{self.class.name}.sql"
+	# Creates the table
+	def self.init_table
+		sql_file = "sql/tables/#{self.name}.sql"
 
 		begin
 			q = File.read sql_file # get SQL script
@@ -20,50 +20,50 @@ class Entity
 		end
 	end
 
-	private def gen_update_query(vars) # generates part of the update query string
+	private def self.gen_update_query(vars) # generates part of the update query string
 		vars.join "= ?, "
 	end
 
-	private def gen_insert_query(vars) # generates part of the insert query string
+	private def self.gen_insert_query(vars) # generates part of the insert query string
 		entstr = "(#{vars.join ", "})"
 		valstr = "(#{(["?"] * vars.length).join ", "})"
 
 		return entstr, valstr
 	end
 
-	private def apply_filter(query, filter)
+	private def self.apply_filter(query, filter)
 		if filter != "" then query += " WHERE #{filter}" end
 		query
 	end
 
-	private def query(q, *args) # query table with query string
+	def self.query(q, *args) # query table with query string
 		db.execute( q, *args )
 	end
 
-	private def get(attr, filter="", *args) # get data from table
-		q = "SELECT #{attr} FROM #{self.class.name}" # create the query string
+	def self.get(attr, filter="", *args) # get data from table
+		q = "SELECT #{attr} FROM #{self.name}" # create the query string
 		q = apply_filter(q, filter)
 
 		self.query q, *args # execute query
 	end
 
-	private def update(data, filter="") # Updates the table with specified data hash 
-		q = "UPDATE #{self.class.name} SET #{self.gen_update_query(data.keys)}" 
+	def self.update(data, filter="") # Updates the table with specified data hash 
+		q = "UPDATE #{self.name} SET #{self.gen_update_query(data.keys)}" 
 		q = apply_filter(q, filter)
 
 		self.query(q, *data.values )
 	end
 
-	private def insert(data) # Inserts new data into the table
-		entstr, valstr = gen_insert_query data.keys
-		self.query( "INSERT INTO #{self.class.name} #{entstr} VALUES #{valstr}", *data.values )
+	def self.insert(data) # Inserts new data into the table
+		entstr, valstr = self.gen_insert_query data.keys
+		self.query( "INSERT INTO #{self.name} #{entstr} VALUES #{valstr}", *data.values )
 	end
 
-	private def set(attr, data, filter="") # slower but more lazy
-		if db.get(self.class.name, attr, filter).length > 0 then
-			db.update(self.class.name, data, filter)
+	def self.set(attr, data, filter="") # slower but more lazy
+		if self.get(attr, filter).length > 0 then
+			self.update(data, filter)
 		else
-			db.insert(self.class.name, data, filter)
+			self.insert(data, filter)
 		end
 	end
 end

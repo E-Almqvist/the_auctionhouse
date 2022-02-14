@@ -1,9 +1,11 @@
 require_relative "db_models.rb"
 
-LOAD_TABLES = [
+LOAD_MODELS = [
 	User
 ]
 
 def db_init
-	db = Database.new("main", LOAD_TABLES)
+	LOAD_MODELS.each do |model|
+		model.init_table # init all tables
+	end
 end
