@@ -19,7 +19,7 @@ require_relative "db_init.rb"
 require_relative "db_models.rb"
 
 enable :sessions
-db = db_init
+db_init
 
 # Routes
 get "/style.css" do
@@ -42,15 +42,12 @@ end
 
 # API stuff
 post "/user" do
-	# create user
-	user = db.get_table :User
-
 	email = params[:email]
 	name = params[:name]
 	password = params[:password]
 	password_confirm = params[:password_confirm]
 
-	status, ret = user.register(email, name, password, password_confirm)
+	status, ret = User.register(email, name, password, password_confirm)
 	Console::debug "STATUS: #{status}", ret
 	if !status then # if something went wrong then return to 0
 		session[:error_msg] = ret

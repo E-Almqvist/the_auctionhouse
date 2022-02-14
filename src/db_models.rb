@@ -2,17 +2,17 @@
 class User < Entity 
 	# Find user by ID, returns multiple results if multiple IDs exist
 	# (which wont happen since IDs are unique)
-	def find_by_id(id)
+	def self.find_by_id(id)
 		self.get("*", "id = ?", id)
 	end
 
 	# Find user by email, same as above but for emails.
 	# Also unique
-	def find_by_email(email)
+	def self.find_by_email(email)
 		self.get("*", "email = ?", email)
 	end
 
-	private def validate_register_creds(email, name, password, password_confirm)
+	def self.validate_register_creds(email, name, password, password_confirm)
 		# Field check
 		check_all_fields = email != "" && name != "" && password != "" && password_confirm != ""
 
@@ -39,7 +39,7 @@ class User < Entity
 
 	# Register a new user
 	# Returns: success?, data
-	def register(email, name, password, password_confirm)
+	def self.register(email, name, password, password_confirm)
 		check, errorstr = self.validate_register_creds(email, name, password, password_confirm)
 
 		if( check ) then
@@ -59,7 +59,7 @@ class User < Entity
 
 	# Log in user
 	# Returns: success?, auth token
-	def login(email, password)
+	def self.login(email, password)
 		user_query = self.find_by_email email # get the user info
 
 		if user_query.length >= 1 then

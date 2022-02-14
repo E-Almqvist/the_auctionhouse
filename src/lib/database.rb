@@ -20,18 +20,18 @@ class Entity
 		end
 	end
 
-	private def self.gen_update_query(vars) # generates part of the update query string
+	def self.gen_update_query(vars) # generates part of the update query string
 		vars.join "= ?, "
 	end
 
-	private def self.gen_insert_query(vars) # generates part of the insert query string
+	def self.gen_insert_query(vars) # generates part of the insert query string
 		entstr = "(#{vars.join ", "})"
 		valstr = "(#{(["?"] * vars.length).join ", "})"
 
 		return entstr, valstr
 	end
 
-	private def self.apply_filter(query, filter)
+	def self.apply_filter(query, filter)
 		if filter != "" then query += " WHERE #{filter}" end
 		query
 	end
