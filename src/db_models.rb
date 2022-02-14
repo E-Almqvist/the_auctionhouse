@@ -1,9 +1,5 @@
 # User table model
-class User < Table
-	def initialize(db)
-		super db, "User" 
-	end
-
+class User < Entity 
 	# Find user by ID, returns multiple results if multiple IDs exist
 	# (which wont happen since IDs are unique)
 	def find_by_id(id)

@@ -21,7 +21,6 @@ require_relative "db_models.rb"
 enable :sessions
 db = db_init
 
-
 # Routes
 get "/style.css" do
 	sass :"stylesheets/style", style: :compressed

@@ -1,3 +1,6 @@
+# DB stuff
+DB_PATH = "db/main.db"
+
 # Register stuff
 MIN_PASSWORD_LEN = 8
 MIN_NAME_LEN = 2
@@ -16,6 +19,7 @@ REGISTER_ERRORS = {
 	email_fake: "Please use a valid email address"
 }
 
+# Login stuff
 LOGIN_ERRORS = {
 	fields: "Please fill all of the fields",
 	fail: "Wrong password and/or email"
