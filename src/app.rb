@@ -1,6 +1,6 @@
 #!/usr/bin/ruby -w
 
-DEBUG = ARGV[0] == "debug"
+DEBUG = ARGV[0] == "debug" 
 
 require "sinatra"
 require "sinatra/reloader" if DEBUG
@@ -9,7 +9,6 @@ require "sqlite3"
 require "sassc"
 require "colorize"
 require "bcrypt"
-require "gravatar"
 
 require_relative "config.rb"
 require_relative "debug.rb"
@@ -18,6 +17,12 @@ require_relative "func.rb"
 
 require_relative "db_init.rb"
 require_relative "db_models.rb"
+
+also_reload "lib/*"
+also_reload "func.rb"
+also_reload "config.rb"
+also_reload "db_models.rb"
+also_reload "db_init.rb"
 
 enable :sessions
 db_init
@@ -69,5 +74,10 @@ post "/login" do
 		session[:userid] = ret 
 		redirect "/"
 	end
+end
+
+post "/logout" do
+	session.clear
+	redirect "/"
 end
 

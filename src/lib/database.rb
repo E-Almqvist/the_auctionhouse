@@ -3,7 +3,7 @@ def db
 	dbbuf.results_as_hash = true
 	dbbuf
 end
-	
+
 class EntityModel
 	attr_reader :id, :data
 

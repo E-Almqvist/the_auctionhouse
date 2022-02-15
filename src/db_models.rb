@@ -14,12 +14,7 @@ class User < EntityModel
 	end
 
 	def avatar
-		gravatar = nil # Gravatar.src @email
-		if gravatar then
-			return gravatar
-		else
-			return @avatar_url
-		end
+		return @avatar_url
 	end
 
 	# Find user by ID, returns a user object 
@@ -39,7 +34,7 @@ class User < EntityModel
 		check_all_fields = email != "" && name != "" && password != "" && password_confirm != ""
 
 		# Check email
-		check_email_dupe = self.find_by_email(email) 
+		check_email_dupe = self.find_by_email(email) == nil
 		check_email_valid = email.match(EMAIL_REGEX) != nil 
 
 		# Name
