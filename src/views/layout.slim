@@ -21,7 +21,6 @@ html lang="en"
                   | Log in
             - else
               li
-                label = session[:user].name
                 a href="/profile" target="_self" 
                   img.avatar src=session[:user].avatar_url alt="Your avatar"
 
