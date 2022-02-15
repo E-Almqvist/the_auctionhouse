@@ -32,15 +32,11 @@ get "/" do
 end
 
 get "/login" do
-	info = session[:error_msg] != nil ? {error_msg: session[:error_msg]} : {}
-	session[:error_msg] = nil
 	serve :"user/login"
 end
 
 get "/register" do
-	info = session[:error_msg] != nil ? {error_msg: session[:error_msg]} : {}
-	session[:error_msg] = nil
-	serve :"user/register", info
+	serve :"user/register"
 end
 
 # API stuff
@@ -66,11 +62,11 @@ post "/login" do
 
 	status, ret = User.login(email, password)
 	Console.debug "/login STATUS: #{status}", ret
-	if !status then
+	if !status then # ret = error message
 		session[:error_msg] = ret
 		redirect "/login"
-	else
-		session[:user] = User.new ret
+	else # ret = userid
+		session[:userid] = ret 
 		redirect "/"
 	end
 end

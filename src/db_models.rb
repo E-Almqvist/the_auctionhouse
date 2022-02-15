@@ -1,6 +1,6 @@
 # User table model
 class User < EntityModel 
-	attr_reader :email, :name, :bio_text, :balance, :avatar_url, :reputation
+	attr_reader :email, :name, :bio_text, :balance, :avatar_url, :reputation, :pw_hash
 
 	def initialize(user_info)
 		super user_info
@@ -10,10 +10,11 @@ class User < EntityModel
 		@balance = user_info["balance"]
 		@avatar_url = user_info["avatar_url"]
 		@reputation = user_info["reputation"]
+		@pw_hash = user_info["pw_hash"]
 	end
 
-	def self.get_avatar
-		gravatar = Gravatar.src @email
+	def avatar
+		gravatar = nil # Gravatar.src @email
 		if gravatar then
 			return gravatar
 		else
@@ -21,16 +22,16 @@ class User < EntityModel
 		end
 	end
 
-	# Find user by ID, returns multiple results if multiple IDs exist
-	# (which wont happen since IDs are unique)
+	# Find user by ID, returns a user object 
 	def self.find_by_id(id)
-		self.get("*", "id = ?", id)
+		data = self.get("*", "id = ?", id).first
+		data && User.new(data)
 	end
 
 	# Find user by email, same as above but for emails.
-	# Also unique
 	def self.find_by_email(email)
-		self.get("*", "email = ?", email)
+		data = self.get("*", "email = ?", email).first
+		data && User.new(data)
 	end
 
 	def self.validate_register_creds(email, name, password, password_confirm)
@@ -38,7 +39,7 @@ class User < EntityModel
 		check_all_fields = email != "" && name != "" && password != "" && password_confirm != ""
 
 		# Check email
-		check_email_dupe = self.find_by_email(email).length <= 0
+		check_email_dupe = self.find_by_email(email) 
 		check_email_valid = email.match(EMAIL_REGEX) != nil 
 
 		# Name
@@ -68,14 +69,14 @@ class User < EntityModel
 		check, errorstr = self.validate_register_creds(email, name, password, password_confirm)
 
 		if check then
-			pw_hash = BCrypt::Password.create(password) 
+			pw_hash = BCrypt::Password.create password
 			data = { # payload
 				name: name,
 				email: email,
 				pw_hash: pw_hash
 			}
 
-			resp = self.insert(data) # insert into the db
+			resp = self.insert data # insert into the db
 			return check, resp
 		else
 			return check, errorstr
@@ -84,16 +85,15 @@ class User < EntityModel
 
 
 	# Log in user
-	# Returns: success?, user info 
+	# Returns: success?, user id 
 	def self.login(email, password)
-		user_query = self.find_by_email email # get the user info
+		user = self.find_by_email email # get the user info
 
-		return false, LOGIN_ERRORS[:fail] unless user_query.length >= 1  # Verify that a user was found
+		return false, LOGIN_ERRORS[:fail] unless user # Verify that the user exists 
 
-		user_info = user_query.first	
-		pw_check = self.validate_password user_info["pw_hash"], password
+		pw_check = self.validate_password(user.pw_hash, password)
 		return false, LOGIN_ERRORS[:fail] unless pw_check # Verify password
 
-		return true, user_info
+		return true, user.id
 	end
 end

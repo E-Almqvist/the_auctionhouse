@@ -5,9 +5,10 @@ def db
 end
 	
 class EntityModel
-	attr_accessor :data
+	attr_reader :id, :data
 
 	def initialize(data)
+		@id = data["id"]
 		@data = data
 	end
 

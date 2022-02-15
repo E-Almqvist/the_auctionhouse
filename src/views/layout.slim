@@ -12,7 +12,7 @@ html lang="en"
           h2 = get_random_subtitle
         nav
           ul
-            - unless session[:user] 
+            - unless user 
               li
                 a.button#register href="/register" target="_self"
                   | Register
@@ -22,7 +22,7 @@ html lang="en"
             - else
               li
                 a href="/profile" target="_self" 
-                  img.avatar src="#{session[:user].get_avatar}" alt="Your avatar"
+                  img.avatar src="#{user.avatar}" alt="Your avatar"
 
     .content-container
       ==yield
