@@ -12,6 +12,15 @@ class User < EntityModel
 		@reputation = user_info["reputation"]
 	end
 
+	def self.get_avatar
+		gravatar = Gravatar.src @email
+		if gravatar then
+			return gravatar
+		else
+			return @avatar_url
+		end
+	end
+
 	# Find user by ID, returns multiple results if multiple IDs exist
 	# (which wont happen since IDs are unique)
 	def self.find_by_id(id)

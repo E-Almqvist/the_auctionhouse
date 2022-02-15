@@ -3,6 +3,7 @@
 $font_stack: "Space Mono", monospace
 $bg_clr: #272a34
 $bg_alt_clr: #232730
+$bg_dark_clr: #21242e
 $fg_clr: #fff
 $fg_alt_clr: #eee
 $fg_error: #f77 
@@ -34,14 +35,15 @@ body
   height: 100% 
 
   header
-    background-color: $bg_clr
-    // border-bottom: 1px solid $shadow_clr
-    padding: .1rem .8rem .4rem .8rem
+    height: 55px
+    background-color: $bg_dark_clr
+    //border-bottom: 1px solid $shadow_clr
+    padding: .1rem .8rem .1rem .8rem
     white-space: nowrap
 
     div
       display: flex
-      max-width: 80rem
+      max-width: 70rem
       margin: 0 auto
 
       #logo_container
@@ -54,11 +56,10 @@ body
         h1
           margin: 0
           opacity: .8
-          font-size: 2rem
+          font-size: 1.2rem
           font-weight: bold
 
         h2 
-          padding-left: 6px
           margin: 0
           opacity: .2
           font-size: .8rem
@@ -69,7 +70,8 @@ body
         display: flex
         align-items: center
         margin: 0 0 0 auto
-        padding: 8px 
+        padding: 8px
+        padding-right: 0
         
         ul
           margin: 0
@@ -102,8 +104,9 @@ label.error_msg
   font-weight: bold
 
 img.avatar
-  width: 3.4rem
-  height: 3.4rem
+  background: $shadow_clr
+  width: 2.15rem 
+  height: auto
   border-radius: 50%
   border: 2px solid $shadow_clr
   transition: border .2s

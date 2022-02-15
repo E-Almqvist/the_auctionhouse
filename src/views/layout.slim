@@ -22,7 +22,7 @@ html lang="en"
             - else
               li
                 a href="/profile" target="_self" 
-                  img.avatar src=session[:user].avatar_url alt="Your avatar"
+                  img.avatar src="#{session[:user].get_avatar}" alt="Your avatar"
 
     .content-container
       ==yield

@@ -4,6 +4,7 @@ GEM
     bcrypt (3.1.16)
     colorize (0.8.1)
     ffi (1.15.5)
+    gravatar (1.0)
     multi_json (1.15.0)
     mustermann (1.1.1)
       ruby2_keywords (>= 0.0.1)
@@ -39,6 +40,7 @@ PLATFORMS
 DEPENDENCIES
   bcrypt
   colorize
+  gravatar
   sassc
   sinatra
   sinatra-reloader

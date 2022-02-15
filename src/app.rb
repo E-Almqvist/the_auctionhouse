@@ -9,6 +9,7 @@ require "sqlite3"
 require "sassc"
 require "colorize"
 require "bcrypt"
+require "gravatar"
 
 require_relative "config.rb"
 require_relative "debug.rb"
@@ -69,7 +70,7 @@ post "/login" do
 		session[:error_msg] = ret
 		redirect "/login"
 	else
-		session[:user] = User.new(ret)
+		session[:user] = User.new ret
 		redirect "/"
 	end
 end
