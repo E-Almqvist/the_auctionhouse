@@ -1,4 +1,4 @@
-module Console 
+class Console 
 	def self.log(str, indent=4, *args)
 		puts "#{str}"
 

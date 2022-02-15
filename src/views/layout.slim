@@ -12,7 +12,7 @@ html lang="en"
           h2 = get_random_subtitle
         nav
           ul
-            - unless session[:auth_token] 
+            - unless session[:user] 
               li
                 a.button#register href="/register" target="_self"
                   | Register
@@ -21,8 +21,9 @@ html lang="en"
                   | Log in
             - else
               li
-                a.button#profile href="/profile" target="_self"
-                  | Profile
+                label = session[:user].name
+                a href="/profile" target="_self" 
+                  img.avatar src=session[:user].avatar_url alt="Your avatar"
 
     .content-container
       ==yield

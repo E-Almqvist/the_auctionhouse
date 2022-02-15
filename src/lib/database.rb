@@ -4,9 +4,12 @@ def db
 	dbbuf
 end
 	
-class Entity 
-	attr_reader :name, :path 
-	attr_accessor :tables
+class EntityModel
+	attr_accessor :data
+
+	def initialize(data)
+		@data = data
+	end
 
 	# Creates the table
 	def self.init_table
