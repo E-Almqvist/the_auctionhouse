@@ -21,6 +21,19 @@ class User < EntityModel
 		"INSERT ROLE HERE"
 	end
 
+	def has_bad_rep?
+		@reputation < 0
+	end
+
+	def bio_html
+		"<h1>Yes</h1>"
+	end
+
+	def reputation_text
+		sign = @reputation > 0 ? "+" : ""	
+		return "#{sign}#{@reputation}"
+	end
+
 	# Find user by ID, returns a user object 
 	def self.find_by_id(id)
 		data = self.get("*", "id = ?", id).first

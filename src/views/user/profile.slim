@@ -1,32 +1,48 @@
 #profile-container
-  aside#userinfo.card.card-container
-    h2 = user.name
-    h3 = user.role
 
-    .avatar-container
-      img.avatar src="#{user.avatar}" alt="#{user.name}'s avatar"
+  aside
+    #userinfo.card.card-container
+      h2 = user.name
+      h3 = user.role
 
-    p = user.bio_text
+      .avatar-container
+        img.avatar src="#{user.avatar}" alt="#{user.name}'s avatar"
 
-  aside#roles.card
-    h2 Roles
-    .card-container
-      ul.roles-container
-        li
-          label role
-        li
-          label role2
-        li
-          label role2
-        li
-          label role2
-        li
-          label role2
+      ul.button-container
+        a.button href="mailto:#{user.email}"
+          li Message
+        a.button href="/profile/#{user.id}/reputation"
+          li Rep
+        a.button href="/profile/#{user.id}/posts"
+          li Posts 
 
-  aside#reputation.card
-    p 100 rep
+    #roles.card
+      h2 Roles
+      .card-container
+        ul.button-container
+          // insert roles here
+          li
+            label role
+          li
+            label role2
+          li
+            label role2
+          li
+            label role2
+          li
+            label role2
+
+    #reputation.card
+      h2 Reputation
+      - unless user.has_bad_rep?
+        h3.green = user.reputation_text
+      - else
+        h3.red = user.reputation_text
+      h4 Based on user reviews
 
   #bio.card
-    p markdown stuff here...
+    h2 User biography
+    .card-container
+      == user.bio_html
   
 
