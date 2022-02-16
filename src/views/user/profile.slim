@@ -1,0 +1,32 @@
+#profile-container
+  aside#userinfo.card.card-container
+    h2 = user.name
+    h3 = user.role
+
+    .avatar-container
+      img.avatar src="#{user.avatar}" alt="#{user.name}'s avatar"
+
+    p = user.bio_text
+
+  aside#roles.card
+    h2 Roles
+    .card-container
+      ul.roles-container
+        li
+          label role
+        li
+          label role2
+        li
+          label role2
+        li
+          label role2
+        li
+          label role2
+
+  aside#reputation.card
+    p 100 rep
+
+  #bio.card
+    p markdown stuff here...
+  
+

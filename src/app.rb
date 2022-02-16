@@ -36,6 +36,10 @@ get "/" do
 	serve :index
 end
 
+get "/404" do
+	serve :"404"
+end
+
 get "/login" do
 	serve :"user/login"
 end
@@ -43,6 +47,26 @@ end
 get "/register" do
 	serve :"user/register"
 end
+
+get "/profile/:id" do
+	id = params[:id].to_i
+	userobj = User.find_by_id id
+
+	if userobj then
+		serve :"user/profile", {user: userobj}
+	else
+		serve :"404"
+	end
+end
+
+get "/profile" do 
+	if is_logged_in then
+		redirect "/profile/#{session[:userid]}"
+	else
+		redirect "/login"
+	end
+end
+
 
 # API stuff
 post "/register" do
@@ -66,7 +90,6 @@ post "/login" do
 	password = params[:password]
 
 	status, ret = User.login(email, password)
-	Console.debug "/login STATUS: #{status}", ret
 	if !status then # ret = error message
 		session[:error_msg] = ret
 		redirect "/login"

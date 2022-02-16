@@ -17,6 +17,10 @@ class User < EntityModel
 		return @avatar_url
 	end
 
+	def role
+		"INSERT ROLE HERE"
+	end
+
 	# Find user by ID, returns a user object 
 	def self.find_by_id(id)
 		data = self.get("*", "id = ?", id).first

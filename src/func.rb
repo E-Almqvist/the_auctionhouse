@@ -3,22 +3,22 @@ def get_random_subtitle
 	subtitles.sample.chomp
 end
 
-def init_info(*infos)
-	g = Hash.new ""
-	info = g.merge(*infos)
-	return info
+def is_logged_in
+	session[:userid] != nil
 end
 
-def user 
+def get_current_user 
 	session[:userid] && User.find_by_id(session[:userid])
 end
 
 # Serve templates
-def serve(template, info={})
-	# Insert the error info (if it exists)
-	error_info = session[:error_msg] != nil ? {error_msg: session[:error_msg]} : {}
+def serve(template, locals={})
+	# Insert the error locals (if it exists)
+	locals[:error_msg] = session[:error_msg] or ""
 	session[:error_msg] = nil
 
+	locals[:session_user] = get_current_user unless !is_logged_in
+
 	# Serve the slim template
-	slim(template, locals: {info: init_info(info, error_info), user: user})
+	slim(template, locals: locals)
 end
