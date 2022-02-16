@@ -26,7 +26,8 @@ class User < EntityModel
 	end
 
 	def bio_html
-		"<h1>Yes</h1>"
+		md_parser = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
+		md_parser.render @bio_text
 	end
 
 	def reputation_text

@@ -9,6 +9,7 @@ require "sqlite3"
 require "sassc"
 require "colorize"
 require "bcrypt"
+require "redcarpet"
 
 require_relative "config.rb"
 require_relative "debug.rb"

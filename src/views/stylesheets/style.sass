@@ -39,6 +39,7 @@ html
 body
   margin: 0
   height: 100% 
+  overflow-y: hidden
 
   header
     height: 55px
@@ -246,6 +247,8 @@ ul.button-container
         flex-wrap: nowrap
         a.button
           padding: 0
+          li
+            background: $special_clr
       p
         text-align: center
         color: $fg_alt_clr
@@ -275,5 +278,12 @@ ul.button-container
 
   #bio
     min-height: 14rem
+    max-height: 50rem
     width: 100%
+
+    .card-container
+      height: 92.5%
+      overflow-y: scroll 
+      margin-bottom: 4rem
+      padding-bottom: 2rem
 
