@@ -68,6 +68,15 @@ get "/profile" do
 	end
 end
 
+# Posts
+get "/profile/:id/posts" do
+	serve :"user/posts", {user: User.find_by_id(params[:id].to_i)}
+end
+
+# Reputation
+get "/profile/:id/rep" do
+	serve :"user/rep", {user: User.find_by_id(params[:id].to_i)}
+end
 
 # API stuff
 post "/register" do

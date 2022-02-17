@@ -1,0 +1,13 @@
+div
+  h1 = "#{user.name}'s reputation reviews"
+  h2 Not implemented yet.
+
+#profile-container
+  aside
+    #reputation.card
+      h2 Reputation
+      - unless user.has_bad_rep?
+        h3.green = user.reputation_text
+      - else
+        h3.red = user.reputation_text
+      h4 Based on user reviews
