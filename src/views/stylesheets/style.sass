@@ -11,7 +11,7 @@ $fg_clr: #fff
 $fg_alt_clr: #eee
 $fg_error: #f77 
 
-$shadow_clr: #4b5263 
+$shadow_clr: $bg_alt_clr
 $green_clr: #5cb85c
 $red_clr: #de2a1d
 
@@ -94,6 +94,9 @@ body
           justify-content: flex-end
 
           li   
+            display: flex
+            flex-direction: column
+            justify-content: center
             margin: 0 8px
 
 // General
@@ -115,6 +118,7 @@ a.button
   transition: opacity .2s
 
 a.button:hover
+  cursor: pointer
   opacity: .6
 
 label.error_msg
@@ -128,6 +132,12 @@ img.avatar
   height: 2.15rem
   border-radius: 50%
   border: 2px solid $shadow_clr
+
+img.icon
+  width: 1.2rem
+  height: auto
+  opacity: .4
+  
 
 ul.button-container
   display: flex
@@ -174,7 +184,7 @@ ul.button-container
       font-size: 2.2rem
 
     input
-      border-radius: 2rem
+      border-radius: $border_radius 
       background: $bg_alt_clr
       border: 3px solid $shadow_clr
       color: $fg_alt_clr
@@ -189,6 +199,7 @@ ul.button-container
     input[type=submit]:hover
       opacity: .8
       color: $special_clr
+      cursor: pointer
 
     input:not(:last-child)
       margin-bottom: 1rem

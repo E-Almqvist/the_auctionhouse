@@ -21,6 +21,9 @@ html lang="en"
                   | Log in
             - else
               li
+                a.inlbutton href="/settings" target="_self" 
+                  img.icon src="/icons/settings.svg" alt="cog"
+              li
                 a href="/profile" target="_self" 
                   img.avatar src="#{session_user.avatar}" alt="Your avatar"
 

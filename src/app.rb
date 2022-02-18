@@ -78,6 +78,11 @@ get "/profile/:id/rep" do
 	serve :"user/rep", {user: User.find_by_id(params[:id].to_i)}
 end
 
+# Settings
+get "/settings" do
+	serve :"user/settings", {user: User.find_by_id(params[:id].to_i)}
+end
+
 # API stuff
 post "/register" do
 	email = params[:email]
