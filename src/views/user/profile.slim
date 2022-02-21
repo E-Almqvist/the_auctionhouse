@@ -10,11 +10,12 @@
       h4 = user.bio_text
 
       ul.button-container
-        - unless true
+        - unless user.id == session[:userid]
           a.button href="mailto:#{user.email}" 
-            li Message
-        a.button href="/profile/#{user.id}/rep"
-          li Rep
+            li Email 
+        - else
+          a.button href="/settings"
+            li Settings
         a.button href="/profile/#{user.id}/posts"
           li Posts 
 
@@ -41,6 +42,8 @@
       - else
         h3.red = user.reputation_text
       h4 Based on user reviews
+      a.button href="/profile/#{user.id}/rep"
+        | + Write a review
 
   #posts.card
     h2 Recent posts
