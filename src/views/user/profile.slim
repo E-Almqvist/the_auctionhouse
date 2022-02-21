@@ -7,9 +7,12 @@
       .avatar-container
         img.avatar src="#{user.avatar}" alt="#{user.name}'s avatar"
 
+      h4 = user.bio_text
+
       ul.button-container
-        a.button href="mailto:#{user.email}"
-          li Message
+        - unless true
+          a.button href="mailto:#{user.email}" 
+            li Message
         a.button href="/profile/#{user.id}/rep"
           li Rep
         a.button href="/profile/#{user.id}/posts"
@@ -39,9 +42,9 @@
         h3.red = user.reputation_text
       h4 Based on user reviews
 
-  #bio.card
-    h2 User biography
+  #posts.card
+    h2 Recent posts
     .card-container
-      == user.bio_html
+      //== user.bio_html
   
 
