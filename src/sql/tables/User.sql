@@ -6,6 +6,6 @@ CREATE TABLE IF NOT EXISTS "User" (
 	"bio_text"		TEXT NOT NULL DEFAULT 'No information given.',
 	"balance"		REAL NOT NULL DEFAULT 0,
 	"avatar_url"	TEXT NOT NULL DEFAULT '/avatars/default.png',
-	"reputation"	INTEGER NOT NULL DEFAULT 100,
+	"reputation"	INTEGER NOT NULL DEFAULT 0,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
