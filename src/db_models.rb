@@ -112,3 +112,25 @@ class User < EntityModel
 		return true, user.id
 	end
 end
+
+
+class Role < EntityModel
+	attr_reader :name, :color, :perm_level
+	def initialize(role_info)
+		super role_info
+		@name = role_info["name"]
+		@color = role_info["color"]
+		@perm_level = role_info["perm_level"]
+		# perm_level follow the UNIX perms system
+	end
+
+	def self.find_by_id(id)
+		data = self.get("*", "id = ?", id).first
+		data && Role.new(data)
+	end
+
+	def self.find_by_name(name)
+		data = self.get("*", "name = ?", name).first
+		data && Role.new(data)
+	end
+end

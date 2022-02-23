@@ -9,6 +9,7 @@ require "sqlite3" # db
 require "sassc" # SASS -> CSS precompiler
 require "colorize" # colors for debug
 require "bcrypt" # password digest
+# TODO: remove redcarpet dep
 require "redcarpet" # markdown renderer
 require "mini_magick" # image manipulation
 
