@@ -2,12 +2,9 @@ div
   h1 = "#{user.name}'s reputation reviews"
   h2 Not implemented yet.
 
-#profile-container
-  aside
-    #reputation.card
-      h2 Reputation
-      - unless user.has_bad_rep?
-        h3.green = user.reputation_text
-      - else
-        h3.red = user.reputation_text
-      h4 Based on user reviews
+  - if user.rep_score == GOOD_REP
+    h3.green = user.reputation_text
+  - elsif user.rep_score == BAD_REP
+    h3.red = user.reputation_text
+  - else
+    h3.gray = user.reputation_text

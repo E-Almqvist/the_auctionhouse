@@ -2,25 +2,28 @@
 
 DEBUG = ARGV[0] == "debug" 
 
-require "sinatra"
-require "sinatra/reloader" if DEBUG
-require "slim"
-require "sqlite3"
-require "sassc"
-require "colorize"
-require "bcrypt"
-require "redcarpet"
+require "sinatra" 
+require "sinatra/reloader" if DEBUG # reload stuff
+require "slim" # template
+require "sqlite3" # db
+require "sassc" # SASS -> CSS precompiler
+require "colorize" # colors for debug
+require "bcrypt" # password digest
+require "redcarpet" # markdown renderer
+require "mini_magick" # image manipulation
 
-require_relative "config.rb"
-require_relative "debug.rb"
-require_relative "lib/database.rb"
-require_relative "func.rb"
+require_relative "config.rb" # config stuff
+require_relative "debug.rb" # debug methods
+require_relative "lib/database.rb" # database library
+require_relative "func.rb" # usefull methods
+require_relative "const.rb" # constants
 
-require_relative "db_init.rb"
-require_relative "db_models.rb"
+require_relative "db_init.rb" # db init (pre server init
+require_relative "db_models.rb" # db models (i.e. User, Roles etc)
 
 also_reload "lib/*"
 also_reload "func.rb"
+also_reload "const.rb"
 also_reload "config.rb"
 also_reload "db_models.rb"
 also_reload "db_init.rb"
@@ -80,7 +83,7 @@ end
 
 # Settings
 get "/settings" do
-	serve :"user/settings", {user: User.find_by_id(params[:id].to_i)}
+	serve :"user/settings"
 end
 
 # API stuff

@@ -13,11 +13,11 @@
         - unless user.id == session[:userid]
           a.button href="mailto:#{user.email}" 
             li Email 
+          a.button href="/profile/#{user.id}/rep"
+            li Write review
         - else
           a.button href="/settings"
-            li Settings
-        a.button href="/profile/#{user.id}/posts"
-          li Posts 
+            li Edit profile
 
     #roles.card
       h2 Roles
@@ -37,10 +37,12 @@
 
     #reputation.card
       h2 Reputation
-      - unless user.has_bad_rep?
+      - if user.rep_score == GOOD_REP
         h3.green = user.reputation_text
-      - else
+      - elsif user.rep_score == BAD_REP
         h3.red = user.reputation_text
+      - else
+        h3.gray = user.reputation_text
       h4 Based on user reviews
       a.button href="/profile/#{user.id}/rep"
         | + Write a review

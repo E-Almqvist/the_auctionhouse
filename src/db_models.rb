@@ -21,8 +21,10 @@ class User < EntityModel
 		"INSERT ROLE HERE"
 	end
 
-	def has_bad_rep?
-		@reputation < 0
+	def rep_score
+		return BAD_REP if @reputation < 0
+		return GOOD_REP if @reputation > 0
+		return NEUTRAL_REP 
 	end
 
 	def bio_html

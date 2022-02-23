@@ -1,0 +1,3 @@
+BAD_REP		= -1
+NEUTRAL_REP = 0
+GOOD_REP 	= 1
