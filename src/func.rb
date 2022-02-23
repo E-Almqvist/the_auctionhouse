@@ -12,7 +12,7 @@ def get_current_user
 end
 
 # Serve templates
-def serve(template, locals={})
+def serve(template, locals={}, layout: :layout)
 	# Insert the error locals (if it exists)
 	locals[:error_msg] = session[:error_msg] or ""
 	session[:error_msg] = nil
@@ -20,5 +20,5 @@ def serve(template, locals={})
 	locals[:session_user] = get_current_user unless !is_logged_in
 
 	# Serve the slim template
-	slim(template, locals: locals)
+	slim(template, locals: locals, :layout => layout)
 end

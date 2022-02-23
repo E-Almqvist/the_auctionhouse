@@ -46,11 +46,11 @@ get "/404" do
 end
 
 get "/login" do
-	serve :"user/login"
+	serve :"user/login", layout: :empty
 end
 
 get "/register" do
-	serve :"user/register"
+	serve :"user/register", layout: :empty
 end
 
 get "/profile/:id" do
