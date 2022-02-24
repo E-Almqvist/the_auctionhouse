@@ -18,9 +18,9 @@ class EntityModel
 
 		begin
 			q = File.read sql_file # get SQL script
-			self.db.query q # run query
+			db.query q # run query
 		rescue Errno::ENOENT => err
-			error "#{err}"	
+			Console.error "#{err}"	
 		end
 	end
 
