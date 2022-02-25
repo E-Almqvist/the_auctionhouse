@@ -1,18 +1,26 @@
 @import "fonts"
 
 $font_stack: "Space Mono", monospace
-$border_radius: .25rem
+$border_radius: .38rem
 $border_size: 1px
 
-$bg_clr: #272a34
-$bg_alt_clr: #232730
-$bg_dark_clr: #21242e
-$fg_clr: #fff
-$fg_alt_clr: #eee
-$fg_error: #f77 
+// $bg_clr: #272a34
+// $bg_alt_clr: #232730
+// $bg_dark_clr: #21242e
+// $fg_clr: #fff
+// $fg_alt_clr: #eee
+// $fg_error: #f77 
+// $shadow_clr: $bg_alt_clr
 
-$shadow_clr: $bg_alt_clr
-$border_clr: #999 
+$bg_clr: #fff
+$bg_alt_clr: #eee
+$bg_dark_clr: #24292f
+$fg_clr: #272a34
+$fg_alt_clr: #24292f
+$fg_error: #f77
+$shadow_clr: #d0d7de
+
+$border_clr: $shadow_clr 
 $green_clr: #5cb85c
 $red_clr: #de2a1d
 $gray_clr: #aaa
@@ -129,7 +137,7 @@ label.error_msg
   font-weight: bold
 
 img.avatar
-  background: $bg_clr
+  background: $bg_dark_clr
   width: 2.15rem 
   height: 2.15rem
   border-radius: 50%
@@ -233,7 +241,7 @@ ul.button-container
     padding: 0 1rem
 
   .card
-    background-color: $bg_dark_clr
+    background-color: $bg_clr
     border: $border_size solid $shadow_clr
     border-radius: $border_radius
     h2
