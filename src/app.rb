@@ -22,12 +22,14 @@ require_relative "const.rb" # constants
 require_relative "db_init.rb" # db init (pre server init
 require_relative "db_models.rb" # db models (i.e. User, Roles etc)
 
-also_reload "lib/*"
-also_reload "func.rb"
-also_reload "const.rb"
-also_reload "config.rb"
-also_reload "db_models.rb"
-also_reload "db_init.rb"
+if DEBUG then
+	also_reload "lib/*"
+	also_reload "func.rb"
+	also_reload "const.rb"
+	also_reload "config.rb"
+	also_reload "db_models.rb"
+	also_reload "db_init.rb"
+end
 
 enable :sessions
 db_init
