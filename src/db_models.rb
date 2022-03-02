@@ -18,7 +18,19 @@ class User < EntityModel
 	end
 
 	def role
-		"INSERT ROLE HERE"
+		roles = self.roles
+		p "####"
+		p roles
+		if roles.length > 0 then
+			role = roles.max_by { |role| role.flags }
+			return role.name 
+		else
+			return ""
+		end
+	end
+
+	def roles
+		User_Role_relation.get_user_roles @id
 	end
 
 	def rep_score
@@ -115,13 +127,12 @@ end
 
 
 class Role < EntityModel
-	attr_reader :name, :color, :perm_level
+	attr_reader :name, :color, :flags
 	def initialize(role_info)
 		super role_info
 		@name = role_info["name"]
 		@color = role_info["color"]
-		@perm_level = role_info["perm_level"]
-		# perm_level follow the UNIX perms system
+		@flags = role_info["flags"]
 	end
 
 	def self.find_by_id(id)
@@ -132,5 +143,15 @@ class Role < EntityModel
 	def self.find_by_name(name)
 		data = self.get("*", "name = ?", name).first
 		data && Role.new(data)
+	end
+end
+
+
+class User_Role_relation < EntityModel
+	def self.get_user_roles(user_id)
+		roleids = self.get "role_id", "user_id = ?", user_id
+		roles = roleids.map do |ent| 
+			Role.find_by_id(ent["role_id"].to_i)
+		end
 	end
 end

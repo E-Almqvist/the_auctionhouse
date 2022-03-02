@@ -19,21 +19,14 @@
           a.button href="/settings"
             li Edit profile
 
-    #roles.card
-      h2 Roles
-      .card-container
-        ul.button-container
-          // insert roles here
-          li
-            label role
-          li
-            label role2
-          li
-            label role2
-          li
-            label role2
-          li
-            label role2
+    - if user.roles.length >= 1
+      #roles.card
+        h2 Roles
+        .card-container
+          ul.button-container
+            - user.roles.each do |role|
+                li
+                  label = role.name 
 
     #reputation.card
       h2 Reputation
