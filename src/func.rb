@@ -7,7 +7,7 @@ def is_logged_in
 	session[:userid] != nil
 end
 
-def sesson_user
+def get_current_user 
 	session[:userid] && User.find_by_id(session[:userid])
 end
 
@@ -17,7 +17,7 @@ def serve(template, locals={}, layout: :layout)
 	locals[:error_msg] = session[:error_msg] or ""
 	session[:error_msg] = nil
 
-	#locals[:session_user] = get_current_user unless !is_logged_in
+	locals[:session_user] = get_current_user unless !is_logged_in
 
 	# Serve the slim template
 	slim(template, locals: locals, :layout => layout)
