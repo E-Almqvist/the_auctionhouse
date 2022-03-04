@@ -18,9 +18,6 @@ class User < EntityModel
 	end
 
 	def role
-		p "######################"
-		p roles
-		p "######################"
 		if roles.length > 0 then
 			role = roles.max_by { |role| role.flags }
 			return role.name 
@@ -150,11 +147,8 @@ end
 class User_Role_relation < EntityModel
 	def self.get_user_roles(user_id)
 		roleids = self.get "role_id", "user_id = ?", user_id
-		p roleids
 		roles = roleids.map do |ent| 
 			Role.find_by_id(ent["role_id"].to_i)
 		end
-		p roles
-		return roles
 	end
 end
