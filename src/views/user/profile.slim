@@ -26,7 +26,7 @@
           ul.button-container
             - user.roles.each do |role|
                 li
-                  label = role.name 
+                  label style="color: #{role.color};" = role.name 
 
     #reputation.card
       h2 Reputation

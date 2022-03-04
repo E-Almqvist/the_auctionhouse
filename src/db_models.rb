@@ -18,9 +18,6 @@ class User < EntityModel
 	end
 
 	def role
-		roles = self.roles
-		p "####"
-		p roles
 		if roles.length > 0 then
 			role = roles.max_by { |role| role.flags }
 			return role.name 
