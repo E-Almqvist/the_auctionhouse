@@ -13,26 +13,25 @@ require "bcrypt" # password digest
 require "redcarpet" # markdown renderer
 require "mini_magick" # image manipulation
 
-require_relative "config.rb" # config stuff
-require_relative "debug.rb" # debug methods
-require_relative "lib/database.rb" # database library
-require_relative "func.rb" # usefull methods
-require_relative "const.rb" # constants
+require_relative "config" # config stuff
+require_relative "debug" # debug methods
+require_relative "lib/database" # database library
+require_relative "func" # usefull methods
+require_relative "const" # constants
 
-require_relative "db_init.rb" # db init (pre server init
-require_relative "db_models.rb" # db models (i.e. User, Roles etc)
+require_relative "db_init" # db init (pre server init
+require_relative "db_models" # db models (i.e. User, Roles etc)
 
 if DEBUG then
-	also_reload "lib/*"
-	also_reload "func.rb"
-	also_reload "const.rb"
-	also_reload "config.rb"
-	also_reload "db_models.rb"
-	also_reload "db_init.rb"
+	also_reload "lib/*", "func.rb", "const.rb", "config.rb", "db_models.rb", "db_init.rb"
 end
 
 enable :sessions
 db_init
+
+not_found do 
+	serve :"404"
+end
 
 # Routes
 get "/style.css" do
