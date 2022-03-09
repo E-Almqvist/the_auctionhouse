@@ -18,12 +18,13 @@ class User < EntityModel
 	end
 
 	def role
-		if roles.length > 0 then
-			role = roles.max_by { |role| role.flags }
+		user_roles = roles
+		p user_roles
+		if user_roles.length > 0 then
+			role = user_roles.max_by { |role| role.flags }
 			return role.name 
-		else
-			return ""
 		end
+		return ""
 	end
 
 	def roles
