@@ -46,7 +46,7 @@ class User < EntityModel
 		return "#{sign}#{@reputation}"
 	end
 
-	def reputation= val
+	def reputation=(val)
 		val = val.clamp MIN_REP, MAX_REP
 		@reputation = val
 		self.update({reputation: val}, "id = ?", @id)
@@ -113,7 +113,6 @@ class User < EntityModel
 		end
 	end
 
-
 	# Log in user
 	# Returns: success?, user id 
 	def self.login(email, password)
@@ -158,7 +157,7 @@ class Role < EntityModel
 	end
 
 	def self.edit(roleid, data)
-		self.update data, "id = ?", roleid
+		self.update data, "id = #{roleid}"
 	end
 end
 

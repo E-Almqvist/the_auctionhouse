@@ -1,1 +1,8 @@
-h1 Settings
+h1.tcenter = "#{session_user.name}'s Settings"
+.form-container
+  form action="/user/update" method="post"
+    label Avatar URL
+    input type="text" name="avatar_url" placeholder="/avatars/default.png" value="#{session_user.avatar_url}"
+    label Biography
+    input type="text" name="bio" placeholder="User Biography" value="#{session_user.bio_text}"
+    input type="submit" value="Update"

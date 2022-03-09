@@ -25,7 +25,8 @@ class EntityModel
 	end
 
 	def self.gen_update_query(vars) # generates part of the update query string
-		vars.join "= ?, "
+		out = vars.join " = ?, "
+		out += " = ?"
 	end
 
 	def self.gen_insert_query(vars) # generates part of the insert query string
@@ -41,6 +42,7 @@ class EntityModel
 	end
 
 	def self.query(q, *args) # query table with query string
+		Console.debug("Running SQL -> #{q}", *args)
 		db.execute( q, *args )
 	end
 
@@ -54,7 +56,6 @@ class EntityModel
 	def self.update(data, filter="", *args) # Updates the table with specified data hash 
 		q = "UPDATE #{self.name} SET #{self.gen_update_query(data.keys)}" 
 		q = apply_filter(q, filter)
-
 		self.query(q, *data.values, *args)
 	end
 

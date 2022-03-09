@@ -119,8 +119,18 @@ post "/login" do
 	end
 end
 
-post "/logout" do
+get "/logout" do
 	session.clear
 	redirect "/"
+end
+
+
+post "/user/update" do
+	data = {
+		bio_text: params["bio"],
+		avatar_url: params["avatar_url"]
+	}
+	User.update(data, "id = ?", session[:userid])
+	redirect "/settings"
 end
 
