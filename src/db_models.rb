@@ -1,6 +1,6 @@
 # User table model
 class User < EntityModel 
-	attr_reader :email, :name, :bio_text, :balance, :avatar_url, :pw_hash
+	attr_reader :email, :name, :bio_text, :balance, :avatar_url, :pw_hash, :reputation
 
 	def initialize(user_info)
 		super user_info
@@ -41,18 +41,14 @@ class User < EntityModel
 		md_parser.render @bio_text
 	end
 
-	def reputation
-		rep = self.get "reputation", "id = ?", @id
-		rep && rep.to_i
-	end
-
 	def reputation_text
-		sign = reputation > 0 ? "+" : ""	
-		return "#{sign}#{reputation}"
+		sign = @reputation > 0 ? "+" : ""	
+		return "#{sign}#{@reputation}"
 	end
 
 	def reputation= val
 		val = val.clamp MIN_REP, MAX_REP
+		@reputation = val
 		self.update({reputation: val}, "id = ?", @id)
 	end
 
