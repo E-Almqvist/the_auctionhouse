@@ -142,6 +142,19 @@ class Role < EntityModel
 		data = self.get("*", "name = ?", name).first
 		data && Role.new(data)
 	end
+
+	def self.create(name, color="#ffffff", flags=0)
+		data = {
+			name: name,
+			color: color,
+			flags: flags
+		}
+		self.insert data
+	end
+
+	def self.edit(roleid, data)
+		self.update data, "id = ?", roleid
+	end
 end
 
 
