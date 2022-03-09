@@ -51,11 +51,11 @@ class EntityModel
 		self.query q, *args # execute query
 	end
 
-	def self.update(data, filter="") # Updates the table with specified data hash 
+	def self.update(data, filter="", *args) # Updates the table with specified data hash 
 		q = "UPDATE #{self.name} SET #{self.gen_update_query(data.keys)}" 
 		q = apply_filter(q, filter)
 
-		self.query(q, *data.values )
+		self.query(q, *data.values, *args)
 	end
 
 	def self.insert(data) # Inserts new data into the table
