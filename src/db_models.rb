@@ -1,4 +1,4 @@
-# User table model
+# User model
 class User < EntityModel 
 	attr_reader :email, :name, :bio_text, :balance, :avatar_url, :pw_hash, :reputation
 
@@ -127,7 +127,7 @@ class User < EntityModel
 	end
 end
 
-
+# Role model
 class Role < EntityModel
 	attr_reader :name, :color, :flags
 	def initialize(data)
@@ -172,12 +172,45 @@ class User_Role_relation < EntityModel
 end
 
 
+# Auction model
 class Auction < EntityModel
+	attr_reader :user_id, :title, :description, :init_price, :start_time, :end_time
 	def initialize(data)
 		super data
+		@user_id = data["user_id"]
 		@title = data["title"]
 		@description = data["description"]
+		@init_price = data["init_price"]
 		@start_time = data["start_time"]
 		@end_time = data["end_time"]
 	end
 end
+
+class Category < EntityModel
+	attr_reader :name, :color
+	def initialize(data)
+		super data
+		@name = data["name"]
+		@color = data["color"]
+	end
+end
+
+class Image < EntityModel
+	attr_reader :auction_id, :image_order, :url
+	def initialize(data)
+		super data
+		@auction_id = data["auction_id"]
+		@image_order = data["image_order"]
+		@url = data["url"]
+	end
+end
+
+class Auction_Category_relation < EntityModel
+	attr_reader :auction_id, :category_id
+	def initialize(data)
+		super data
+		@auction_id = data["auction_id"]
+		@category_id = data["category_id"]
+	end
+end
+
