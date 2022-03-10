@@ -2,15 +2,15 @@
 class User < EntityModel 
 	attr_reader :email, :name, :bio_text, :balance, :avatar_url, :pw_hash, :reputation
 
-	def initialize(user_info)
-		super user_info
-		@email = user_info["email"]
-		@name = user_info["name"]
-		@bio_text = user_info["bio_text"]
-		@balance = user_info["balance"]
-		@avatar_url = user_info["avatar_url"]
-		@reputation = user_info["reputation"]
-		@pw_hash = user_info["pw_hash"]
+	def initialize(data)
+		super data
+		@email = data["email"]
+		@name = data["name"]
+		@bio_text = data["bio_text"]
+		@balance = data["balance"]
+		@avatar_url = data["avatar_url"]
+		@reputation = data["reputation"]
+		@pw_hash = data["pw_hash"]
 	end
 
 	def avatar
@@ -130,11 +130,11 @@ end
 
 class Role < EntityModel
 	attr_reader :name, :color, :flags
-	def initialize(role_info)
-		super role_info
-		@name = role_info["name"]
-		@color = role_info["color"]
-		@flags = role_info["flags"]
+	def initialize(data)
+		super data
+		@name = data["name"]
+		@color = data["color"]
+		@flags = data["flags"]
 	end
 
 	def self.find_by_id(id)
@@ -168,5 +168,13 @@ class User_Role_relation < EntityModel
 		roles = roleids.map do |ent| 
 			Role.find_by_id(ent["role_id"].to_i)
 		end
+	end
+end
+
+
+class Auction < EntityModel
+	def initialize(data)
+		super data
+		@title = data["title"]
 	end
 end

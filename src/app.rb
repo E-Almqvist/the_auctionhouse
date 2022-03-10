@@ -119,7 +119,7 @@ post "/login" do
 	end
 end
 
-get "/logout" do
+get "/logout" do # TODO: make me post
 	session.clear
 	redirect "/"
 end
