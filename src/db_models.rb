@@ -193,6 +193,14 @@ class Category < EntityModel
 		@name = data["name"]
 		@color = data["color"]
 	end
+
+	def self.create(name, color)
+		data = {
+			name: name,
+			color: color
+		}
+		self.insert(data)
+	end
 end
 
 class Image < EntityModel
@@ -211,6 +219,13 @@ class Auction_Category_relation < EntityModel
 		super data
 		@auction_id = data["auction_id"]
 		@category_id = data["category_id"]
+	end
+
+	def self.get_user_roles(user_id)
+		roleids = self.get "role_id", "user_id = ?", user_id
+		roles = roleids.map do |ent| 
+			Role.find_by_id(ent["role_id"].to_i)
+		end
 	end
 end
 

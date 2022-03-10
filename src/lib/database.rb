@@ -72,3 +72,15 @@ class EntityModel
 		end
 	end
 end
+
+class RelationModel < EntityModel
+	def self.table1 = nil
+	def self.table2 = nil
+
+	def self.get_relation(id)
+		roleids = self.get "role_id", "user_id = ?", user_id
+		roles = roleids.map do |ent| 
+			Role.find_by_id(ent["role_id"].to_i)
+		end
+	end
+end
