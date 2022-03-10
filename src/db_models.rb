@@ -176,5 +176,8 @@ class Auction < EntityModel
 	def initialize(data)
 		super data
 		@title = data["title"]
+		@description = data["description"]
+		@start_time = data["start_time"]
+		@end_time = data["end_time"]
 	end
 end

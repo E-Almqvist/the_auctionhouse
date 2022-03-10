@@ -24,3 +24,6 @@ LOGIN_ERRORS = {
 	fields: "Please fill all of the fields",
 	fail: "Wrong password and/or email"
 }
+
+# Auction stuff
+AH_BUYOUT_FACTOR = 1.8 
