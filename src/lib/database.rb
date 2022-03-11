@@ -18,7 +18,7 @@ class EntityModel
 
 		begin
 			q = File.read sql_file # get SQL script
-			db.query q # run query
+			self.query q # run query
 		rescue Errno::ENOENT => err
 			Console.error "#{err}"	
 		end
@@ -43,7 +43,12 @@ class EntityModel
 
 	def self.query(q, *args) # query table with query string
 		Console.debug("Running SQL -> #{q}", *args)
-		db.execute( q, *args )
+		begin
+			db.execute( q, *args )
+		rescue SQLite3::SQLException => err
+			Console.error "SQL exception: #{err}", q
+
+		end
 	end
 
 	def self.get(attr, filter="", *args) # get data from table
@@ -74,8 +79,7 @@ class EntityModel
 end
 
 class RelationModel < EntityModel
-	def self.table1 = nil
-	def self.table2 = nil
+	def self.tables = nil
 
 	def self.get_relation(id)
 		roleids = self.get "role_id", "user_id = ?", user_id
