@@ -24,14 +24,10 @@ def serve(template, locals={}, layout: :layout)
 end
 
 # Save image
-def save_image params, path
-	if params[:image] && params[:image][:filename]
-		filename = params[:image][:filename]
-		file = params[:image][:tempfile]
-
-		# Write file to disk
-		File.open(path, 'wb') do |f|
-			f.write(file.read)
-		end
+def save_image imgdata, path
+	image = Magick::Image.from_blob(imgdata).first
+	image.format = "PNG"
+	File.open(path, 'wb') do |f|
+		image.resize_to_fill(512, 512).write(f) 
 	end
 end

@@ -11,7 +11,7 @@ require "colorize" # colors for debug
 require "bcrypt" # password digest
 # TODO: remove redcarpet dep
 require "redcarpet" # markdown renderer
-require "mini_magick" # image manipulation
+require "rmagick" # image manipulation
 
 require_relative "config" # config stuff
 require_relative "debug" # debug methods
@@ -61,7 +61,7 @@ get "/profile/:id" do
 	if userobj then
 		serve :"user/profile", {user: userobj}
 	else
-		serve :"404"
+		raise Sinatra::NotFound
 	end
 end
 
@@ -124,14 +124,13 @@ get "/logout" do # TODO: make me post
 	redirect "/"
 end
 
-
 post "/user/update" do
-
-	path = "./public/avatars/#{session[:userid]}.png"
+	imgdata = params[:image][:tempfile] 
+	save_image imgdata.read, "./public/avatars/#{session[:userid]}.png"
 
 	data = {
 		bio_text: params["bio"],
-		avatar_url: params["avatar_url"]
+		avatar_url: "/avatars/#{session[:userid]}.png"
 	}
 	User.update(data, "id = ?", session[:userid])
 	redirect "/settings"

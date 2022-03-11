@@ -1,11 +1,11 @@
 #settings
   h1.tcenter = "#{session_user.name}'s Settings"
   .form-container
-    form action="/user/update" method="post"
+    form action="/user/update" method="post" enctype="multipart/form-data"
 
       img.avatar_big src="#{session_user.avatar_url}" alt="Your avatar"
       label Change avatar
-      input type="file" name="avatar_file"
+      input type="file" name="image" accept="image"
 
       label Biography
       textarea name="bio" cols="20" rows="5" placeholder="Tell us about yourself!" value="#{session_user.bio_text}" 
