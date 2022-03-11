@@ -126,6 +126,9 @@ end
 
 
 post "/user/update" do
+
+	path = "./public/avatars/#{session[:userid]}.png"
+
 	data = {
 		bio_text: params["bio"],
 		avatar_url: params["avatar_url"]

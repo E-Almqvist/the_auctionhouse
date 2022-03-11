@@ -22,3 +22,16 @@ def serve(template, locals={}, layout: :layout)
 	# Serve the slim template
 	slim(template, locals: locals, :layout => layout)
 end
+
+# Save image
+def save_image params, path
+	if params[:image] && params[:image][:filename]
+		filename = params[:image][:filename]
+		file = params[:image][:tempfile]
+
+		# Write file to disk
+		File.open(path, 'wb') do |f|
+			f.write(file.read)
+		end
+	end
+end

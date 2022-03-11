@@ -1,8 +1,12 @@
-h1.tcenter = "#{session_user.name}'s Settings"
-.form-container
-  form action="/user/update" method="post"
-    label Avatar URL
-    input type="text" name="avatar_url" placeholder="/avatars/default.png" value="#{session_user.avatar_url}"
-    label Biography
-    textarea name="bio" cols="20" rows="5" placeholder="Tell us about yourself!" value="#{session_user.bio_text}" 
-    input type="submit" value="Update"
+#settings
+  h1.tcenter = "#{session_user.name}'s Settings"
+  .form-container
+    form action="/user/update" method="post"
+
+      img.avatar_big src="#{session_user.avatar_url}" alt="Your avatar"
+      label Change avatar
+      input type="file" name="avatar_file"
+
+      label Biography
+      textarea name="bio" cols="20" rows="5" placeholder="Tell us about yourself!" value="#{session_user.bio_text}" 
+      input type="submit" value="Update"

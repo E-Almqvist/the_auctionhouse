@@ -47,7 +47,6 @@ class EntityModel
 			db.execute( q, *args )
 		rescue SQLite3::SQLException => err
 			Console.error "SQL exception: #{err}", q
-
 		end
 	end
 

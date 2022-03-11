@@ -128,13 +128,17 @@ label.error_msg
   font-size: 1rem
   font-weight: bold
 
-img.avatar
+img.avatar, img.avatar_big
   background: $bg_clr
   width: 2.15rem
   height: 2.15rem
   object-fit: cover
   border-radius: 50%
   border: 2px solid $border_clr
+
+img.avatar_big
+  width: 8.15rem
+  height: 8.15rem
 
 img.icon
   width: 1.2rem
@@ -320,3 +324,7 @@ ul.button-container
 
 
 #settings
+  .form-container
+    form
+      background-color: $bg_alt_clr
+      border: $border_size solid $border_clr
