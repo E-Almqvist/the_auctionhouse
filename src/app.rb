@@ -119,20 +119,28 @@ post "/login" do
 	end
 end
 
-get "/logout" do # TODO: make me post
+post "/user/logout" do 
 	session.clear
 	redirect "/"
 end
 
 post "/user/update" do
-	imgdata = params[:image][:tempfile] 
-	save_image imgdata.read, "./public/avatars/#{session[:userid]}.png"
+	data = {}
+	if params[:image] then
+		imgdata = params[:image][:tempfile] 
+		save_image imgdata.read, "./public/avatars/#{session[:userid]}.png"
+		data[:avatar_url] = "/avatars/#{session[:userid]}.png"
+	end
 
-	data = {
-		bio_text: params["bio"],
-		avatar_url: "/avatars/#{session[:userid]}.png"
-	}
-	User.update(data, "id = ?", session[:userid])
+	current_user = get_current_user
+	data[:bio_text] = params["bio"] unless params["bio"] == current_user.bio_text
+	if params["displayname"].length < MIN_NAME_LEN then
+		session[:error_msg] = SETTINGS_ERRORS[:name_len] 
+	else
+		data[:name] = params["displayname"] unless params["displayname"] == current_user.name 
+	end
+
+	User.update(data, "id = ?", session[:userid]) unless data.length < 1
 	redirect "/settings"
 end
 

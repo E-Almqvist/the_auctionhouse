@@ -2,11 +2,14 @@
   h1.tcenter = "#{session_user.name}'s Settings"
   .form-container
     form action="/user/update" method="post" enctype="multipart/form-data"
-
+      label.error_msg = error_msg
       img.avatar_big src="#{session_user.avatar_url}" alt="Your avatar"
       label Change avatar
       input type="file" name="image" accept="image"
 
+      label Display name (min 2 chars)
+      input type="text" name="displayname" value="#{session_user.name}"
+
       label Biography
-      textarea name="bio" cols="20" rows="5" placeholder="Tell us about yourself!" value="#{session_user.bio_text}" 
+      textarea name="bio" cols="20" rows="5" placeholder="Tell us about yourself!" value="#{session_user.bio_text}" = session_user.bio_text
       input type="submit" value="Update"

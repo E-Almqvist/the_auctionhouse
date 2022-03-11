@@ -28,6 +28,6 @@ def save_image imgdata, path
 	image = Magick::Image.from_blob(imgdata).first
 	image.format = "PNG"
 	File.open(path, 'wb') do |f|
-		image.resize_to_fill(512, 512).write(f) 
+		image.resize_to_fill(AVATAR_SIZE, AVATAR_SIZE).write(f) 
 	end
 end

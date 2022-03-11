@@ -1,6 +1,9 @@
 # DB stuff
 DB_PATH = "db/main.db"
 
+# User settings stuff
+AVATAR_SIZE = 1024
+
 # Register stuff
 MIN_PASSWORD_LEN = 8
 MIN_NAME_LEN = 2
@@ -17,6 +20,10 @@ REGISTER_ERRORS = {
 
 	email_dupe: "Email is already in use",
 	email_fake: "Please use a valid email address"
+}
+
+SETTINGS_ERRORS = {
+	name_len: "Name length must be at least #{MIN_NAME_LEN}"
 }
 
 # Login stuff
