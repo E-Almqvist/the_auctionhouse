@@ -48,7 +48,7 @@ body
 
 header
   height: 48px
-  background-color: $bg_alt_clr
+  background-color: $bg_clr
   border-bottom: $border_size solid $shadow_clr
   padding: .1rem .8rem 
   white-space: nowrap
@@ -105,8 +105,16 @@ header
 
 .inlbutton
   transition: opacity .2s
+
 .inlbutton:hover
   opacity: .6
+
+.sticky
+  position: fixed
+  width: 100%
+  top: 0
+.sticky + .sticky_content
+  padding-top: 102px
 
 a.button
   display: inline-block
@@ -255,8 +263,8 @@ ul.button-container
     padding: 0 1rem
 
   .card
-    background-color: $bg_alt_clr
-    border: $border_size solid $shadow_clr
+    background-color: $bg_clr
+    //border: $border_size solid $shadow_clr
     border-radius: $border_radius
     h2
       text-align: left 
@@ -274,12 +282,12 @@ ul.button-container
       width: 250px
       word-wrap: wrap
       h2
-        margin: 1rem 0 0 0
         padding: 0
         text-align: center
         font-size: 100%
         font-weight: bold
         border-bottom: none
+        border-bottom: $border_size solid $shadow_clr
       h3
         text-align: center
         font-size: .8rem
