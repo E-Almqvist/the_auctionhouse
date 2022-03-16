@@ -3,7 +3,7 @@
     h2 Register Account
     label.error_msg = error_msg
     input type="text" name="email" placeholder="Email"
-    input type="text" name="name" placeholder="Name"
+    input type="text" placeholder="Name" oninput="this.reportValidity()" title="#{REGISTER_ERRORS[:name_desc]}" maxlength="#{MAX_NAME_LEN}" name="name" pattern="#{NAME_REGEX_STR}"
     input type="password" name="password" placeholder="Password"
     input type="password" name="password_confirm" placeholder="Confirm Password"
     input type="submit" value="Register"

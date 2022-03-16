@@ -20,12 +20,14 @@ AVATAR_SIZE = 1024 # width & height
 
 MIN_PASSWORD_LEN = 8
 MIN_NAME_LEN = 2
-MAX_NAME_LEN = 32
+MAX_NAME_LEN = 28 
 
 MIN_BIO_LEN = 0
 MAX_BIO_LEN = 128
 
-EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/
+NAME_REGEX_STR = "[a-zA-Z-_0-9 ]{#{MIN_NAME_LEN},#{MAX_NAME_LEN}}"
+BIO_REGEX_STR = "{#{MIN_BIO_LEN},#{MAX_BIO_LEN}}"
 
 
 # Routes that needs auth

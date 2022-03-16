@@ -7,9 +7,9 @@
       label Change avatar
       input type="file" name="image" accept="image"
 
-      label Display name (min 2 chars)
-      input type="text" name="displayname" value="#{session_user.name}"
+      label Display name
+      input type="text" oninput="this.reportValidity()" title="May only contain alphabetical characters and must be between #{MIN_NAME_LEN} and #{MAX_NAME_LEN} characters long" maxlength="#{MAX_NAME_LEN}" name="displayname" value="#{session_user.name}" pattern="#{NAME_REGEX_STR}"
 
       label Biography
-      textarea name="bio" cols="20" rows="5" placeholder="Tell us about yourself!" value="#{session_user.bio_text}" = session_user.bio_text
+      textarea name="bio" cols="20" rows="5" title="Content length must be between #{MIN_BIO_LEN} and #{MAX_BIO_LEN} characters" pattern="#{BIO_REGEX_STR}" maxlength="#{MAX_BIO_LEN}" placeholder="Tell us about yourself!" value="#{session_user.bio_text}" = session_user.bio_text
       input type="submit" value="Update"

@@ -58,11 +58,9 @@ class User < EntityModel
 		return false, SETTINGS_ERRORS[:bio_len] unless data[:bio_text].length.between?(MIN_BIO_LEN, MAX_BIO_LEN)
 
 		# Filter unchanged data
-		p data
 		data.keys.each do |k|
 			data.delete(k) if @data[k.to_s] == data[k]
 		end
-		p data
 		User.update(data, "id = ?", @id) unless data.length < 1
 		return true, nil
 	end

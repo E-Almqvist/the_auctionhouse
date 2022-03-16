@@ -110,8 +110,8 @@ post "/register" do
 end
 
 post "/login" do
-	email = params[:email]
-	password = params[:password]
+	email = params[:email].strip
+	password = params[:password].strip
 
 	status, ret = User.login(email, password)
 	if !status then # ret = error message
@@ -130,8 +130,8 @@ end
 
 post "/user/update" do
 	data = {
-		name: params["displayname"],
-		bio_text: params["bio"]
+		name: params["displayname"].chomp,
+		bio_text: params["bio"].chomp
 	}
 
 	if params[:image] then
