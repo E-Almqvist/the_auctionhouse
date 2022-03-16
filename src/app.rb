@@ -31,7 +31,7 @@ db_init
 
 before do 
 	if !is_logged_in && request.path_info.start_with?(*AUTH_ROUTES) then
-		session[:ret] = request.fullpath
+		session[:ret] = request.fullpath # TODO: return the user to the previous route
 		session[:status] = 403
 		session[:error_msg] = AUTH_ERRORS[:needed] 
 		redirect "/login"
@@ -108,7 +108,7 @@ post "/register" do
 		redirect "/login"
 	end
 end
-
+No information given.
 post "/login" do
 	email = params[:email].strip
 	password = params[:password].strip
