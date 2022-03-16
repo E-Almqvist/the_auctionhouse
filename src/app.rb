@@ -108,7 +108,7 @@ post "/register" do
 		redirect "/login"
 	end
 end
-No information given.
+
 post "/login" do
 	email = params[:email].strip
 	password = params[:password].strip
