@@ -52,6 +52,21 @@ class User < EntityModel
 		self.update({reputation: val}, "id = ?", @id)
 	end
 
+	def update_creds(data)
+		# Validate input
+		return false, SETTINGS_ERRORS[:name_len] unless data[:name].length.between?(MIN_NAME_LEN, MAX_NAME_LEN)
+		return false, SETTINGS_ERRORS[:bio_len] unless data[:bio_text].length.between?(MIN_BIO_LEN, MAX_BIO_LEN)
+
+		# Filter unchanged data
+		p data
+		data.keys.each do |k|
+			data.delete(k) if @data[k.to_s] == data[k]
+		end
+		p data
+		User.update(data, "id = ?", @id) unless data.length < 1
+		return true, nil
+	end
+
 	# Find user by ID, returns a user object 
 	def self.find_by_id(id)
 		data = self.get("*", "id = ?", id).first
@@ -73,7 +88,7 @@ class User < EntityModel
 		check_email_valid = email.match(EMAIL_REGEX) != nil 
 
 		# Name
-		check_name_len = name.length >= MIN_NAME_LEN
+		check_name_len = name.length.between?(MIN_NAME_LEN, MAX_NAME_LEN)
 
 		# Password
 		check_pass_equals = password == password_confirm

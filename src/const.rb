@@ -10,3 +10,23 @@ PERM_LEVELS = {
 	rmpost: 1, # allows the user to remove other peoples auctions
 	roleman: 2 # allows the user to manage other peoples roles
 }
+
+# DB stuff
+DB_PATH = "db/main.db"
+
+
+# User constants
+AVATAR_SIZE = 1024 # width & height
+
+MIN_PASSWORD_LEN = 8
+MIN_NAME_LEN = 2
+MAX_NAME_LEN = 32
+
+MIN_BIO_LEN = 0
+MAX_BIO_LEN = 128
+
+EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+
+
+# Routes that needs auth
+AUTH_ROUTES = %w[/settings]

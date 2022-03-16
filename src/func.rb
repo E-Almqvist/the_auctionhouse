@@ -20,6 +20,8 @@ def serve(template, locals={}, layout: :layout)
 	locals[:session_user] = get_current_user unless !is_logged_in
 
 	# Serve the slim template
+	status session[:status] if session[:status]
+	session.delete :status
 	slim(template, locals: locals, :layout => layout)
 end
 

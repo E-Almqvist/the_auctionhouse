@@ -44,7 +44,7 @@ class EntityModel
 	def self.query(q, *args) # query table with query string
 		Console.debug("Running SQL -> #{q}", *args)
 		begin
-			db.execute( q, *args )
+			db.execute( q, args )
 		rescue SQLite3::SQLException => err
 			Console.error "SQL exception: #{err}", q
 		end

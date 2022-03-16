@@ -16,8 +16,8 @@ require "rmagick" # image manipulation
 require_relative "config" # config stuff
 require_relative "debug" # debug methods
 require_relative "lib/database" # database library
-require_relative "func" # usefull methods
 require_relative "const" # constants
+require_relative "func" # usefull methods
 
 require_relative "db_init" # db init (pre server init
 require_relative "db_models" # db models (i.e. User, Roles etc)
@@ -28,6 +28,15 @@ end
 
 enable :sessions
 db_init
+
+before do 
+	if !is_logged_in && request.path_info.start_with?(*AUTH_ROUTES) then
+		session[:ret] = request.fullpath
+		session[:status] = 403
+		session[:error_msg] = AUTH_ERRORS[:needed] 
+		redirect "/login"
+	end
+end
 
 not_found do 
 	serve :"404"
@@ -73,14 +82,9 @@ get "/profile" do
 	end
 end
 
-# Posts
-get "/profile/:id/posts" do
-	serve :"user/posts", {user: User.find_by_id(params[:id].to_i)}
-end
-
 # Reputation
 get "/profile/:id/rep" do
-	serve :"user/rep", {user: User.find_by_id(params[:id].to_i)}
+	serve :"user/rep"
 end
 
 # Settings
@@ -125,22 +129,20 @@ post "/user/logout" do
 end
 
 post "/user/update" do
-	data = {}
+	data = {
+		name: params["displayname"],
+		bio_text: params["bio"]
+	}
+
 	if params[:image] then
 		imgdata = params[:image][:tempfile] 
-		save_image imgdata.read, "./public/avatars/#{session[:userid]}.png"
-		data[:avatar_url] = "/avatars/#{session[:userid]}.png"
+		save_image imgdata.read, "./public/avatars/#{session[:userid]}.png" # save the image
+		data[:avatar_url] = "/avatars/#{session[:userid]}.png" # update image path
 	end
 
-	current_user = get_current_user
-	data[:bio_text] = params["bio"] unless params["bio"] == current_user.bio_text
-	if params["displayname"].length < MIN_NAME_LEN then
-		session[:error_msg] = SETTINGS_ERRORS[:name_len] 
-	else
-		data[:name] = params["displayname"] unless params["displayname"] == current_user.name 
-	end
+	success, msg = get_current_user.update_creds data # update the user creds
+	if not success then session[:error_msg] = msg end	
 
-	User.update(data, "id = ?", session[:userid]) unless data.length < 1
 	redirect "/settings"
 end
 

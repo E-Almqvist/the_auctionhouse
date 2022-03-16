@@ -1,14 +1,8 @@
-# DB stuff
-DB_PATH = "db/main.db"
+require_relative "const"
 
-# User settings stuff
-AVATAR_SIZE = 1024
-
-# Register stuff
-MIN_PASSWORD_LEN = 8
-MIN_NAME_LEN = 2
-
-EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+AUTH_ERRORS = {
+	needed: "Authentication is needed to perform that task! Please login!"
+}
 
 REGISTER_ERRORS = {
 	fields: "Please fill all of the fields",
@@ -16,14 +10,15 @@ REGISTER_ERRORS = {
 	pass_len: "Password length must be at least #{MIN_PASSWORD_LEN}",
 	pass_notequals: "Password mismatch",
 
-	name_len: "Name length must be at least #{MIN_NAME_LEN}",
+	name_len: "Name length must be between #{MIN_NAME_LEN} and #{MAX_NAME_LEN}",
 
 	email_dupe: "Email is already in use",
 	email_fake: "Please use a valid email address"
 }
 
 SETTINGS_ERRORS = {
-	name_len: "Name length must be at least #{MIN_NAME_LEN}"
+	name_len: "Name length must be between #{MIN_NAME_LEN} and #{MAX_NAME_LEN} characters!",
+	bio_len: "Biography length must be between #{MIN_BIO_LEN} and #{MAX_BIO_LEN} characters!"
 }
 
 # Login stuff

@@ -43,63 +43,63 @@ body
   height: 100% 
   overflow-y: hidden
 
-  header
-    height: 55px
-    background-color: $bg_dark_clr
-    border-bottom: $border_size solid $shadow_clr
-    padding: .1rem .8rem .1rem .8rem
-    white-space: nowrap
+header
+  height: 55px
+  background-color: $bg_dark_clr
+  border-bottom: $border_size solid $shadow_clr
+  padding: .1rem .8rem .1rem .8rem
+  white-space: nowrap
 
-    img.avatar
-      transition: border .2s
+  img.avatar
+    transition: border .2s
 
-    img.avatar:hover
-      border: 2px solid $special_clr
+  img.avatar:hover
+    border: 2px solid $special_clr
 
-    div
+  div
+    display: flex
+    max-width: 70rem
+    margin: 0 auto
+
+    #logo_container
       display: flex
-      max-width: 70rem
-      margin: 0 auto
+      flex-direction: column 
+      margin: 0
+      text-decoration: none
+      color: $fg_clr
 
-      #logo_container
-        display: flex
-        flex-direction: column 
+      h1
         margin: 0
-        text-decoration: none
-        color: $fg_clr
+        opacity: .8
+        font-size: 1.2rem
+        font-weight: bold
 
-        h1
-          margin: 0
-          opacity: .8
-          font-size: 1.2rem
-          font-weight: bold
+      h2 
+        margin: 0
+        opacity: .2
+        font-size: .8rem
+        font-style: italic
+        font-weight: normal
 
-        h2 
-          margin: 0
-          opacity: .2
-          font-size: .8rem
-          font-style: italic
-          font-weight: normal
-
-      nav
+    nav
+      display: flex
+      align-items: center
+      margin: 0 0 0 auto
+      padding: 8px
+      padding-right: 0
+      
+      ul
+        margin: 0
         display: flex
-        align-items: center
-        margin: 0 0 0 auto
-        padding: 8px
-        padding-right: 0
-        
-        ul
-          margin: 0
-          display: flex
-          flex-direction: row 
-          list-style-type: none
-          justify-content: flex-end
+        flex-direction: row 
+        list-style-type: none
+        justify-content: flex-end
 
-          li   
-            display: flex
-            flex-direction: column
-            justify-content: center
-            margin: 0 8px
+        li   
+          display: flex
+          flex-direction: column
+          justify-content: center
+          margin: 0 8px
 
 // General
 #login
@@ -343,4 +343,8 @@ ul.button-container
     form
       background-color: $bg_alt_clr
       border: $border_size solid $border_clr
+
+      input[type=text]
+        padding: 0 .2rem
+        border: $border_size solid $border_clr
 
