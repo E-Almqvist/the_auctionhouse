@@ -84,7 +84,12 @@ end
 
 # Reputation
 get "/profile/:id/rep" do
-	serve :"user/rep"
+	userobj = User.find_by_id params[:id].to_i
+	if userobj then
+		serve :"user/rep", {user: userobj} 
+	else
+		raise Sinatra::NotFound
+	end
 end
 
 # Settings

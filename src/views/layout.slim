@@ -14,11 +14,11 @@ html lang="en"
           ul
             - unless is_logged_in 
               li
-                a.button#register href="/register" target="_self"
-                  | Register
-              li
                 a.button#login href="/login" target="_self"
-                  | Log in
+                  | LOG IN 
+              li
+                a.button#register href="/register" target="_self"
+                  | SIGN UP
             - else
               li
                 a.inlbutton href="/settings" target="_self" 

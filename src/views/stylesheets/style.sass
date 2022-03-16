@@ -1,21 +1,21 @@
 @import "fonts"
 
 $font_stack: "Space Mono", monospace
-$border_radius: .25rem
+$border_radius: .4rem
 $border_size: 1px
 
-$bg_clr: #272a34
-$bg_alt_clr: #232730
-$bg_dark_clr: #21242e
-$fg_clr: #fff
-$fg_alt_clr: #eee
+$bg_clr: #ffffff
+$bg_alt_clr: #f7f7f8
+$bg_dark_clr: #f0f0f1
+$fg_clr: #191927
+$fg_alt_clr: #fff
 $fg_error: #f77 
 
-$shadow_clr: $bg_alt_clr
-$border_clr: #999 
+$shadow_clr: $bg_dark_clr
+$border_clr: $bg_alt_clr
 $green_clr: #5cb85c
 $red_clr: #de2a1d
-$gray_clr: #aaa
+$gray_clr: #888
 
 $special_clr: #4776C1
 
@@ -24,8 +24,12 @@ $special_clr: #4776C1
   margin: 0
   padding: 0
   font-family: $font_stack
-  font-size: 16px
+  font-size: 16px 
   color: $fg_clr
+  word-wrap: break-word
+
+* 
+  margin: 0
 
 html 
   background-color: $bg_clr 
@@ -35,21 +39,19 @@ html
   flex-direction: column
   justify-content: center
   width: auto 
-  height: 90% 
+  height: 100% 
 
 // Layout
 body
   margin: 0
   height: 100% 
-  overflow-y: hidden
 
 header
-  height: 55px
-  background-color: $bg_dark_clr
+  height: 48px
+  background-color: $bg_alt_clr
   border-bottom: $border_size solid $shadow_clr
-  padding: .1rem .8rem .1rem .8rem
+  padding: .1rem .8rem 
   white-space: nowrap
-
   img.avatar
     transition: border .2s
 
@@ -60,6 +62,8 @@ header
     display: flex
     max-width: 70rem
     margin: 0 auto
+    align-items: center
+    justify-content: center
 
     #logo_container
       display: flex
@@ -84,9 +88,7 @@ header
     nav
       display: flex
       align-items: center
-      margin: 0 0 0 auto
-      padding: 8px
-      padding-right: 0
+      margin: auto 0 auto auto
       
       ul
         margin: 0
@@ -101,11 +103,6 @@ header
           justify-content: center
           margin: 0 8px
 
-// General
-#login
-  color: $fg_alt_clr
-  background-color: $special_clr 
-
 .inlbutton
   transition: opacity .2s
 .inlbutton:hover
@@ -113,15 +110,21 @@ header
 
 a.button
   display: inline-block
+  font-size: .8rem
+  font-weight: bold
   text-decoration: none
-  padding: .4rem 1rem 
+  padding: .4rem 1rem
   color: $fg_clr
-  border-radius: .25rem
+  border-radius: 3em
   transition: opacity .2s
 
 a.button:hover
   cursor: pointer
-  opacity: .6
+  opacity: .8
+
+.button#register
+  color: $fg_alt_clr
+  background-color: $special_clr
 
 label.error_msg
   color: $fg_error
@@ -130,8 +133,8 @@ label.error_msg
 
 img.avatar, img.avatar_big
   background: $bg_clr
-  width: 2.15rem
-  height: 2.15rem
+  width: 2.25rem
+  height: 2.25rem
   object-fit: cover
   border-radius: 50%
   border: 2px solid $border_clr
@@ -143,7 +146,8 @@ img.avatar_big
 img.icon
   width: 1.2rem
   height: auto
-  opacity: .4
+  -webkit-filter: invert(100%)
+  filter: invert(100%)
   
 .tcenter
   text-align: center
@@ -166,10 +170,8 @@ ul.button-container
     margin: .5rem
     padding: .025rem .4rem
     flex-direction: column
-    color: $fg_alt_clr
-    background: $bg_alt_clr
-    border: $border_size solid $shadow_clr
-    border-radius: $border_radius
+    color: $fg_clr
+    background: $bg_dark_clr
 
 .form-container
   display: flex
@@ -183,18 +185,16 @@ ul.button-container
     margin: 0
     width: 50rem
     max-width: 400px
-    border-radius: .4rem
+    border-radius: .2rem
 
     textarea
       background-color: $bg_alt_clr
-      color: $fg_alt_clr
       font-size: 1rem
       resize: none
       border: $border_size solid $border_clr
       border-radius: $border_radius
 
     label
-      color: $fg_alt_clr
       opacity: .8
 
     a
@@ -211,8 +211,8 @@ ul.button-container
     input
       border-radius: $border_radius 
       background: $bg_alt_clr
-      border: 3px solid $shadow_clr
-      color: $fg_alt_clr
+      border: $border_size solid $shadow_clr
+      color: $fg_clr
       font-family: $font_stack
       font-size: 1.2rem
       padding: .2rem 1rem
@@ -254,7 +254,7 @@ ul.button-container
     padding: 0 1rem
 
   .card
-    background-color: $bg_dark_clr
+    background-color: $bg_alt_clr
     border: $border_size solid $shadow_clr
     border-radius: $border_radius
     h2
@@ -263,7 +263,7 @@ ul.button-container
       margin: 0
       border-bottom: $border_size solid $shadow_clr
       font-size: 1rem
-      color: $fg_alt_clr
+      color: $fg_clr
 
   aside
     margin-right: 2rem
@@ -271,6 +271,7 @@ ul.button-container
       margin-bottom: 1.75rem
       text-align: center
       width: 250px
+      word-wrap: wrap
       h2
         margin: 1rem 0 0 0
         padding: 0
@@ -283,23 +284,18 @@ ul.button-container
         font-size: .8rem
         margin: 0 0 1rem 0
         font-weight: normal
-        color: $fg_alt_clr
+        color: $fg_clr
         opacity: .5
       h4
         font-weight: normal
         font-size: .8rem
         max-width: 250px
-        
       ul
         margin: 1rem 0
         flex-wrap: nowrap
-        a.button
-          padding: 0
-          li
-            background: $special_clr
       p
         text-align: center
-        color: $fg_alt_clr
+        color: $fg_clr
         max-width: 20rem
       .avatar-container
         display: flex
@@ -322,7 +318,7 @@ ul.button-container
       h4
         margin: 0
         font-weight: normal
-        color: $fg_alt_clr
+        color: $fg_clr
         opacity: .8
 
   #posts
