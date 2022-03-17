@@ -52,6 +52,7 @@ header
   background-color: $bg_clr
   padding: .1rem .8rem 
   white-space: nowrap
+  border-bottom: $border_size solid $shadow_clr
   img.avatar
     transition: border .2s
 
@@ -64,7 +65,6 @@ header
     margin: 0 auto
     align-items: center
     justify-content: center
-    border-bottom: $border_size solid $shadow_clr
 
     #logo_container
       display: flex
@@ -75,13 +75,11 @@ header
 
       h1
         margin: 0
-        opacity: .8
         font-size: 1.2rem
         font-weight: bold
 
       h2 
         margin: 0
-        opacity: .2
         font-size: .8rem
         font-style: italic
         font-weight: normal
@@ -122,7 +120,7 @@ article
 
 a.button
   display: inline-block
-  font-size: .8rem
+  font-size: 1rem
   font-weight: bold
   text-decoration: none
   padding: .4rem 1rem
@@ -132,7 +130,7 @@ a.button
 
 a.button:hover
   cursor: pointer
-  opacity: .8
+  opacity: .6
 
 .button#register
   color: $fg_alt_clr
@@ -180,10 +178,17 @@ ul.button-container
   li
     display: flex
     margin: .5rem
-    padding: .025rem .4rem
     flex-direction: column
+    padding: .025rem .4rem
     color: $fg_clr
     background: $bg_dark_clr
+    border-radius: $border_radius
+
+  li.em
+    background: $special_clr
+    a
+      color: #fff
+
 
 .form-container
   display: flex
