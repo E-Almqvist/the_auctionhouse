@@ -38,6 +38,7 @@ html
   display: flex
   flex-direction: column
   justify-content: center
+  align-items: center
   width: auto 
   height: 100% 
 
@@ -49,7 +50,6 @@ body
 header
   height: 48px
   background-color: $bg_clr
-  border-bottom: $border_size solid $shadow_clr
   padding: .1rem .8rem 
   white-space: nowrap
   img.avatar
@@ -64,6 +64,7 @@ header
     margin: 0 auto
     align-items: center
     justify-content: center
+    border-bottom: $border_size solid $shadow_clr
 
     #logo_container
       display: flex
@@ -102,6 +103,16 @@ header
           flex-direction: column
           justify-content: center
           margin: 0 8px
+
+article
+  width: 70rem
+
+  h1
+    font-size: 2rem
+
+  p 
+    opacity: .7
+    padding: 0 10rem
 
 .inlbutton
   transition: opacity .2s
