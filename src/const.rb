@@ -31,4 +31,4 @@ BIO_REGEX_STR = "{#{MIN_BIO_LEN},#{MAX_BIO_LEN}}"
 
 
 # Routes that needs auth
-AUTH_ROUTES = %w[/settings]
+AUTH_ROUTES = %w[/settings /auction/post]
