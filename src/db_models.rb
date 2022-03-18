@@ -1,6 +1,6 @@
 # User model
 class User < EntityModel 
-	attr_reader :email, :name, :bio_text, :balance, :avatar_url, :pw_hash, :reputation
+	attr_reader :email, :name, :bio_text, :avatar_url, :pw_hash, :reputation
 
 	def initialize(data)
 		super data
@@ -15,6 +15,10 @@ class User < EntityModel
 
 	def avatar
 		return @avatar_url
+	end
+
+	def balance
+		@balance.to_f
 	end
 
 	def role

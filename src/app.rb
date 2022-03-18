@@ -150,4 +150,3 @@ post "/user/update" do
 
 	redirect "/settings"
 end
-
