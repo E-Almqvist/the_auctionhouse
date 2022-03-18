@@ -102,13 +102,19 @@ header
           justify-content: center
           margin: 0 8px
 
-article#index
+article.index
   width: 70rem
   h1
     font-size: 2rem
   p 
     opacity: .7
     padding: 0 10rem
+
+article.index:not(:last-child)
+  margin-bottom: 4rem
+
+h1.title
+  border-bottom: $border_size solid $shadow_clr
 
 .inlbutton
   transition: opacity .2s
