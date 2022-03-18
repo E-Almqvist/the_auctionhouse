@@ -1,5 +1,8 @@
 require_relative "const"
 
+COINS_PREFIX = "€"
+COINS_SUFFIX = ""
+
 AUTH_ERRORS = {
 	needed: "Authentication is needed to perform that task! Please login!"
 }

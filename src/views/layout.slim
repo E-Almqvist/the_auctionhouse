@@ -20,11 +20,12 @@ html lang="en"
                 a.button#register href="/register" target="_self"
                   | SIGN UP
             - else
+              li.coins = "#{COINS_PREFIX}#{session_user.coins}#{COINS_SUFFIX}"
               li
                 a.inlbutton href="/settings" target="_self" 
                   img.icon src="/icons/settings.svg" alt="Settings"
               li
-                a href="/profile" target="_self" 
+                a.inlbutton href="/profile" target="_self" 
                   img.avatar src="#{session_user.avatar}" alt="Profile"
 
     .content-container
