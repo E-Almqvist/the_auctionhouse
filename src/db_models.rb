@@ -9,7 +9,7 @@ class User < EntityModel
 		@bio_text = data["bio_text"]
 		@balance = data["balance"].to_f
 		@avatar_url = data["avatar_url"]
-		@reputation = data["reputation"].to_f
+		@reputation = data["reputation"].to_i
 		@pw_hash = data["pw_hash"]
 	end
 
