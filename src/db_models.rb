@@ -197,7 +197,30 @@ class Auction < EntityModel
 		@start_time = data["start_time"]
 		@end_time = data["end_time"]
 	end
+
+	def create(user_id, title, description, init_price, delta_time) 
+		# Get current UNIX time
+		start_time = Time.now.to_i 
+		end_time = start_time + delta_time 
+
+		# Prep the payload
+		data = {
+			user_id: user_id,
+			title: title,
+			description: description,
+			init_price: init_price,
+			start_time: start_time,
+			end_time: end_time
+		}
+
+		self.insert data
+	end
+
+	def post(user_id, title, description, init_price, delta_time)
+		# validate input
+	end
 end
+
 
 class Category < EntityModel
 	attr_reader :name, :color
@@ -216,6 +239,7 @@ class Category < EntityModel
 	end
 end
 
+
 class Image < EntityModel
 	attr_reader :auction_id, :image_order, :url
 	def initialize(data)
@@ -225,6 +249,7 @@ class Image < EntityModel
 		@url = data["url"]
 	end
 end
+
 
 class Auction_Category_relation < EntityModel
 	attr_reader :auction_id, :category_id

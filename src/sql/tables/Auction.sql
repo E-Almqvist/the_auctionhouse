@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS "Auction" (
 	"title"			TEXT NOT NULL,
 	"description"	TEXT NOT NULL,
 	"init_price"	INTEGER NOT NULL DEFAULT 1,
-	"start_time"	DATE NOT NULL,
-	"end_time"		DATE NOT NULL,
+	"start_time"	INTEGER NOT NULL,
+	"end_time"		INTEGER NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );

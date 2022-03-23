@@ -6,14 +6,23 @@ MIN_REP		= -100
 MAX_REP 	= 100
 
 PERM_LEVELS = {
-	post: 0, # allows the user to post auctions
-	rmpost: 1, # allows the user to remove other peoples auctions
-	roleman: 2 # allows the user to manage other peoples roles
+	banned: 2**0, # denies the user everything
+	rmpost: 2**1, # allows the user to remove other peoples auctions
+	roleman: 2**2, # allows the user to manage other peoples roles
+	cateman: 2**3, # allows the user to manage categories
 }
 
 # DB stuff
 DB_PATH = "db/main.db"
 
+# Auction constants
+MIN_INIT_PRICE = 1
+
+MIN_TITLE_LEN = 2
+MAX_TITLE_LEN = 32
+
+MIN_DESC_LEN = 0
+MAX_DESC_LEN = 512
 
 # User constants
 AVATAR_SIZE = 1024 # width & height

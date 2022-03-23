@@ -151,15 +151,21 @@ post "/user/update" do
 end
 
 # Auction stuff
-get "/auction" do
+get "/auctions" do
 	serve :"auction/index"
 end
 
-get "/auction/view/:id" do
+get "/auction/new" do
+	serve :"auction/new"
+end
+
+post "/auctions" do
+	user_id = session[:userid]
+	title = params[:title]
+end
+
+get "/auctions/:id" do
 	id = params[:id].to_i
 	serve :"auction/view"
 end
 
-get "/auction/post" do
-	serve :"auction/new"
-end
