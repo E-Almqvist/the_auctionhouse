@@ -92,12 +92,11 @@ get "/profile/:id/rep" do
 	end
 end
 
-# Settings
+# User stuff
 get "/settings" do
 	serve :"user/settings"
 end
 
-# API stuff
 post "/register" do
 	email = params[:email]
 	name = params[:name]
@@ -128,7 +127,7 @@ post "/login" do
 	end
 end
 
-post "/user/logout" do 
+get "/logout" do 
 	session.clear
 	redirect "/"
 end
@@ -149,4 +148,18 @@ post "/user/update" do
 	if not success then session[:error_msg] = msg end	
 
 	redirect "/settings"
+end
+
+# Auction stuff
+get "/auction" do
+	serve :"auction/index"
+end
+
+get "/auction/view/:id" do
+	id = params[:id].to_i
+	serve :"auction/view"
+end
+
+get "/auction/post" do
+	serve :"auction/new"
 end
