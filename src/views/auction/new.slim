@@ -1,0 +1,13 @@
+.form-container
+  form action="/auctions" method="post" enctype="multipart/form-data"
+    input type="file" name="image" accept="image"
+
+    label Title
+    input type="text" name="title" placeholder="Title"
+
+    label = "Initial Price #{COINS_PREFIX} #{COINS_SUFFIX}"
+    input type="number" name="init_price" value="#{MIN_INIT_PRICE}"
+
+    textarea name="description" cols="20" rows="5" title="Content length must be between #{MIN_DESC_LEN} and #{MAX_DESC_LEN} characters" pattern="#{DESC_REGEX_STR}" maxlength="#{MAX_DESC_LEN}" placeholder="Description"
+
+    input type="submit" value="Post"
