@@ -33,7 +33,8 @@ LOGIN_ERRORS = {
 
 AUCTION_ERRORS = {
 	titlelen: "Title length must be between #{MIN_TITLE_LEN} and #{MAX_TITLE_LEN} characters!",
-	initprice: "The initial price must be at least #{MIN_INIT_PRICE}!"
+	initprice: "The initial price must be at least #{MIN_INIT_PRICE}!",
+	deltatime: "Time span is too short! Must be at least one day!"
 }
 
 # Auction stuff

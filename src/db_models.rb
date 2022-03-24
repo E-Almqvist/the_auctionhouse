@@ -198,7 +198,18 @@ class Auction < EntityModel
 		@end_time = data["end_time"]
 	end
 
+	def validate_ah(title, description, init_price, delta_time)
+		return false, AUCTION_ERRORS[:titlelen] unless title.length.between?(MIN_TITLE_LEN, MAX_TITLE_LEN)
+		return false, AUCTION_ERRORS[:initprice] unless init_price >= MIN_INIT_PRICE
+		return false, AUCTION_ERRORS[:deltatime] unless delta_time >= MIN_DELTA_TIME
+		return true, ""
+	end
+
 	def create(user_id, title, description, init_price, delta_time) 
+		# Validate the input
+		check, errorstr = self.validate_ah(title, description, init_price, delta_time)
+		return errorstr unless check
+
 		# Get current UNIX time
 		start_time = Time.now.to_i 
 		end_time = start_time + delta_time 
@@ -214,10 +225,6 @@ class Auction < EntityModel
 		}
 
 		self.insert data
-	end
-
-	def post(user_id, title, description, init_price, delta_time)
-		# validate input
 	end
 end
 
