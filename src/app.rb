@@ -162,6 +162,10 @@ end
 post "/auctions" do
 	user_id = session[:userid]
 	title = params[:title]
+	init_price = params[:init_price]
+
+	newid = 0
+	redirect "/auctions/#{newid}"
 end
 
 get "/auctions/:id" do

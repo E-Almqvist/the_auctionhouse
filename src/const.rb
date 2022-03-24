@@ -39,6 +39,7 @@ MAX_BIO_LEN = 128
 EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/
 NAME_REGEX_STR = "[a-zA-Z-_0-9 ]{#{MIN_NAME_LEN},#{MAX_NAME_LEN}}"
 BIO_REGEX_STR = "{#{MIN_BIO_LEN},#{MAX_BIO_LEN}}"
+DESC_REGEX_STR = "{#{MIN_DESC_LEN},#{MAX_DESC_LEN}}"
 
 
 # Routes that needs auth
