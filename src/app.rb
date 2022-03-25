@@ -155,7 +155,7 @@ get "/auctions" do
 	serve :"auction/index"
 end
 
-get "/auction/new" do
+get "/auctions/new" do
 	serve :"auction/new"
 end
 
