@@ -1,0 +1,17 @@
+#auctions
+  aside
+    h2 Search Filters
+    .form-container
+      form action="/auctions" method="get"
+        label Keywords
+        input type="text" name="title" placeholder="Keywords (ex: computer, teapot)"
+
+        label Price range
+        input type="range" name="price_rng"
+
+        label Is Open?
+        input type="checkbox" name="isopen" value="1" 
+
+        input type="submit" value="Search"
+  article
+    h2 Results
