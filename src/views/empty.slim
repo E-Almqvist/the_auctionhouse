@@ -6,7 +6,7 @@ html lang="en"
     title The Auction House 
   body
     .content-container
-      .flash
+      div class="flash" onclick="this.remove();"
         - flash.each do |k, v|
             div class="flash-#{k}"
               | #{v}
