@@ -154,7 +154,13 @@ end
 
 # Auction stuff
 get "/auctions" do
-	serve :"auction/index"
+	title = params[:title]
+	#categories = (params[:categories].split ",").map {|id| id.to_i} 
+	#price_rng = (params[:price_rng].split "-").map {|p| p.to_i}
+	isopen = params[:isopen]
+
+	auctions = Auction.search title#, categories, price_rng, isopen
+	serve :"auction/index", {auctions: auctions}
 end
 
 get "/auctions/new" do

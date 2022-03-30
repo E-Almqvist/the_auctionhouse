@@ -236,7 +236,7 @@ class Auction < EntityModel
 
 	def self.compose_query_filters(title=nil, categories=nil, price_rng=nil, isopen=nil)
 		querystr = "SELECT * FROM Auction "
-		querystr += "WHERE " if title or categories or price_rng or time_left
+		querystr += "WHERE " if title or categories or price_rng or isopen
 
 		filters = []
 		filters << "LIKE '%#{title}%'" if title

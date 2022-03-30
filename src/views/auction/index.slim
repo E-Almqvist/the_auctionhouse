@@ -15,3 +15,8 @@
         input type="submit" value="Search"
   article
     h2 Results
+
+    ul
+    - auctions.each do |auction|
+      li
+        | #{auction["title"]}
