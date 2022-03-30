@@ -29,7 +29,7 @@ html lang="en"
                 a.inlbutton href="/profile" target="_self" 
                   img.avatar src="#{session_user.avatar}" alt="Profile"
     .content-container
-      .flash
+      div class="flash" onclick="this.remove();"
         - flash.each do |k, v|
             div class="flash-#{k}"
               | #{v}

@@ -173,8 +173,13 @@ post "/auctions" do
 	
 	newid, resp = Auction.create user_id, title, description, init_price, delta_time, category_choices
 
-	flash[:success] = "Auction posted!"
-	redirect "/auctions/#{newid}"
+	if newid then
+		flash[:success] = "Auction posted!"
+		redirect "/auctions/#{newid}"
+	else
+		flash[:error] = resp
+		redirect "/auctions/new"
+	end
 end
 
 get "/auctions/:id" do

@@ -215,7 +215,7 @@ class Auction < EntityModel
 
 		# Validate the input
 		check, errorstr = self.validate_ah(title, description, init_price, delta_time)
-		return errorstr unless check
+		return check, errorstr unless check
 
 		# Get current UNIX time
 		start_time = Time.now.to_i 

@@ -142,12 +142,15 @@ a.button:hover
   background-color: $special_clr
 
 .flash
-  position: absolute
+  position: fixed
   text-align: center
-  top: 5rem
+  top: 4rem
+  left: .8rem
   font-size: 1rem
   font-weight: bold
   animation: flash .2s ease-in alternate
+  background: $bg_alt_clr
+  transition: .4s opacity 
 
   &-error
     color: $fg_error
@@ -160,6 +163,10 @@ a.button:hover
     padding: 8px
     border: $border_size solid $green_clr
     border-radius: $border_radius
+
+.flash:hover
+  cursor: pointer
+  opacity: .5
 
 img.avatar, img.avatar_big
   background: $bg_clr
