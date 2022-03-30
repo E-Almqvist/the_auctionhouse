@@ -138,6 +138,14 @@ class User < EntityModel
 
 		return true, user.id
 	end
+
+	# Check if user has permission
+	# TODO: Make this work
+	def self.permitted?(id, perm)
+		user = self.find_by_id id
+		roles = user.roles
+		# check each role for flag
+	end
 end
 
 # Role model
@@ -148,6 +156,11 @@ class Role < EntityModel
 		@name = data["name"]
 		@color = data["color"]
 		@flags = data["flags"]
+	end
+
+	# TODO: Check if role has specific flag
+	def has_flag?(flag)
+		# do bitwise ops	
 	end
 
 	def self.find_by_id(id)
@@ -198,14 +211,19 @@ class Auction < EntityModel
 		@end_time = data["end_time"]
 	end
 
-	def self.validate_ah(title, description, init_price, delta_time)
+	private def self.validate_ah(title, description, init_price, delta_time)
 		return false, AUCTION_ERRORS[:titlelen] unless title.length.between?(MIN_TITLE_LEN, MAX_TITLE_LEN)
 		return false, AUCTION_ERRORS[:initprice] unless init_price >= MIN_INIT_PRICE
 		return false, AUCTION_ERRORS[:deltatime] unless delta_time >= MIN_DELTA_TIME
 		return true, ""
 	end
 
-	def self.create(user_id, title, description, init_price, delta_time) 
+	def self.create(user_id, title, description, init_price, delta_time, categories) 
+		# Remove invalid categories
+		categories.select! do |id|
+			self.exists? id
+		end
+
 		# Validate the input
 		check, errorstr = self.validate_ah(title, description, init_price, delta_time)
 		return errorstr unless check

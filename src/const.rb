@@ -24,7 +24,7 @@ MAX_TITLE_LEN = 32
 MIN_DESC_LEN = 0
 MAX_DESC_LEN = 512
 
-MIN_DELTA_TIME = 60 * 60 * 24 # 1 day
+MIN_DELTA_TIME = 60*60 # 1 hour
 
 # User constants
 AVATAR_SIZE = 1024 # width & height
@@ -40,6 +40,7 @@ EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/
 NAME_REGEX_STR = "[a-zA-Z-_0-9 ]{#{MIN_NAME_LEN},#{MAX_NAME_LEN}}"
 BIO_REGEX_STR = "{#{MIN_BIO_LEN},#{MAX_BIO_LEN}}"
 DESC_REGEX_STR = "{#{MIN_DESC_LEN},#{MAX_DESC_LEN}}"
+TITLE_REGEX_STR = "{#{MIN_TITLE_LEN},#{MAX_TITLE_LEN}}"
 
 
 # Routes that needs auth

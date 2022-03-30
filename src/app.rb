@@ -163,6 +163,11 @@ post "/auctions" do
 	user_id = session[:userid]
 	title = params[:title]
 	init_price = params[:init_price]
+	delta_time = params[:delta_time]
+
+	# Select the category ids
+	category_choices = (params.select { |k, v| k.to_s.match(/^category-\d+/) }).map{ |k, v| v.to_i }
+
 
 	newid = 0
 	redirect "/auctions/#{newid}"

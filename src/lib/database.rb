@@ -75,9 +75,18 @@ class EntityModel
 			self.insert(data, filter)
 		end
 	end
+
+	def self.get_all(ents="*")
+		self.query "SELECT #{ents} FROM #{self.name}"
+	end
+
+	def self.exists?(id)
+		resp = self.get "id", "id = ?", id
+		resp.length > 0
+	end
 end
 
-class RelationModel < EntityModel
+class RelationModel < EntityModel # TODO: make this work
 	def self.tables = nil
 
 	def self.get_relation(id)
