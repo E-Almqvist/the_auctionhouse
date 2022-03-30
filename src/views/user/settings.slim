@@ -2,7 +2,6 @@
   h1.tcenter = "#{session_user.name}'s Settings"
   .form-container
     form action="/user/update" method="post" enctype="multipart/form-data"
-      label.error_msg = error_msg
       img.avatar_big src="#{session_user.avatar_url}" alt="Your avatar"
       label Change avatar
       input type="file" name="image" accept="image"

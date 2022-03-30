@@ -16,3 +16,5 @@ gem "bcrypt"
 gem "redcarpet"
 
 gem "rmagick", "~> 4.2"
+
+gem "sinatra-flash", "~> 0.3.0"

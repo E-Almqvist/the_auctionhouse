@@ -28,7 +28,10 @@ html lang="en"
               li
                 a.inlbutton href="/profile" target="_self" 
                   img.avatar src="#{session_user.avatar}" alt="Profile"
-
     .content-container
+      .flash
+        - flash.each do |k, v|
+            div class="flash-#{k}"
+              | #{v}
       ==yield
 

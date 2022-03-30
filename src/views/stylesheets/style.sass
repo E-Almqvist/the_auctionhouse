@@ -141,10 +141,25 @@ a.button:hover
   color: $fg_alt_clr
   background-color: $special_clr
 
-label.error_msg
-  color: $fg_error
+.flash
+  position: absolute
+  text-align: center
+  top: 5rem
   font-size: 1rem
   font-weight: bold
+  animation: flash .2s ease-in alternate
+
+  &-error
+    color: $fg_error
+    padding: 8px
+    border: $border_size solid $red_clr
+    border-radius: $border_radius
+
+  &-success
+    color: $green_clr
+    padding: 8px
+    border: $border_size solid $green_clr
+    border-radius: $border_radius
 
 img.avatar, img.avatar_big
   background: $bg_clr
@@ -368,9 +383,14 @@ ul.button-container
         padding: 0 .2rem
         border: $border_size solid $border_clr
 
-
-
 // Auctions
-#auctinos
+#auctions
   display: flex
   flex-direction: column
+
+// Animation keyframes
+@keyframes flash
+  0%
+    opacity: 0
+  100%
+    opacity: 1

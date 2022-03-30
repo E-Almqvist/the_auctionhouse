@@ -6,4 +6,8 @@ html lang="en"
     title The Auction House 
   body
     .content-container
+      .flash
+        - flash.each do |k, v|
+            div class="flash-#{k}"
+              | #{v}
       ==yield

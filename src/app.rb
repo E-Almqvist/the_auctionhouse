@@ -4,6 +4,7 @@ DEBUG = ARGV[0] == "debug"
 
 require "sinatra" 
 require "sinatra/reloader" if DEBUG # reload stuff
+require "sinatra/flash"
 require "slim" # template
 require "sqlite3" # db
 require "sassc" # SASS -> CSS precompiler
@@ -33,7 +34,7 @@ before do
 	if !is_logged_in && request.path_info.start_with?(*AUTH_ROUTES) then
 		session[:ret] = request.fullpath # TODO: return the user to the previous route
 		session[:status] = 403
-		session[:error_msg] = AUTH_ERRORS[:needed] 
+		flash[:error] = AUTH_ERRORS[:needed] 
 		redirect "/login"
 	end
 end
@@ -106,7 +107,7 @@ post "/register" do
 	status, ret = User.register(email, name, password, password_confirm)
 	Console.debug "/register STATUS: #{status}", ret
 	if !status then # if something went wrong then return to 0
-		session[:error_msg] = ret
+		flash[:error] = ret
 		redirect "/register"
 	else # if everything went right then continue
 		redirect "/login"
@@ -119,7 +120,7 @@ post "/login" do
 
 	status, ret = User.login(email, password)
 	if !status then # ret = error message
-		session[:error_msg] = ret
+		flash[:error] = ret
 		redirect "/login"
 	else # ret = userid
 		session[:userid] = ret 
@@ -145,8 +146,9 @@ post "/user/update" do
 	end
 
 	success, msg = get_current_user.update_creds data # update the user creds
-	if not success then session[:error_msg] = msg end	
+	if not success then flash[:error] = msg end	
 
+	flash[:success] = "Updated profile"
 	redirect "/settings"
 end
 
@@ -170,10 +172,8 @@ post "/auctions" do
 	category_choices = (params.select { |k, v| k.to_s.match(/^category-\d+/) }).map{ |k, v| v.to_i }
 	
 	newid, resp = Auction.create user_id, title, description, init_price, delta_time, category_choices
-	p "###################"
-	p newid
-	p "###################"
 
+	flash[:success] = "Auction posted!"
 	redirect "/auctions/#{newid}"
 end
 
