@@ -162,19 +162,29 @@ end
 post "/auctions" do
 	user_id = session[:userid]
 	title = params[:title]
-	init_price = params[:init_price]
-	delta_time = params[:delta_time]
+	description = params[:description]
+	init_price = params[:init_price].to_f
+	delta_time = params[:delta_time].to_i * 3600 # hours to seconds
 
 	# Select the category ids
 	category_choices = (params.select { |k, v| k.to_s.match(/^category-\d+/) }).map{ |k, v| v.to_i }
+	
+	newid, resp = Auction.create user_id, title, description, init_price, delta_time, category_choices
+	p "###################"
+	p newid
+	p "###################"
 
-
-	newid = 0
 	redirect "/auctions/#{newid}"
 end
 
 get "/auctions/:id" do
 	id = params[:id].to_i
-	serve :"auction/view"
+	auction_obj = Auction.find_by_id id
+
+	if !auction_obj.nil? then
+		serve :"auction/view", {auction: auction_obj}	
+	else
+		raise Sinatra::NotFound
+	end
 end
 

@@ -65,7 +65,9 @@ class EntityModel
 
 	def self.insert(data) # Inserts new data into the table
 		entstr, valstr = self.gen_insert_query data.keys
-		self.query( "INSERT INTO #{self.name} #{entstr} VALUES #{valstr}", *data.values )
+		r = self.query( "INSERT INTO #{self.name} #{entstr} VALUES #{valstr}", *data.values )
+		newid = db.last_insert_row_id
+		return newid, r
 	end
 
 	def self.set(attr, data, filter="") # slower but more lazy
@@ -83,6 +85,11 @@ class EntityModel
 	def self.exists?(id)
 		resp = self.get "id", "id = ?", id
 		resp.length > 0
+	end
+
+	def self.find_by_id(id)
+		data = self.get("*", "id = ?", id).first
+		data && self.new(data)
 	end
 end
 

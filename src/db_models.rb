@@ -65,12 +65,6 @@ class User < EntityModel
 		return true, nil
 	end
 
-	# Find user by ID, returns a user object 
-	def self.find_by_id(id)
-		data = self.get("*", "id = ?", id).first
-		data && User.new(data)
-	end
-
 	# Find user by email, same as above but for emails.
 	def self.find_by_email(email)
 		data = self.get("*", "email = ?", email).first
@@ -163,11 +157,6 @@ class Role < EntityModel
 		# do bitwise ops	
 	end
 
-	def self.find_by_id(id)
-		data = self.get("*", "id = ?", id).first
-		data && Role.new(data)
-	end
-
 	def self.find_by_name(name)
 		data = self.get("*", "name = ?", name).first
 		data && Role.new(data)
@@ -211,7 +200,7 @@ class Auction < EntityModel
 		@end_time = data["end_time"]
 	end
 
-	private def self.validate_ah(title, description, init_price, delta_time)
+	def self.validate_ah(title, description, init_price, delta_time)
 		return false, AUCTION_ERRORS[:titlelen] unless title.length.between?(MIN_TITLE_LEN, MAX_TITLE_LEN)
 		return false, AUCTION_ERRORS[:initprice] unless init_price >= MIN_INIT_PRICE
 		return false, AUCTION_ERRORS[:deltatime] unless delta_time >= MIN_DELTA_TIME
