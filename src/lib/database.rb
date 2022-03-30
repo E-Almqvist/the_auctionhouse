@@ -50,6 +50,18 @@ class EntityModel
 		end
 	end
 
+	# Extended query that also returns database instance
+	def self.equery(q, *args)
+		Console.debug("Running extended SQL -> #{q}", *args)
+		begin
+			dbbuf = db
+			resp = dbbuf.execute( q, args )
+			return dbbuf, resp
+		rescue SQLite3::SQLException => err
+			Console.error "SQL exception: #{err}", q
+		end
+	end
+
 	def self.get(attr, filter="", *args) # get data from table
 		q = "SELECT #{attr} FROM #{self.name}" # create the query string
 		q = apply_filter(q, filter)
@@ -65,9 +77,9 @@ class EntityModel
 
 	def self.insert(data) # Inserts new data into the table
 		entstr, valstr = self.gen_insert_query data.keys
-		r = self.query( "INSERT INTO #{self.name} #{entstr} VALUES #{valstr}", *data.values )
-		newid = db.last_insert_row_id
-		return newid, r
+		dbbuf, resp = self.equery( "INSERT INTO #{self.name} #{entstr} VALUES #{valstr}", *data.values )
+		newid = dbbuf.last_insert_row_id
+		return newid, resp
 	end
 
 	def self.set(attr, data, filter="") # slower but more lazy
