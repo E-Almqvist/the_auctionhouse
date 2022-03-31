@@ -22,16 +22,28 @@ html lang="en"
                   | SIGN UP
             - else
               li.coins = "#{COINS_PREFIX}#{session_user.balance}#{COINS_SUFFIX}"
+              
+              - if session_user.admin? && !session_user.banned?
+                li
+                  a.inlbutton href="/admin" target="_self" 
+                    img.icon src="/icons/shield.svg" alt="Admin Panel"
+
               li
                 a.inlbutton href="/settings" target="_self" 
                   img.icon src="/icons/settings.svg" alt="Settings"
+
+              li
+                a.inlbutton href="/logout" target="_self" 
+                  img.icon src="/icons/logout.svg" alt="Log out"
+
               li
                 a.inlbutton href="/profile" target="_self" 
                   img.avatar src="#{session_user.avatar}" alt="Profile"
-    .content-container
-      div class="flash" onclick="this.remove();"
-        - flash.each do |k, v|
-            div class="flash-#{k}"
-              | #{v}
+
+    div class="flash" onclick="this.remove();"
+      - flash.each do |k, v|
+          div class="flash-#{k}"
+            | #{v}
+    .content-container.fade-in
       ==yield
 

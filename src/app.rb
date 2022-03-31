@@ -43,6 +43,15 @@ not_found do
 	serve :"404"
 end
 
+def auth_denied(msg="You are not permitted to do that!")
+	flash[:error] = msg
+	redirect "/"
+end
+
+def banned
+	auth_denied "You are banned!"
+end
+
 # Routes
 get "/style.css" do
 	sass :"stylesheets/style", style: :compressed
@@ -110,6 +119,7 @@ post "/register" do
 		flash[:error] = ret
 		redirect "/register"
 	else # if everything went right then continue
+		flash[:success] = "Account created! Please login."
 		redirect "/login"
 	end
 end
@@ -130,6 +140,7 @@ end
 
 get "/logout" do 
 	session.clear
+	flash[:success] = "Successfully logged out!"
 	redirect "/"
 end
 
@@ -202,5 +213,12 @@ end
 
 # Admin panel
 get "/admin" do
+	flags = get_current_user.flags
+	p flags.to_s(2)
+
+	user = get_current_user
+	banned unless !user.banned?
+	auth_denied unless user.flags != 0
+
 	serve :admin, {flags: flags}
 end

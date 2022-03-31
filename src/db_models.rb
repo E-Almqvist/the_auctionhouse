@@ -146,14 +146,20 @@ class User < EntityModel
 	# Check if user has flags
 	# Returns: true or false depending whether the user has those flags
 	def permitted?(flag, *other_flags)
-		flags = self.get_flags(@id, self)
-
-		flag_mask = flag
+		flag_mask = PERM_LEVELS[flag]
 		if other_flags then
-			other_flags.each {|f| flag_mask |= f}
+			other_flags.each {|f| flag_mask |= PERM_LEVELS[f]}
 		end
 
-		return flags & flag_mask == flag_mask
+		return self.flags & flag_mask == flag_mask
+	end
+
+	def admin?
+		return self.permitted? :admin
+	end
+
+	def banned?
+		return self.permitted? :banned
 	end
 end
 

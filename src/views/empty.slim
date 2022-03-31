@@ -5,9 +5,9 @@ html lang="en"
     link rel="stylesheet" href="/style.css"
     title The Auction House 
   body
+    div class="flash" onclick="this.remove();"
+      - flash.each do |k, v|
+          div class="flash-#{k}"
+            | #{v}
     .content-container
-      div class="flash" onclick="this.remove();"
-        - flash.each do |k, v|
-            div class="flash-#{k}"
-              | #{v}
       ==yield

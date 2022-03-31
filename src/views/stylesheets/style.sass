@@ -42,6 +42,9 @@ html
   width: auto 
   height: 100% 
 
+.fade-in
+  animation: fade-in .4s ease-in alternate
+
 // Layout
 body
   margin: 0
@@ -145,10 +148,12 @@ a.button:hover
   position: fixed
   text-align: center
   top: 4rem
+  left: 50%
+  transform: translateX(-50%)
   font-size: 1rem
   font-weight: bold
-  animation: flash .2s ease-in alternate
-  background: $bg_alt_clr
+  animation: fade-in .9s ease-in alternate
+  background: $bg_clr
   transition: .4s opacity 
 
   &-error
@@ -180,8 +185,11 @@ img.avatar_big
   height: 8.15rem
 
 img.icon
-  width: 1.2rem
+  width: 1rem
   height: auto
+  opacity: .75
+
+img.icon-invert
   -webkit-filter: invert(100%)
   filter: invert(100%)
   
@@ -395,9 +403,8 @@ ul.button-container
   flex-direction: column
 
 // Animation keyframes
-@keyframes flash
+@keyframes fade-in
   0%
     opacity: 0
   100%
     opacity: 1
-
