@@ -199,3 +199,8 @@ get "/auctions/:id" do
 	end
 end
 
+
+# Admin panel
+get "/admin" do
+	serve :admin, {flags: flags}
+end

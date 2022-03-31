@@ -7,9 +7,28 @@ MAX_REP 	= 100
 
 PERM_LEVELS = {
 	banned: 2**0, # denies the user everything
-	rmpost: 2**1, # allows the user to remove other peoples auctions
-	roleman: 2**2, # allows the user to manage other peoples roles
+	admin: 2**1, # admin role (gives all flags)
+	roleman: 2**2, # allows the user to manage roles
 	cateman: 2**3, # allows the user to manage categories
+	rmpost: 2**4 # allows the user to remove other peoples auctions
+}
+
+# Constant roles that will always exist
+# IMPORTANT!: these ids are allocated for the specified roles. It is imperative that other roles have these ids!
+ROLES = {
+	admin: {
+		id: 1, 		
+		name: "Admin",
+		color: "#4776C1",
+		flags: PERM_LEVELS[:admin]
+	},
+
+	banned: {
+		id: 2,
+		name: "Banned",
+		color: "#de2a1d",
+		flags: PERM_LEVELS[:banned]
+	}
 }
 
 # DB stuff
@@ -44,4 +63,5 @@ TITLE_REGEX_STR = "{#{MIN_TITLE_LEN},#{MAX_TITLE_LEN}}"
 
 
 # Routes that needs auth
-AUTH_ROUTES = %w[/settings /auction /user]
+AUTH_ROUTES = %w[/settings /auction /user /admin]
+

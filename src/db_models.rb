@@ -133,12 +133,27 @@ class User < EntityModel
 		return true, user.id
 	end
 
-	# Check if user has permission
-	# TODO: Make this work
-	def self.permitted?(id, perm)
-		user = self.find_by_id id
-		roles = user.roles
-		# check each role for flag
+	# Get a users flags
+	# Returns: bitmap int thingie
+	def flags
+		flags = 0
+		self.roles.each do |role|
+			flags |= role.flags
+		end
+		return flags
+	end
+
+	# Check if user has flags
+	# Returns: true or false depending whether the user has those flags
+	def permitted?(flag, *other_flags)
+		flags = self.get_flags(@id, self)
+
+		flag_mask = flag
+		if other_flags then
+			other_flags.each do {|f| flag_mask |= f}
+		end
+
+		return flags & flag_mask == flag_mask
 	end
 end
 
@@ -152,9 +167,17 @@ class Role < EntityModel
 		@flags = data["flags"]
 	end
 
-	# TODO: Check if role has specific flag
-	def has_flag?(flag)
-		# do bitwise ops	
+	def has_flag?(flag, *other_flags)
+		flag_mask = PERM_LEVELS[flag]
+
+		# Add other flags
+		if other_flags then
+			other_flags.each do |f|
+				flag_mask += PERM_LEVELS[f]
+			end
+		end
+
+		return @flags & flag_mask == flag_mask # f AND m = m => flags exists
 	end
 
 	def self.find_by_name(name)
@@ -178,6 +201,17 @@ end
 
 
 class User_Role_relation < EntityModel
+	def self.init_table
+		super
+		
+		# Add the "first user" to the admin role
+		search = self.get("role_id", "user_id=1") or []
+		if search.length <= 0 then
+			q = "INSERT INTO #{self.name} (user_id, role_id) VALUES (?, ?)"
+			self.query(q, 1, 1)
+		end
+	end
+
 	def self.get_user_roles(user_id)
 		roleids = self.get "role_id", "user_id = ?", user_id
 		roles = roleids.map do |ent| 
