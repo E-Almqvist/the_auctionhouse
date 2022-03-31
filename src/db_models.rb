@@ -150,7 +150,7 @@ class User < EntityModel
 
 		flag_mask = flag
 		if other_flags then
-			other_flags.each do {|f| flag_mask |= f}
+			other_flags.each {|f| flag_mask |= f}
 		end
 
 		return flags & flag_mask == flag_mask
