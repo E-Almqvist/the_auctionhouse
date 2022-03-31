@@ -43,7 +43,8 @@ not_found do
 	serve :"404"
 end
 
-def auth_denied(msg="You are not permitted to do that!")
+def auth_denied(msg="You are not permitted to do that!", status=403)
+	session[:status] = status
 	flash[:error] = msg
 	redirect "/"
 end
@@ -217,8 +218,8 @@ get "/admin" do
 	p flags.to_s(2)
 
 	user = get_current_user
-	banned unless !user.banned?
-	auth_denied unless user.flags != 0
+	banned unless !user.banned? # reject the user if banned
+	auth_denied unless user.flags != 0 # reject the user if he/she has no roles
 
 	serve :admin, {flags: flags}
 end
