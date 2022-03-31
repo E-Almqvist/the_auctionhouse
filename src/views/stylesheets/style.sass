@@ -223,6 +223,17 @@ ul.button-container
     a
       color: #fff
 
+ul.list-container
+  display: flex
+  flex-direction: column 
+  padding: 0
+  margin: 0
+  list-style-type: none
+  height: 15rem
+  overflow-y: scroll
+
+  li
+    display: flex
 
 .form-container
   display: flex
@@ -232,7 +243,7 @@ ul.button-container
     display: flex
     flex-direction: column
     justify-content: center
-    padding: 2rem
+    padding: 1rem
     margin: 0
     width: 50rem
     max-width: 400px
@@ -292,6 +303,22 @@ ul.button-container
 .gray
   color: $gray_clr
 
+.card-container
+  padding: 0 1rem
+
+.card
+  background-color: $bg_clr
+  border-radius: $border_radius
+  h2
+    text-align: left 
+    padding: 0 .8rem
+    margin: 0
+    border-bottom: $border_size solid $shadow_clr
+    font-size: 1rem
+    color: $fg_clr
+.border
+  border: $border_size solid $shadow_clr
+
 // Profiles
 #profile-container
   display: flex 
@@ -301,21 +328,6 @@ ul.button-container
   max-width: 70rem
   padding-top: 2rem
   margin: 0 auto
-
-  .card-container
-    padding: 0 1rem
-
-  .card
-    background-color: $bg_clr
-    //border: $border_size solid $shadow_clr
-    border-radius: $border_radius
-    h2
-      text-align: left 
-      padding-left: .8rem
-      margin: 0
-      border-bottom: $border_size solid $shadow_clr
-      font-size: 1rem
-      color: $fg_clr
 
   aside
     margin-right: 2rem
@@ -396,6 +408,19 @@ ul.button-container
       input[type=text]
         padding: 0 .2rem
         border: $border_size solid $border_clr
+
+#admin-panel
+  display: flex
+  flex-wrap: wrap
+
+  article
+    margin: 2rem
+
+    .list-container
+      padding: 1rem
+      li
+        a
+          margin-left: 1rem
 
 // Auctions
 #auctions

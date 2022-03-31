@@ -31,11 +31,15 @@ enable :sessions
 db_init
 
 before do 
-	if !is_logged_in && request.path_info.start_with?(*AUTH_ROUTES) then
+	route_auth_needed = request.path_info.start_with?(*AUTH_ROUTES)
+
+	if !is_logged_in && route_auth_needed then
 		session[:ret] = request.fullpath # TODO: return the user to the previous route
 		session[:status] = 403
 		flash[:error] = AUTH_ERRORS[:needed] 
 		redirect "/login"
+	elsif route_auth_needed && get_current_user.banned?
+		banned
 	end
 end
 
@@ -43,10 +47,14 @@ not_found do
 	serve :"404"
 end
 
-def auth_denied(msg="You are not permitted to do that!", status=403)
+def auth_denied(msg=AUTH_ERRORS[:denied], status=403)
 	session[:status] = status
 	flash[:error] = msg
 	redirect "/"
+end
+
+def no_go_away
+	auth_denied "No! GO AWAY!"
 end
 
 def banned
@@ -160,7 +168,7 @@ post "/user/update" do
 	success, msg = get_current_user.update_creds data # update the user creds
 	if not success then flash[:error] = msg end	
 
-	flash[:success] = "Updated profile"
+	flash[:success] = "Profile updated."
 	redirect "/settings"
 end
 
@@ -215,11 +223,55 @@ end
 # Admin panel
 get "/admin" do
 	flags = get_current_user.flags
-	p flags.to_s(2)
 
 	user = get_current_user
 	banned unless !user.banned? # reject the user if banned
 	auth_denied unless user.flags != 0 # reject the user if he/she has no roles
 
-	serve :admin, {flags: flags}
+	data = {
+		roles: Role.get_all
+	}
+
+	serve :"admin/index", {flags: flags, data: data}
 end
+
+def role_check(id)
+	no_go_away if ROLE_IDS.include? id
+	auth_denied if get_current_user.permitted? :roleman
+end
+
+get "/admin/roles/:id/delete" do
+	id = params[:id].to_i
+	role_check id
+	
+	Role.delete id
+
+	flash[:success] = "Removed role."
+	redirect "/admin"
+end
+
+get "/admin/roles/:id/edit" do
+	id = params[:id].to_i
+	role_check id
+
+	flash[:success] = "Much edit. YES" # TODO: make edit stuff
+	redirect "/admin"
+end
+
+post "/admin/roles" do
+	auth_denied if get_current_user.permitted? :roleman
+
+	name = params[:name]
+	color = params[:color]
+	flags = params[:flags]
+
+	newid, resp = Role.create(name, color, flags)
+	if newid then
+		flash[:success] = "Successfully created role '#{name}'."
+	else
+		flash[:error] = resp 
+	end
+	redirect "/admin"
+end
+
+

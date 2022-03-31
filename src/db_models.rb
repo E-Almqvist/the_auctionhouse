@@ -138,7 +138,9 @@ class User < EntityModel
 	def flags
 		flags = 0
 		self.roles.each do |role|
-			flags |= role.flags
+			if role.is_a? Role then
+				flags |= role.flags
+			end
 		end
 		return flags
 	end
@@ -192,6 +194,8 @@ class Role < EntityModel
 	end
 
 	def self.create(name, color="#ffffff", flags=0)
+		return false, REGISTER_ERRORS[:name_len] unless name.length.between?(MIN_NAME_LEN, MAX_NAME_LEN)
+
 		data = {
 			name: name,
 			color: color,
@@ -202,6 +206,16 @@ class Role < EntityModel
 
 	def self.edit(roleid, data)
 		self.update data, "id = #{roleid}"
+	end
+
+	def self.get_all_ids
+		ids = self.get "id"
+		ids.map! {|k, id| id.to_i}
+	end
+
+	def self.get_all
+		data = self.get "*"
+		data && data.map! {|r| Role.new(r)}
 	end
 end
 

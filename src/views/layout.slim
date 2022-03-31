@@ -23,7 +23,7 @@ html lang="en"
             - else
               li.coins = "#{COINS_PREFIX}#{session_user.balance}#{COINS_SUFFIX}"
               
-              - if session_user.admin? && !session_user.banned?
+              - if session_user.flags != 0 && !session_user.banned?
                 li
                   a.inlbutton href="/admin" target="_self" 
                     img.icon src="/icons/shield.svg" alt="Admin Panel"

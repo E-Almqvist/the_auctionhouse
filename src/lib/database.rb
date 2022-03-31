@@ -77,9 +77,17 @@ class EntityModel
 
 	def self.insert(data) # Inserts new data into the table
 		entstr, valstr = self.gen_insert_query data.keys
-		dbbuf, resp = self.equery( "INSERT INTO #{self.name} #{entstr} VALUES #{valstr}", *data.values )
-		newid = dbbuf.last_insert_row_id
+		begin
+			dbbuf, resp = self.equery( "INSERT INTO #{self.name} #{entstr} VALUES #{valstr}", *data.values )
+			newid = dbbuf.last_insert_row_id
+		rescue SQLite3::ConstraintException
+			resp = "Constraint Exception! Duplicate item."
+		end
 		return newid, resp
+	end
+
+	def self.delete(id)
+		self.query "DELETE FROM #{self.name} WHERE id = ?", id
 	end
 
 	def self.set(attr, data, filter="") # slower but more lazy

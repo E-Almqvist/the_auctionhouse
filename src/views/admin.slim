@@ -1,1 +1,30 @@
 h1 Admin Panel
+#admin-panel
+  article.card.border
+    h2 Manage Roles 
+    ul.list-container
+      - data[:roles].each do |role|
+          li
+            | #{role.name}
+            a.inlbutton href="/admin/roles/#{role.id}/edit"
+              | EDIT
+            a.inlbutton href="/admin/roles/#{role.id}/delete"
+              | DELETE
+
+  article.card.border
+    h2 Create Role
+
+    .form-container
+      form action="/admin/roles" method="post"
+        label Role name
+        input type="text" name="name" pattern="#{NAME_REGEX_STR}" maxlength="#{MAX_NAME_LEN}" oninput="this.reportValidity()" title="#{REGISTER_ERRORS[:name_desc]}"
+
+        label Role color 
+        input type="color" name="color" value="#fa0f01"
+
+        label Role flags int
+        input type="number" name="flags" value="0"
+
+        input type="submit" value="Create role"
+
+      

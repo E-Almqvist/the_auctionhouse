@@ -4,7 +4,8 @@ COINS_PREFIX = "€"
 COINS_SUFFIX = ""
 
 AUTH_ERRORS = {
-	needed: "Authentication is needed to perform that task! Please login!"
+	needed: "Authentication is needed to perform that task! Please login!",
+	denied: "You are not permitted to do that!"
 }
 
 REGISTER_ERRORS = {
@@ -13,7 +14,7 @@ REGISTER_ERRORS = {
 	pass_len: "Password length must be at least #{MIN_PASSWORD_LEN}",
 	pass_notequals: "Password mismatch",
 
-	name_len: "Name length must be between #{MIN_NAME_LEN} and #{MAX_NAME_LEN}",
+	name_len: "Name length must be between #{MIN_NAME_LEN} and #{MAX_NAME_LEN} characters!",
 	name_desc: "May only contain alphabetical characters and must be between #{MIN_NAME_LEN} and #{MAX_NAME_LEN} characters long",
 
 	email_dupe: "Email is already in use",

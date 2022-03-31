@@ -7,10 +7,11 @@ MAX_REP 	= 100
 
 PERM_LEVELS = {
 	banned: 2**0, # denies the user everything
-	admin: 2**1, # admin role (gives all flags)
+	admin: 2**1, # admin role (gives all flags except "banned")
 	roleman: 2**2, # allows the user to manage roles
 	cateman: 2**3, # allows the user to manage categories
-	rmpost: 2**4 # allows the user to remove other peoples auctions
+	rmpost: 2**4, # allows the user to remove other peoples auctions
+	moneyman: 2**5 # allows the user to give/take money from people
 }
 
 # Constant roles that will always exist
@@ -30,6 +31,9 @@ ROLES = {
 		flags: PERM_LEVELS[:banned]
 	}
 }
+
+ROLE_IDS = [] 
+ROLES.each {|_, role| ROLE_IDS << role[:id]}
 
 # DB stuff
 DB_PATH = "db/main.db"
