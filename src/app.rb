@@ -51,7 +51,7 @@ def auth_denied(msg=AUTH_ERRORS[:denied], status=403, ret="/")
 	session[:status] = status
 	session[:ret] = ret
 	flash[:error] = msg
-	redirect "/"
+	redirect ret
 end
 
 def no_go_away(ret="/")
@@ -288,6 +288,26 @@ post "/admin/roles/:id/update" do
 
 	flash[:success] = "Updated role."
 	redirect "/admin/roles/#{id}/edit"
+end
+
+post "/admin/roles/give" do
+	user = get_current_user
+	auth_denied if user.permitted? :roleman
+
+	user_id = params[:user_id]
+	role_id = params[:role_id]
+	
+	if user.role_ids.include? role_id or user.admin? then
+		User_Role_relation.give_role(user_id, role_id)
+
+		newrole = Role.find_by_id role_id
+		promoted_user = User.find_by_id user_id
+
+		flash[:success] = "Gave role '#{newrole.name}' to #{promoted_user.name}!"
+		redirect "/admin"
+	else
+		auth_denied "You are not permitted to give that role!", 403, "/admin"
+	end
 end
 
 post "/admin/roles" do

@@ -26,6 +26,10 @@ class User < EntityModel
 		return ""
 	end
 
+	def role_ids
+		User_Role_relation.get_user_roles_ids @id
+	end
+
 	def roles
 		User_Role_relation.get_user_roles @id
 	end
@@ -207,16 +211,6 @@ class Role < EntityModel
 	def self.edit(roleid, data)
 		self.update data, "id = #{roleid}"
 	end
-
-	def self.get_all_ids
-		ids = self.get "id"
-		ids.map! {|k, id| id.to_i}
-	end
-
-	def self.get_all
-		data = self.get "*"
-		data && data.map! {|r| Role.new(r)}
-	end
 end
 
 
@@ -232,10 +226,30 @@ class User_Role_relation < EntityModel
 		end
 	end
 
+	def self.give_role(user_id, role_id)
+		user = User.find_by_id user_id
+
+		# TODO prevent duplicate roles
+		if not user.role_ids.include? role_id then
+			data = {
+				role_id: role_id,
+				user_id: user_id
+			}
+			self.insert data
+		end
+	end
+
+	def self.get_user_roles_ids(user_id)
+		ids = self.get "role_id", "user_id = ?", user_id
+		ids.map! do |ent|
+			ent["role_id"].to_i
+		end
+	end
+	
 	def self.get_user_roles(user_id)
-		roleids = self.get "role_id", "user_id = ?", user_id
-		roles = roleids.map do |ent| 
-			Role.find_by_id(ent["role_id"].to_i)
+		roleids = self.get_user_roles_ids user_id
+		roles = roleids.map do |id| 
+			Role.find_by_id(id)
 		end
 	end
 end

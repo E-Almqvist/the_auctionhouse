@@ -98,10 +98,6 @@ class EntityModel
 		end
 	end
 
-	def self.get_all(ents="*")
-		self.query "SELECT #{ents} FROM #{self.name}"
-	end
-
 	def self.exists?(id)
 		resp = self.get "id", "id = ?", id
 		resp.length > 0
@@ -110,6 +106,17 @@ class EntityModel
 	def self.find_by_id(id)
 		data = self.get("*", "id = ?", id).first
 		data && self.new(data)
+	end
+
+
+	def self.get_all_ids
+		ids = self.get "id"
+		ids.map! {|k, id| id.to_i}
+	end
+
+	def self.get_all
+		data = self.get "*"
+		data && data.map! {|r| self.new(r)}
 	end
 end
 

@@ -27,3 +27,26 @@ h1 Admin Panel
             a.inlbutton href="/admin/roles/#{role.id}/delete"
               | [DELETE]
       
+  article.card.border
+    h2 Add User to Role 
+
+    .form-container
+      form action="/admin/roles/give" method="post"
+        label Select User
+        select name="user_id"
+          - User.get_all.each do |seluser|
+            option value="#{seluser.id}"
+              | #{seluser.name} (id=#{seluser.id})
+
+        label Select Role
+        select name="role_id"
+          - if session_user.admin?
+            - Role.get_all.each do |selrole|
+              option value="#{selrole.id}"
+                | #{selrole.name} (id=#{selrole.id})
+          - else
+            - session_user.roles.each do |selrole|
+              option value="#{selrole.id}"
+                | #{selrole.name} (id=#{selrole.id})
+
+        input type="submit" value="Add User"
