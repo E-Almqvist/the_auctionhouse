@@ -43,7 +43,7 @@ html
   height: 100% 
 
 .fade-in
-  animation: fade-in .4s ease-in alternate
+  animation: fade-in .5s ease-in alternate
 
 // Layout
 body
@@ -121,6 +121,9 @@ h1.title
   border-bottom: $border_size solid $shadow_clr
 
 .inlbutton
+  font-weight: bold
+  text-decoration: none
+  color: $fg_clr
   transition: opacity .2s
 
 .inlbutton:hover
@@ -155,6 +158,9 @@ a.button:hover
   animation: fade-in .9s ease-in alternate
   background: $bg_clr
   transition: .4s opacity 
+
+  div:not(:last-child)
+    margin-bottom: 1rem
 
   &-error
     color: $fg_error

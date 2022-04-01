@@ -47,18 +47,19 @@ not_found do
 	serve :"404"
 end
 
-def auth_denied(msg=AUTH_ERRORS[:denied], status=403)
+def auth_denied(msg=AUTH_ERRORS[:denied], status=403, ret="/")
 	session[:status] = status
+	session[:ret] = ret
 	flash[:error] = msg
 	redirect "/"
 end
 
-def no_go_away
-	auth_denied "No! GO AWAY!"
+def no_go_away(ret="/")
+	auth_denied "No! GO AWAY!", 403, ret
 end
 
-def banned
-	auth_denied "You are banned!"
+def banned(ret="/")
+	auth_denied "You are banned!", 403, ret
 end
 
 # Routes
@@ -254,16 +255,51 @@ get "/admin/roles/:id/edit" do
 	id = params[:id].to_i
 	role_check id
 
-	flash[:success] = "Much edit. YES" # TODO: make edit stuff
-	redirect "/admin"
+	roleobj = Role.find_by_id id
+	if roleobj then
+		serve :"admin/roles/edit", {role: roleobj}
+	else
+		raise Sinatra::NotFound
+	end
+end
+
+def verify_flags(flags, userflags)
+	# TODO: check if this actually works
+	# should work in practise but who knows
+	newflags = flags & userflags # only give flags that the user have (max)
+	flash[:error] = "You are not allowed those flags!" if newflags != flags
+	return newflags
+end
+
+post "/admin/roles/:id/update" do
+	id = params[:id].to_i
+	user = get_current_user
+	auth_denied if user.permitted? :roleman
+
+	flags = params[:flags].to_i
+	flags = verify_flags(flags, user.flags)
+
+	data = {
+		name: params[:name],
+		color: params[:color],
+		flags: flags
+	}
+	resp = Role.edit id, data
+
+	flash[:success] = "Updated role."
+	redirect "/admin/roles/#{id}/edit"
 end
 
 post "/admin/roles" do
-	auth_denied if get_current_user.permitted? :roleman
+	user = get_current_user
+	auth_denied if user.permitted? :roleman
 
 	name = params[:name]
 	color = params[:color]
 	flags = params[:flags]
+
+	flags = params[:flags].to_i
+	flags = verify_flags(flags, user.flags)
 
 	newid, resp = Role.create(name, color, flags)
 	if newid then
@@ -273,5 +309,3 @@ post "/admin/roles" do
 	end
 	redirect "/admin"
 end
-
-
