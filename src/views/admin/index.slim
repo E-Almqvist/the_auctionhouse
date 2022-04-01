@@ -1,52 +1,70 @@
-h1 Admin Panel
+header
+  h1 Admin Panel
+  nav
+    ul.button-container
+      li
+        a.button href="#users" = "Manage Users"
+      li
+        a.button href="#roles" = "Roles"
+      li
+        a.button href="#auctions" = "Auctions"
+      li
+        a.button href="#categories" = "Category Settings"
+
 #admin-panel
-  article.card.border
-    h2 Create Role
 
-    .form-container
-      form action="/admin/roles" method="post"
-        label Role name
-        input type="text" name="name" pattern="#{NAME_REGEX_STR}" maxlength="#{MAX_NAME_LEN}" oninput="this.reportValidity()" title="#{REGISTER_ERRORS[:name_desc]}"
+  h2#users User Management
+  .management-container
+    article.card.border
+      h2 Add User to Role 
 
-        label Role color 
-        input type="color" name="color" value="#fa0f01"
+      .form-container
+        form action="/admin/roles/give" method="post"
+          label Select User
+          select name="user_id"
+            - User.get_all.each do |seluser|
+              option value="#{seluser.id}"
+                | #{seluser.name} (id=#{seluser.id})
 
-        label Role flags int
-        input type="number" name="flags" value="0"
+          label Select Role
+          select name="role_id"
+            - if session_user.admin?
+              - Role.get_all.each do |selrole|
+                option value="#{selrole.id}"
+                  | #{selrole.name} (id=#{selrole.id})
+            - else
+              - session_user.roles.each do |selrole|
+                option value="#{selrole.id}"
+                  | #{selrole.name} (id=#{selrole.id})
 
-        input type="submit" value="Create role"
+          input type="submit" value="Add User"
 
-  article.card.border
-    h2 Manage Roles 
-    ul.list-container
-      - data[:roles].each do |role|
-          li
-            | #{role.name}
-            a.inlbutton href="/admin/roles/#{role.id}/edit"
-              | [EDIT]
-            a.inlbutton href="/admin/roles/#{role.id}/delete"
-              | [DELETE]
-      
-  article.card.border
-    h2 Add User to Role 
+  h2#roles Role Management
+  .management-container
+    article.card.border
+      h2 Create Role
 
-    .form-container
-      form action="/admin/roles/give" method="post"
-        label Select User
-        select name="user_id"
-          - User.get_all.each do |seluser|
-            option value="#{seluser.id}"
-              | #{seluser.name} (id=#{seluser.id})
+      .form-container
+        form action="/admin/roles" method="post"
+          label Role name
+          input type="text" name="name" pattern="#{NAME_REGEX_STR}" maxlength="#{MAX_NAME_LEN}" oninput="this.reportValidity()" title="#{REGISTER_ERRORS[:name_desc]}"
 
-        label Select Role
-        select name="role_id"
-          - if session_user.admin?
-            - Role.get_all.each do |selrole|
-              option value="#{selrole.id}"
-                | #{selrole.name} (id=#{selrole.id})
-          - else
-            - session_user.roles.each do |selrole|
-              option value="#{selrole.id}"
-                | #{selrole.name} (id=#{selrole.id})
+          label Role color 
+          input type="color" name="color" value="#fa0f01"
 
-        input type="submit" value="Add User"
+          label Role flags int
+          input type="number" name="flags" value="0"
+
+          input type="submit" value="Create role"
+        
+
+    article.card.border
+      h2 Manage Roles 
+      ul.list-container
+        - data[:roles].each do |role|
+            li
+              | #{role.name}
+              a.inlbutton href="/admin/roles/#{role.id}/edit"
+                | [EDIT]
+              a.inlbutton href="/admin/roles/#{role.id}/delete"
+                | [DELETE]

@@ -42,6 +42,13 @@ html
   width: auto 
   height: 100% 
 
+  header
+    background: $bg_clr
+    margin-bottom: 2rem
+
+    h1
+      text-align: center
+
 .fade-in
   animation: fade-in .5s ease-in alternate
 
@@ -51,7 +58,6 @@ body
   height: 100% 
 
 header
-  height: 48px
   background-color: $bg_clr
   padding: .1rem .8rem 
   white-space: nowrap
@@ -421,6 +427,11 @@ ul.list-container
         border: $border_size solid $border_clr
 
 #admin-panel
+  h2
+    text-align: center
+    border-bottom: $border_size solid $shadow_clr
+
+.management-container
   display: flex
   flex-wrap: wrap
   justify-content: center

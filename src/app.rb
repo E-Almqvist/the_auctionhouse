@@ -220,7 +220,6 @@ get "/auctions/:id" do
 	end
 end
 
-
 # Admin panel
 get "/admin" do
 	flags = get_current_user.flags
@@ -238,7 +237,7 @@ end
 
 def role_check(id)
 	no_go_away if ROLE_IDS.include? id
-	auth_denied if get_current_user.permitted? :roleman
+	auth_denied unless get_current_user.permitted? :roleman
 end
 
 get "/admin/roles/:id/delete" do
@@ -274,7 +273,7 @@ end
 post "/admin/roles/:id/update" do
 	id = params[:id].to_i
 	user = get_current_user
-	auth_denied if user.permitted? :roleman
+	auth_denied unless user.permitted? :roleman
 
 	flags = params[:flags].to_i
 	flags = verify_flags(flags, user.flags)
