@@ -297,7 +297,7 @@ end
 
 post "/admin/roles/give" do
 	user = get_current_user
-	auth_denied if user.permitted? :roleman
+	auth_denied unless user.permitted?(:roleman)
 
 	user_id = params[:user_id].to_i
 	role_id = params[:role_id].to_i
@@ -317,7 +317,7 @@ end
 
 post "/admin/roles" do
 	user = get_current_user
-	auth_denied if user.permitted? :roleman
+	auth_denied unless user.permitted? :roleman
 
 	name = params[:name]
 	color = params[:color]

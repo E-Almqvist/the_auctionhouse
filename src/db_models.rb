@@ -18,7 +18,9 @@ class User < EntityModel
 	end
 
 	def role
-		user_roles = roles
+		return Role.find_by_id(1).name if self.admin?
+
+		user_roles = self.roles
 		if user_roles.length > 0 then
 			role = user_roles.max_by { |role| role.flags }
 			return role.name 
@@ -149,9 +151,15 @@ class User < EntityModel
 		return flags
 	end
 
+	def admin?
+		return self.flags[1] == 1
+	end
+
 	# Check if user has flags
 	# Returns: true or false depending whether the user has those flags
 	def permitted?(flag, *other_flags)
+		return true if self.admin?
+
 		flag_mask = PERM_LEVELS[flag]
 		if other_flags then
 			other_flags.each {|f| flag_mask |= PERM_LEVELS[f]}
@@ -160,12 +168,8 @@ class User < EntityModel
 		return self.flags & flag_mask == flag_mask
 	end
 
-	def admin?
-		return self.permitted? :admin
-	end
-
 	def banned?
-		return self.permitted? :banned
+		return self.flags[ PERM_LEVELS.keys.index(:banned) ] == 1
 	end
 end
 
