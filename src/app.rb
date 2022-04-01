@@ -238,6 +238,7 @@ end
 
 # ADMIN USER MANAGEMENT
 get "/admin/users/:id/ban" do
+	auth_denied unless get_current_user.admin?
 end
 
 # ADMIN ROLE MANAGEMENT
@@ -301,6 +302,9 @@ post "/admin/roles/give" do
 
 	user_id = params[:user_id].to_i
 	role_id = params[:role_id].to_i
+
+	# Deny giving the "banned role"
+	auth_denied "You are not permitted to give that role!", 403, "/admin" if role_id == ROLES[:banned][:id]
 	
 	if user.role_ids.include?(role_id) or user.admin? then
 		resp = User_Role_relation.give_role(user_id, role_id)

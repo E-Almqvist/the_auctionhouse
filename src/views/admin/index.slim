@@ -1,5 +1,5 @@
 div
-  h1 Admin Panel
+  h1.tcenter Admin Panel
   nav
     ul.button-container
       li
@@ -23,12 +23,13 @@ div
               | #{user.name}
               a.inlbutton href="/admin/users/#{user.id}/edit"
                 | [EDIT]
-              - if user.banned?
-                a.green.inlbutton href="/admin/users/#{user.id}/unban"
-                  | [UNBAN USER]
-              - else
-                a.red.inlbutton href="/admin/users/#{user.id}/ban"
-                  | [BAN USER]
+              - if session_user.admin?
+                - if user.banned?
+                  a.green.inlbutton href="/admin/users/#{user.id}/unban"
+                    | [UNBAN USER]
+                - else
+                  a.red.inlbutton href="/admin/users/#{user.id}/ban"
+                    | [BAN USER]
 
     article.card.border
       h2 Add User to Role 
@@ -45,12 +46,14 @@ div
           select name="role_id"
             - if session_user.admin?
               - Role.get_all.each do |selrole|
-                option value="#{selrole.id}"
-                  | #{selrole.name} (id=#{selrole.id})
+                - if selrole.id != ROLES[:banned][:id]
+                  option value="#{selrole.id}"
+                    | #{selrole.name} (id=#{selrole.id})
             - else
               - session_user.roles.each do |selrole|
-                option value="#{selrole.id}"
-                  | #{selrole.name} (id=#{selrole.id})
+                - if selrole.id != ROLES[:banned][:id]
+                  option value="#{selrole.id}"
+                    | #{selrole.name} (id=#{selrole.id})
 
           input type="submit" value="Add User"
 
@@ -77,9 +80,10 @@ div
       h2 Manage Roles 
       ul.list-container
         - data[:roles].each do |role|
-            li
-              | #{role.name}
-              a.inlbutton href="/admin/roles/#{role.id}/edit"
-                | [EDIT]
-              a.inlbutton href="/admin/roles/#{role.id}/delete"
-                | [DELETE]
+            - if not ROLE_IDS.include? role.id
+              li
+                | #{role.name}
+                a.inlbutton href="/admin/roles/#{role.id}/edit"
+                  | [EDIT]
+                a.inlbutton href="/admin/roles/#{role.id}/delete"
+                  | [DELETE]

@@ -1,21 +1,22 @@
-h1 Post Auction
-.form-container#auction_new
-  form action="/auctions" method="post" enctype="multipart/form-data"
-    input type="file" name="image" accept="image"
+.content-container
+  h1 Post Auction
+  .form-container#auction_new
+    form action="/auctions" method="post" enctype="multipart/form-data"
+      input type="file" name="image" accept="image"
 
-    label Title
-    input type="text" name="title" placeholder="Title" pattern="#{TITLE_REGEX_STR}"
+      label Title
+      input type="text" name="title" placeholder="Title" pattern="#{TITLE_REGEX_STR}"
 
-    label = "Initial Price #{COINS_PREFIX} #{COINS_SUFFIX}"
-    input type="number" name="init_price" value="#{MIN_INIT_PRICE}" min="#{MIN_INIT_PRICE}"
+      label = "Initial Price #{COINS_PREFIX} #{COINS_SUFFIX}"
+      input type="number" name="init_price" value="#{MIN_INIT_PRICE}" min="#{MIN_INIT_PRICE}"
 
-    label Auction duration (hours)
-    input type="number" name="delta_time" value="1" min="1"
+      label Auction duration (hours)
+      input type="number" name="delta_time" value="1" min="1"
 
-    textarea name="description" cols="20" rows="5" title="Content length must be between #{MIN_DESC_LEN} and #{MAX_DESC_LEN} characters" pattern="#{DESC_REGEX_STR}" maxlength="#{MAX_DESC_LEN}" placeholder="Description"
+      textarea name="description" cols="20" rows="5" title="Content length must be between #{MIN_DESC_LEN} and #{MAX_DESC_LEN} characters" pattern="#{DESC_REGEX_STR}" maxlength="#{MAX_DESC_LEN}" placeholder="Description"
 
-    label Categories
-    - Category.get_all.each do |category|
-      input type="checkbox" name="category-#{category.id}" value="#{category.id}" = category.name
+      label Categories
+      - Category.get_all.each do |category|
+        input type="checkbox" name="category-#{category.id}" value="#{category.id}" = category.name
 
-    input type="submit" value="Post"
+      input type="submit" value="Post"

@@ -1,48 +1,49 @@
-#profile-container
-  aside
-    #userinfo.card.card-container
-      h2 = user.name
-      h3 = user.role
+.content-container
+  #profile-container
+    aside
+      #userinfo.card.card-container
+        h2 = user.name
+        h3 = user.role
 
-      .avatar-container
-        img.avatar src="#{user.avatar}" alt="#{user.name}'s avatar"
+        .avatar-container
+          img.avatar src="#{user.avatar}" alt="#{user.name}'s avatar"
 
-      h4 = user.bio_text
+        h4 = user.bio_text
 
-      ul.button-container
-        - unless user.id == session[:userid]
-          a.button href="mailto:#{user.email}" 
-            li Email 
-          a.button href="/profile/#{user.id}/rep"
-            li Review user
+        ul.button-container
+          - unless user.id == session[:userid]
+            a.button href="mailto:#{user.email}" 
+              li Email 
+            a.button href="/profile/#{user.id}/rep"
+              li Review user
+          - else
+            a.button href="/settings"
+              li Edit profile
+
+      - if user.roles.length >= 1
+        #roles.card
+          h2 Roles
+          .card-container
+            ul.button-container
+              - user.roles.each do |role|
+                  li
+                    label style="color: #{role.color};" = role.name 
+
+      #reputation.card
+        h2 Reputation
+        - if user.rep_score == GOOD_REP
+          h3.green = user.reputation_text
+        - elsif user.rep_score == BAD_REP
+          h3.red = user.reputation_text
         - else
-          a.button href="/settings"
-            li Edit profile
+          h3.gray = user.reputation_text
+        h4 Based on user reviews
+        a.button href="/profile/#{user.id}/rep"
+          | + Write a review
 
-    - if user.roles.length >= 1
-      #roles.card
-        h2 Roles
-        .card-container
-          ul.button-container
-            - user.roles.each do |role|
-                li
-                  label style="color: #{role.color};" = role.name 
-
-    #reputation.card
-      h2 Reputation
-      - if user.rep_score == GOOD_REP
-        h3.green = user.reputation_text
-      - elsif user.rep_score == BAD_REP
-        h3.red = user.reputation_text
-      - else
-        h3.gray = user.reputation_text
-      h4 Based on user reviews
-      a.button href="/profile/#{user.id}/rep"
-        | + Write a review
-
-  #posts.card
-    h2 Recent posts
-    .card-container
-      //== user.bio_html
-  
+    #posts.card
+      h2 Recent posts
+      .card-container
+        //== user.bio_html
+    
 

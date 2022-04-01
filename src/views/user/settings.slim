@@ -1,14 +1,15 @@
-#settings
-  h1.tcenter = "#{session_user.name}'s Settings"
-  .form-container
-    form action="/user/update" method="post" enctype="multipart/form-data"
-      img.avatar_big src="#{session_user.avatar_url}" alt="Your avatar"
-      label Change avatar
-      input type="file" name="image" accept="image"
+.content-container
+  #settings
+    h1.tcenter = "#{session_user.name}'s Settings"
+    .form-container
+      form action="/user/update" method="post" enctype="multipart/form-data"
+        img.avatar_big src="#{session_user.avatar_url}" alt="Your avatar"
+        label Change avatar
+        input type="file" name="image" accept="image"
 
-      label Display name
-      input type="text" oninput="this.reportValidity()" title="May only contain alphabetical characters and must be between #{MIN_NAME_LEN} and #{MAX_NAME_LEN} characters long" maxlength="#{MAX_NAME_LEN}" name="displayname" value="#{session_user.name}" pattern="#{NAME_REGEX_STR}"
+        label Display name
+        input type="text" oninput="this.reportValidity()" title="May only contain alphabetical characters and must be between #{MIN_NAME_LEN} and #{MAX_NAME_LEN} characters long" maxlength="#{MAX_NAME_LEN}" name="displayname" value="#{session_user.name}" pattern="#{NAME_REGEX_STR}"
 
-      label Biography
-      textarea name="bio" cols="20" rows="5" title="Content length must be between #{MIN_BIO_LEN} and #{MAX_BIO_LEN} characters" pattern="#{BIO_REGEX_STR}" maxlength="#{MAX_BIO_LEN}" placeholder="Tell us about yourself!" value="#{session_user.bio_text}" = session_user.bio_text
-      input type="submit" value="Update"
+        label Biography
+        textarea name="bio" cols="20" rows="5" title="Content length must be between #{MIN_BIO_LEN} and #{MAX_BIO_LEN} characters" pattern="#{BIO_REGEX_STR}" maxlength="#{MAX_BIO_LEN}" placeholder="Tell us about yourself!" value="#{session_user.bio_text}" = session_user.bio_text
+        input type="submit" value="Update"
