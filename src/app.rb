@@ -294,16 +294,16 @@ post "/admin/roles/give" do
 	user = get_current_user
 	auth_denied if user.permitted? :roleman
 
-	user_id = params[:user_id]
-	role_id = params[:role_id]
+	user_id = params[:user_id].to_i
+	role_id = params[:role_id].to_i
 	
-	if user.role_ids.include? role_id or user.admin? then
-		User_Role_relation.give_role(user_id, role_id)
+	if user.role_ids.include?(role_id) or user.admin? then
+		resp = User_Role_relation.give_role(user_id, role_id)
 
 		newrole = Role.find_by_id role_id
 		promoted_user = User.find_by_id user_id
 
-		flash[:success] = "Gave role '#{newrole.name}' to #{promoted_user.name}!"
+		flash[:success] = "Gave role '#{newrole.name}' to #{promoted_user.name}!" if resp 
 		redirect "/admin"
 	else
 		auth_denied "You are not permitted to give that role!", 403, "/admin"

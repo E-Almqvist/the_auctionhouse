@@ -18,6 +18,6 @@ def db_init
 	# Create all default roles
 	q = "INSERT OR IGNORE INTO Role (id, name, color, flags) VALUES (?, ?, ?, ?)"
 	ROLES.each do |id, role|
-		db.query(q, role[:id], role[:name], role[:color], role[:flags])
+		Role.query(q, role[:id], role[:name], role[:color], role[:flags])
 	end
 end

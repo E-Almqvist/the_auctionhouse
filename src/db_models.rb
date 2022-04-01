@@ -229,8 +229,7 @@ class User_Role_relation < EntityModel
 	def self.give_role(user_id, role_id)
 		user = User.find_by_id user_id
 
-		# TODO prevent duplicate roles
-		if not user.role_ids.include? role_id then
+		if not user.role_ids.include?(role_id) then
 			data = {
 				role_id: role_id,
 				user_id: user_id

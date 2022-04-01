@@ -315,6 +315,7 @@ ul.list-container
 .card
   background-color: $bg_clr
   border-radius: $border_radius
+  width: inherit
   h2
     text-align: left 
     padding: 0 .8rem
@@ -336,7 +337,11 @@ ul.list-container
   margin: 0 auto
 
   aside
+    display: flex
+    flex-direction: column
+    align-items: center
     margin-right: 2rem
+    width: 300px
     #userinfo
       margin-bottom: 1.75rem
       text-align: center
