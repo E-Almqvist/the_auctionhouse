@@ -18,7 +18,7 @@ class User < EntityModel
 	end
 
 	def role
-		return Role.find_by_id(1).name if self.admin?
+		return Role.find_by_id( ROLES[:admin][:id] ).name if self.admin?
 
 		user_roles = self.roles
 		if user_roles.length > 0 then
