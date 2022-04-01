@@ -229,12 +229,18 @@ get "/admin" do
 	auth_denied unless user.flags != 0 # reject the user if he/she has no roles
 
 	data = {
-		roles: Role.get_all
+		roles: Role.get_all,
+		users: User.get_all
 	}
 
 	serve :"admin/index", {flags: flags, data: data}
 end
 
+# ADMIN USER MANAGEMENT
+get "/admin/users/:id/ban" do
+end
+
+# ADMIN ROLE MANAGEMENT
 def role_check(id)
 	no_go_away if ROLE_IDS.include? id
 	auth_denied unless get_current_user.permitted? :roleman

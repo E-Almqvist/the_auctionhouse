@@ -16,6 +16,6 @@ h1 Post Auction
 
     label Categories
     - Category.get_all.each do |category|
-      input type="checkbox" name="category-#{category["id"]}" value="#{category["id"]}" = category["name"]
+      input type="checkbox" name="category-#{category.id}" value="#{category.id}" = category.name
 
     input type="submit" value="Post"

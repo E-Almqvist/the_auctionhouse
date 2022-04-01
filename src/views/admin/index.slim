@@ -1,4 +1,4 @@
-header
+div
   h1 Admin Panel
   nav
     ul.button-container
@@ -15,6 +15,21 @@ header
 
   h2#users User Management
   .management-container
+    article.card.border
+      h2 Manage User 
+      ul.list-container
+        - data[:users].each do |user|
+            li
+              | #{user.name}
+              a.inlbutton href="/admin/users/#{user.id}/edit"
+                | [EDIT]
+              - if user.banned?
+                a.green.inlbutton href="/admin/users/#{user.id}/unban"
+                  | [UNBAN USER]
+              - else
+                a.red.inlbutton href="/admin/users/#{user.id}/ban"
+                  | [BAN USER]
+
     article.card.border
       h2 Add User to Role 
 
