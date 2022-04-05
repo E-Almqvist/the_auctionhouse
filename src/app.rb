@@ -239,6 +239,8 @@ end
 # ADMIN USER MANAGEMENT
 get "/admin/users/:id/ban" do
 	auth_denied unless get_current_user.admin?
+	id = params[:id].to_i
+
 end
 
 # ADMIN ROLE MANAGEMENT

@@ -171,6 +171,14 @@ class User < EntityModel
 	def banned?
 		return self.flags[ PERM_LEVELS.keys.index(:banned) ] == 1
 	end
+
+	def banned=(b)
+		if b then
+			resp = User_Role_relation.give_role(@id, ROLE_IDS[:banned])
+		else
+
+		end
+	end
 end
 
 # Role model
@@ -240,6 +248,10 @@ class User_Role_relation < EntityModel
 			}
 			self.insert data
 		end
+	end
+
+	def self.revoke_role(user_id, role_id)
+		# TODO: revoke role
 	end
 
 	def self.get_user_roles_ids(user_id)
