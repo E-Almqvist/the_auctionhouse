@@ -253,7 +253,7 @@ get "/admin/roles/:id/delete" do
 	id = params[:id].to_i
 	role_check id
 	
-	Role.delete id
+	Role.delete "id = ?", id
 
 	flash[:success] = "Removed role."
 	redirect "/admin"
