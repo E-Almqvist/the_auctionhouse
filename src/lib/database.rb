@@ -86,8 +86,8 @@ class EntityModel
 		return newid, resp
 	end
 
-	def self.delete(id)
-		self.query "DELETE FROM #{self.name} WHERE id = ?", id
+	def self.delete(filter="", *args)
+		self.query "DELETE FROM #{self.name} #{self.apply_filter(filter)}", *args
 	end
 
 	def self.set(attr, data, filter="") # slower but more lazy

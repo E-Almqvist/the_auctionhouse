@@ -251,7 +251,11 @@ class User_Role_relation < EntityModel
 	end
 
 	def self.revoke_role(user_id, role_id)
-		# TODO: revoke role
+		user = User.find_by_id user_id
+
+		if user.role_ids.include?(role_id) then
+			self.delete "role_id = ? AND user_id = ?", role_id, user_id
+		end
 	end
 
 	def self.get_user_roles_ids(user_id)
