@@ -174,9 +174,11 @@ class User < EntityModel
 
 	def banned=(b)
 		if b then
-			resp = User_Role_relation.give_role(@id, ROLE_IDS[:banned])
+			# Add the "banned" role
+			resp = User_Role_relation.give_role(@id, ROLES[:banned][:id])
 		else
-
+			# Remove the "banned" role
+			resp = User_Role_relation.revoke_role(@id, ROLES[:banned][:id])
 		end
 	end
 end

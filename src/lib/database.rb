@@ -87,7 +87,9 @@ class EntityModel
 	end
 
 	def self.delete(filter="", *args)
-		self.query "DELETE FROM #{self.name} #{self.apply_filter(filter)}", *args
+		q = "DELETE FROM #{self.name}"
+		q = self.apply_filter(q, filter)
+		self.query q, *args
 	end
 
 	def self.set(attr, data, filter="") # slower but more lazy

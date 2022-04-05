@@ -240,7 +240,23 @@ end
 get "/admin/users/:id/ban" do
 	auth_denied unless get_current_user.admin?
 	id = params[:id].to_i
+	user = User.find_by_id id
+	user.banned = true
 
+	flash[:error] = "Banned user '#{user.name}'"
+
+	redirect "/admin"
+end
+
+get "/admin/users/:id/unban" do
+	auth_denied unless get_current_user.admin?
+	id = params[:id].to_i
+	user = User.find_by_id id
+	user.banned = false
+
+	flash[:success] = "Unbanned user '#{user.name}'"
+
+	redirect "/admin"
 end
 
 # ADMIN ROLE MANAGEMENT
