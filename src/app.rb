@@ -245,7 +245,7 @@ get "/admin/users/:id/ban" do
 
 	flash[:error] = "Banned user '#{user.name}'"
 
-	redirect "/admin"
+	redirect back
 end
 
 get "/admin/users/:id/unban" do
@@ -256,7 +256,15 @@ get "/admin/users/:id/unban" do
 
 	flash[:success] = "Unbanned user '#{user.name}'"
 
-	redirect "/admin"
+	redirect back
+end
+
+get "/admin/users/:id/edit" do
+	auth_denied unless get_current_user.admin?
+	id = params[:id].to_i
+	user = User.find_by_id id
+
+	serve :"admin/users/edit", {user: user}
 end
 
 # ADMIN ROLE MANAGEMENT
@@ -272,7 +280,7 @@ get "/admin/roles/:id/delete" do
 	Role.delete "id = ?", id
 
 	flash[:success] = "Removed role."
-	redirect "/admin"
+	redirect back
 end
 
 get "/admin/roles/:id/edit" do
@@ -331,7 +339,7 @@ post "/admin/roles/give" do
 		promoted_user = User.find_by_id user_id
 
 		flash[:success] = "Gave role '#{newrole.name}' to #{promoted_user.name}!" if resp 
-		redirect "/admin"
+		redirect back
 	else
 		auth_denied "You are not permitted to give that role!", 403, "/admin"
 	end
@@ -354,5 +362,5 @@ post "/admin/roles" do
 	else
 		flash[:error] = resp 
 	end
-	redirect "/admin"
+	redirect back
 end

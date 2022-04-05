@@ -1,19 +1,29 @@
-article.card.border
-  h2 = "Edit role '#{role.name}'" 
 
-  .form-container
-    form action="/admin/roles/#{role.id}/update" method="post"
-      label Role name
-      input type="text" name="name" pattern="#{NAME_REGEX_STR}" maxlength="#{MAX_NAME_LEN}" oninput="this.reportValidity()" title="#{REGISTER_ERRORS[:name_desc]}" value="#{role.name}"
+.border
+  h1.tcenter = "#{user.name} (id=#{user.id})"
+  nav.tcenter
+    - if user.banned?
+      a.green.inlbutton href="/admin/users/#{user.id}/unban"
+        | [UNBAN USER]
+    - else
+      a.red.inlbutton href="/admin/users/#{user.id}/ban"
+        | [BAN USER]
+    a.inlbutton href="/admin" 
+      | [GO BACK]
 
-      label Role color 
-      input type="color" name="color" value="#{role.color}"
+.management-container
+  .border
+    h2.tcenter = "User Settings"
+    .form-container
+      form action="/user/update" method="post" enctype="multipart/form-data"
+        img.avatar_big src="#{user.avatar_url}" alt="Your avatar"
+        label Change avatar
+        input type="file" name="image" accept="image"
 
-      label Role flags int
-      input type="number" name="flags" value="#{role.flags}" 
+        label Display name
+        input type="text" oninput="this.reportValidity()" title="May only contain alphabetical characters and must be between #{MIN_NAME_LEN} and #{MAX_NAME_LEN} characters long" maxlength="#{MAX_NAME_LEN}" name="displayname" value="#{user.name}" pattern="#{NAME_REGEX_STR}"
 
-      input type="submit" value="Update"
-  a.button href="/admin/roles/#{role.id}/delete"
-    | [DELETE ROLE]
-  a.button href="/admin" 
-    | [GO BACK]
+        label Biography
+        textarea name="bio" cols="20" rows="5" title="Content length must be between #{MIN_BIO_LEN} and #{MAX_BIO_LEN} characters" pattern="#{BIO_REGEX_STR}" maxlength="#{MAX_BIO_LEN}" placeholder="Tell us about yourself!" value="#{user.bio_text}" = user.bio_text
+        input type="submit" value="Update"
+
