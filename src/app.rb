@@ -54,12 +54,16 @@ def auth_denied(msg=AUTH_ERRORS[:denied], status=403, ret="/")
 	redirect ret
 end
 
-def no_go_away(ret="/")
+def no_go_away(ret=back)
 	auth_denied "No! GO AWAY!", 403, ret
 end
 
-def banned(ret="/")
+def banned(ret=back)
 	auth_denied "You are banned!", 403, ret
+end
+
+def error(ret=back)
+	auth_denied "Internal server error.", 500, ret
 end
 
 # Routes
@@ -155,6 +159,11 @@ get "/logout" do
 end
 
 post "/user/update" do
+	id = (get_current_user.admin? and params[:id]) ? params[:id].to_i : session[:userid]
+	p "##########################"
+	puts "id=#{id}"
+	p "##########################"
+
 	data = {
 		name: params["displayname"].chomp,
 		bio_text: params["bio"].chomp
@@ -162,15 +171,15 @@ post "/user/update" do
 
 	if params[:image] then
 		imgdata = params[:image][:tempfile] 
-		save_image imgdata.read, "./public/avatars/#{session[:userid]}.png" # save the image
-		data[:avatar_url] = "/avatars/#{session[:userid]}.png" # update image path
+		save_image imgdata.read, "./public/avatars/#{id}.png" # save the image
+		data[:avatar_url] = "/avatars/#{id}.png" # update image path
 	end
 
-	success, msg = get_current_user.update_creds data # update the user creds
+	success, msg = User.find_by_id(id).update_creds data # update the user creds
 	if not success then flash[:error] = msg end	
 
 	flash[:success] = "Profile updated."
-	redirect "/settings"
+	redirect back
 end
 
 # Auction stuff
@@ -230,7 +239,8 @@ get "/admin" do
 
 	data = {
 		roles: Role.get_all,
-		users: User.get_all
+		users: User.get_all,
+		categories: Category.get_all
 	}
 
 	serve :"admin/index", {flags: flags, data: data}
@@ -240,6 +250,7 @@ end
 get "/admin/users/:id/ban" do
 	auth_denied unless get_current_user.admin?
 	id = params[:id].to_i
+
 	user = User.find_by_id id
 	user.banned = true
 
@@ -251,6 +262,7 @@ end
 get "/admin/users/:id/unban" do
 	auth_denied unless get_current_user.admin?
 	id = params[:id].to_i
+
 	user = User.find_by_id id
 	user.banned = false
 
@@ -267,10 +279,82 @@ get "/admin/users/:id/edit" do
 	serve :"admin/users/edit", {user: user}
 end
 
+post "/admin/users/rolegive" do
+	user = get_current_user
+	auth_denied unless user.permitted?(:roleman)
+
+	user_id = params[:user_id].to_i
+	role_id = params[:role_id].to_i
+
+	auth_denied "You are not permitted to give that role!", 403, back if role_id == ROLES[:banned][:id]
+	
+	if user.role_ids.include?(role_id) or user.admin? then
+		resp = User_Role_relation.give_role(user_id, role_id)
+
+		flash[:success] = "Gave role to user." if resp 
+		redirect back
+	else
+		auth_denied "You are not permitted to give that role!", 403, back
+	end
+end
+
+post "/admin/users/rolerevoke" do
+	user = get_current_user
+	auth_denied unless user.permitted?(:roleman)
+
+	user_id = params[:user_id].to_i
+	role_id = params[:role_id].to_i
+
+	auth_denied "You are not permitted to give that role!", 403, back if role_id == ROLES[:banned][:id]
+	if user.admin? then
+		resp = User_Role_relation.revoke_role(user_id, role_id)	
+		flash[:success] = "Revoked role from user." if resp 
+		redirect back
+	else
+		auth_denied "You are not permitted to give that role!", 403, back
+	end
+end
+
+
+post "/admin/users/setmoney" do
+	user = get_current_user
+	auth_denied unless user.permitted? :moneyman
+
+	id = params[:user_id].to_i
+	money = params[:money].to_f
+	target = User.find_by_id(id)
+
+	target.balance = money
+
+	flash[:success] = "Set users money to '#{money}'."
+
+	redirect back
+end
+
 # ADMIN ROLE MANAGEMENT
 def role_check(id)
 	no_go_away if ROLE_IDS.include? id
 	auth_denied unless get_current_user.permitted? :roleman
+end
+
+post "/admin/roles" do
+	user = get_current_user
+	auth_denied unless user.permitted? :roleman
+
+	name = params[:name]
+	color = params[:color]
+	flags = params[:flags]
+
+	flags = params[:flags].to_i
+	flags = verify_flags(flags, user.flags)
+
+	newid, resp = Role.create(name, color, flags)
+	if newid then
+		flash[:success] = "Successfully created role '#{name}'."
+	else
+		flash[:error] = resp 
+	end
+	redirect back
 end
 
 get "/admin/roles/:id/delete" do
@@ -322,43 +406,18 @@ post "/admin/roles/:id/update" do
 	redirect "/admin/roles/#{id}/edit"
 end
 
-post "/admin/roles/give" do
+
+# ADMIN CATEGORY MANAGEMENT
+post "/admin/categories" do
 	user = get_current_user
-	auth_denied unless user.permitted?(:roleman)
-
-	user_id = params[:user_id].to_i
-	role_id = params[:role_id].to_i
-
-	# Deny giving the "banned role"
-	auth_denied "You are not permitted to give that role!", 403, "/admin" if role_id == ROLES[:banned][:id]
-	
-	if user.role_ids.include?(role_id) or user.admin? then
-		resp = User_Role_relation.give_role(user_id, role_id)
-
-		newrole = Role.find_by_id role_id
-		promoted_user = User.find_by_id user_id
-
-		flash[:success] = "Gave role '#{newrole.name}' to #{promoted_user.name}!" if resp 
-		redirect back
-	else
-		auth_denied "You are not permitted to give that role!", 403, "/admin"
-	end
-end
-
-post "/admin/roles" do
-	user = get_current_user
-	auth_denied unless user.permitted? :roleman
+	auth_denied unless user.permitted? :cateman
 
 	name = params[:name]
 	color = params[:color]
-	flags = params[:flags]
 
-	flags = params[:flags].to_i
-	flags = verify_flags(flags, user.flags)
-
-	newid, resp = Role.create(name, color, flags)
+	newid, resp = Category.create(name, color)
 	if newid then
-		flash[:success] = "Successfully created role '#{name}'."
+		flash[:success] = "Successfully created category '#{name}'."
 	else
 		flash[:error] = resp 
 	end

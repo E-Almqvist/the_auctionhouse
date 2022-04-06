@@ -55,7 +55,13 @@ class User < EntityModel
 	def reputation=(val)
 		val = val.clamp MIN_REP, MAX_REP
 		@reputation = val
-		self.update({reputation: val}, "id = ?", @id)
+		User.update({reputation: val}, "id = ?", @id)
+	end
+
+	def balance=(val)
+		val = val >= 0 ? val : 0
+		@balance = val
+		User.update({balance: val}, "id = ?", @id)
 	end
 
 	def update_creds(data)

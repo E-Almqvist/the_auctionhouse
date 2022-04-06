@@ -155,8 +155,10 @@ a.button:hover
   font-size: 1rem
   font-weight: bold
   animation: fade-in .9s ease-in alternate
+  border-radius: $border_radius
   background: $bg_clr
   transition: .1s opacity 
+  overflow: hidden
 
   div:not(:last-child)
     margin-bottom: 1rem
@@ -164,14 +166,12 @@ a.button:hover
   &-error
     color: $fg_error
     padding: 8px
-    border: $border_size solid $red_clr
-    border-radius: $border_radius
+    border: $border_size solid $green_clr
 
   &-success
     color: $green_clr
     padding: 8px
     border: $border_size solid $green_clr
-    border-radius: $border_radius
 
 .flash:hover
   cursor: pointer

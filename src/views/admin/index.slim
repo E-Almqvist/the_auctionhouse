@@ -20,9 +20,9 @@ div
       ul.list-container
         - data[:users].each do |user|
             li
-              | #{user.name}
+              | #{user.name} (id=#{user.id})
               a.inlbutton href="/admin/users/#{user.id}/edit"
-                | [EDIT]
+                | [MANAGE]
               - if session_user.admin?
                 - if user.banned?
                   a.green.inlbutton href="/admin/users/#{user.id}/unban"
@@ -30,32 +30,6 @@ div
                 - else
                   a.red.inlbutton href="/admin/users/#{user.id}/ban"
                     | [BAN USER]
-
-    article.card.border
-      h2 Add User to Role 
-
-      .form-container
-        form action="/admin/roles/give" method="post"
-          label Select User
-          select name="user_id"
-            - User.get_all.each do |seluser|
-              option value="#{seluser.id}"
-                | #{seluser.name} (id=#{seluser.id})
-
-          label Select Role
-          select name="role_id"
-            - if session_user.admin?
-              - Role.get_all.each do |selrole|
-                - if selrole.id != ROLES[:banned][:id]
-                  option value="#{selrole.id}"
-                    | #{selrole.name} (id=#{selrole.id})
-            - else
-              - session_user.roles.each do |selrole|
-                - if selrole.id != ROLES[:banned][:id]
-                  option value="#{selrole.id}"
-                    | #{selrole.name} (id=#{selrole.id})
-
-          input type="submit" value="Add User"
 
   h2#roles Role Management
   .management-container
@@ -87,3 +61,30 @@ div
                   | [EDIT]
                 a.inlbutton href="/admin/roles/#{role.id}/delete"
                   | [DELETE]
+
+  h2#categories Category Management
+  .management-container
+    article.card.border
+      h2 Create Category
+
+      .form-container
+        form action="/admin/categories" method="post"
+          label Category name
+          input type="text" name="name" pattern="#{NAME_REGEX_STR}" maxlength="#{MAX_NAME_LEN}" oninput="this.reportValidity()" title="#{REGISTER_ERRORS[:name_desc]}"
+
+          label Category color 
+          input type="color" name="color" value="#010ffa"
+
+          input type="submit" value="Create category"
+        
+
+    article.card.border
+      h2 Manage Categories 
+      ul.list-container
+        - data[:categories].each do |category|
+            li
+              | #{category.name}
+              a.inlbutton href="/admin/categories/#{category.id}/edit"
+                | [EDIT]
+              a.inlbutton href="/admin/categories/#{category.id}/delete"
+                | [DELETE]

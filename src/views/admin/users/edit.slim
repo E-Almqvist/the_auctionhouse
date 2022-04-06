@@ -16,6 +16,7 @@
     h2.tcenter = "User Settings"
     .form-container
       form action="/user/update" method="post" enctype="multipart/form-data"
+        input type="hidden" name="id" value="#{user.id}"
         img.avatar_big src="#{user.avatar_url}" alt="Your avatar"
         label Change avatar
         input type="file" name="image" accept="image"
@@ -27,3 +28,49 @@
         textarea name="bio" cols="20" rows="5" title="Content length must be between #{MIN_BIO_LEN} and #{MAX_BIO_LEN} characters" pattern="#{BIO_REGEX_STR}" maxlength="#{MAX_BIO_LEN}" placeholder="Tell us about yourself!" value="#{user.bio_text}" = user.bio_text
         input type="submit" value="Update"
 
+    article.card.border
+      h2 Add Role 
+
+      .form-container
+        form action="/admin/users/rolegive" method="post"
+          label Select Role
+          input type="hidden" name="user_id" value="#{user.id}"
+          select name="role_id"
+            - if session_user.admin?
+              - Role.get_all.each do |selrole|
+                - if selrole.id != ROLES[:banned][:id]
+                  option value="#{selrole.id}"
+                    | #{selrole.name} (id=#{selrole.id})
+            - else
+              - session_user.roles.each do |selrole|
+                - if selrole.id != ROLES[:banned][:id]
+                  option value="#{selrole.id}"
+                    | #{selrole.name} (id=#{selrole.id})
+
+          input type="submit" value="Give role"
+
+    article.card.border
+      h2 Remove Role 
+
+      .form-container
+        form action="/admin/users/rolerevoke" method="post"
+          label Select Role
+          input type="hidden" name="user_id" value="#{user.id}"
+          select name="role_id"
+            - user.roles.each do |selrole|
+              - if selrole and selrole.id != ROLES[:banned][:id]
+                option value="#{selrole.id}"
+                  | #{selrole.name} (id=#{selrole.id})
+
+          input type="submit" value="Revoke role"
+
+    article.card.border
+      h2 Set money 
+
+      .form-container
+        form action="/admin/users/setmoney" method="post"
+          label Amount 
+          input type="hidden" name="user_id" value="#{user.id}"
+          input type="number" name="money" value="#{user.balance}" min="0"
+
+          input type="submit" value="Set money"
