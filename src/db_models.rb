@@ -227,10 +227,6 @@ class Role < EntityModel
 		}
 		self.insert data
 	end
-
-	def self.edit(roleid, data)
-		self.update data, "id = #{roleid}"
-	end
 end
 
 

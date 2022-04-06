@@ -75,6 +75,10 @@ class EntityModel
 		self.query(q, *data.values, *args)
 	end
 
+	def self.edit(id, data)
+		self.update(data, "id=?", id)
+	end
+
 	def self.insert(data) # Inserts new data into the table
 		entstr, valstr = self.gen_insert_query data.keys
 		begin

@@ -3,13 +3,13 @@ div
   nav
     ul.button-container
       li
-        a.button href="#users" = "Manage Users"
+        a.button href="#users" = "Users"
       li
         a.button href="#roles" = "Roles"
       li
         a.button href="#auctions" = "Auctions"
       li
-        a.button href="#categories" = "Category Settings"
+        a.button href="#categories" = "Categories"
 
 #admin-panel
 
@@ -73,7 +73,7 @@ div
           input type="text" name="name" pattern="#{NAME_REGEX_STR}" maxlength="#{MAX_NAME_LEN}" oninput="this.reportValidity()" title="#{REGISTER_ERRORS[:name_desc]}"
 
           label Category color 
-          input type="color" name="color" value="#010ffa"
+          input type="color" name="color" value="#ffffff"
 
           input type="submit" value="Create category"
         

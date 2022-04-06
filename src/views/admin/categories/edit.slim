@@ -1,0 +1,18 @@
+.content-container
+  article.card.border
+    h2 = "Edit Category '#{category.name}'" 
+
+    .form-container
+      form action="/admin/categories/#{category.id}/update" method="post"
+        label Category name
+        input type="text" name="name" pattern="#{NAME_REGEX_STR}" maxlength="#{MAX_NAME_LEN}" oninput="this.reportValidity()" title="#{REGISTER_ERRORS[:name_desc]}" value="#{category.name}"
+
+        label Category color 
+        input type="color" name="color" value="#{category.color}"
+
+
+        input type="submit" value="Update"
+    a.button href="/admin/categories/#{category.id}/delete"
+      | [DELETE CATEGORY]
+    a.button href="/admin" 
+      | [GO BACK]

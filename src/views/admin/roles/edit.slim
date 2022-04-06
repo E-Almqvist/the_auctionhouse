@@ -1,19 +1,20 @@
-article.card.border
-  h2 = "Edit role '#{role.name}'" 
+.content-container
+  article.card.border
+    h2 = "Edit role '#{role.name}'" 
 
-  .form-container
-    form action="/admin/roles/#{role.id}/update" method="post"
-      label Role name
-      input type="text" name="name" pattern="#{NAME_REGEX_STR}" maxlength="#{MAX_NAME_LEN}" oninput="this.reportValidity()" title="#{REGISTER_ERRORS[:name_desc]}" value="#{role.name}"
+    .form-container
+      form action="/admin/roles/#{role.id}/update" method="post"
+        label Role name
+        input type="text" name="name" pattern="#{NAME_REGEX_STR}" maxlength="#{MAX_NAME_LEN}" oninput="this.reportValidity()" title="#{REGISTER_ERRORS[:name_desc]}" value="#{role.name}"
 
-      label Role color 
-      input type="color" name="color" value="#{role.color}"
+        label Role color 
+        input type="color" name="color" value="#{role.color}"
 
-      label Role flags int
-      input type="number" name="flags" value="#{role.flags}" 
+        label Role flags int
+        input type="number" name="flags" value="#{role.flags}" 
 
-      input type="submit" value="Update"
-  a.button href="/admin/roles/#{role.id}/delete"
-    | [DELETE ROLE]
-  a.button href="/admin" 
-    | [GO BACK]
+        input type="submit" value="Update"
+    a.button href="/admin/roles/#{role.id}/delete"
+      | [DELETE ROLE]
+    a.button href="/admin" 
+      | [GO BACK]

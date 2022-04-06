@@ -423,3 +423,43 @@ post "/admin/categories" do
 	end
 	redirect back
 end
+
+get "/admin/categories/:id/delete" do
+	id = params[:id].to_i
+	user = get_current_user
+	auth_denied unless user.permitted? :cateman
+	
+	Category.delete "id = ?", id
+
+	flash[:success] = "Removed category."
+	redirect back
+end
+
+get "/admin/categories/:id/edit" do
+	id = params[:id].to_i
+	user = get_current_user
+	auth_denied unless user.permitted? :cateman
+
+	catobj = Category.find_by_id id
+	if catobj then
+		serve :"admin/categories/edit", {category: catobj}
+	else
+		raise Sinatra::NotFound
+	end
+end
+
+post "/admin/roles/:id/update" do
+	id = params[:id].to_i
+	user = get_current_user
+	auth_denied unless user.permitted? :cateman
+
+	data = {
+		name: params[:name],
+		color: params[:color],
+	}
+	resp = Category.edit id, data
+
+	flash[:success] = "Updated category."
+	redirect "/admin/roles/#{id}/edit"
+end
+
