@@ -1,5 +1,4 @@
 # TODO
- - Reputation management (Admin panel)
  - Auction posting (single image)
  - Auction views
 ----------------

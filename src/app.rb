@@ -331,6 +331,21 @@ post "/admin/users/setmoney" do
 	redirect back
 end
 
+post "/admin/users/setreputation" do
+	user = get_current_user
+	auth_denied unless user.admin? 
+
+	id = params[:user_id].to_i
+	reputation = params[:reputation].to_f
+	target = User.find_by_id(id)
+
+	target.reputation = reputation
+
+	flash[:success] = "Set users reputation to '#{reputation}'."
+
+	redirect back
+end
+
 # ADMIN ROLE MANAGEMENT
 def role_check(id)
 	no_go_away if ROLE_IDS.include? id

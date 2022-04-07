@@ -74,3 +74,14 @@
           input type="number" name="money" value="#{user.balance}" min="0"
 
           input type="submit" value="Set money"
+
+    article.card.border
+      h2 Set reputation 
+
+      .form-container
+        form action="/admin/users/setreputation" method="post"
+          label Amount 
+          input type="hidden" name="user_id" value="#{user.id}"
+          input type="number" name="reputation" value="#{user.reputation}" min="#{MIN_REP}" max="#{MAX_REP}"
+
+          input type="submit" value="Set reputation"
