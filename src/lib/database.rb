@@ -114,7 +114,6 @@ class EntityModel
 		data && self.new(data)
 	end
 
-
 	def self.get_all_ids
 		ids = self.get "id"
 		ids.map! {|k, id| id.to_i}
@@ -129,10 +128,13 @@ end
 class RelationModel < EntityModel # TODO: make this work
 	def self.tables = nil
 
-	def self.get_relation(id)
-		roleids = self.get "role_id", "user_id = ?", user_id
-		roles = roleids.map do |ent| 
-			Role.find_by_id(ent["role_id"].to_i)
+	def self.get_relation(s_ent, table, filter="", *args)
+		q = "SELECT #{s_ent} FROM #{self.name}"
+		q = self.apply_filter(q, filter)
+		ents = self.get q, *args
+
+		ents.each do |ent|
+			table.find_by_id ent["id"].to_i
 		end
 	end
 end

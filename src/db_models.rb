@@ -298,11 +298,11 @@ class Auction < EntityModel
 		return true, ""
 	end
 
-	def self.create(user_id, title, description, init_price, delta_time, categories) 
+	def self.create(user_id, title, description, init_price, delta_time) 
 		# Remove invalid categories
-		categories.select! do |id|
-			self.exists? id
-		end
+# 		categories.select! do |id|
+# 			self.exists? id
+# 		end
 
 		# Validate the input
 		check, errorstr = self.validate_ah(title, description, init_price, delta_time)
@@ -342,6 +342,10 @@ class Auction < EntityModel
 		q = self.compose_query_filters title, categories, price_rng, isopen	
 		self.query q
 	end
+
+	def images
+		Image.get_relation @id
+	end
 end
 
 
@@ -362,6 +366,15 @@ class Category < EntityModel
 	end
 end
 
+class Auction_Category_relation < EntityModel
+	attr_reader :auction_id, :category_id
+	def initialize(data)
+		super data
+		@auction_id = data["auction_id"]
+		@category_id = data["category_id"]
+	end
+end
+
 
 class Image < EntityModel
 	attr_reader :auction_id, :image_order, :url
@@ -371,22 +384,31 @@ class Image < EntityModel
 		@image_order = data["image_order"]
 		@url = data["url"]
 	end
-end
 
+	def self.save(imgdata, ah_id, order)
+		data = {
+			auction_id: ah_id,
+			image_order: order,
+			url: "/auctions/#{ah_id}/#{order}.png"
+		}
+		newid, resp = self.insert data	
 
-class Auction_Category_relation < EntityModel
-	attr_reader :auction_id, :category_id
-	def initialize(data)
-		super data
-		@auction_id = data["auction_id"]
-		@category_id = data["category_id"]
+		if newid then
+			image = Magick::Image.from_blob(imgdata).first
+			image.format = "PNG"
+			path = "./public/auctions/#{ah_id}/#{order}.png"
+			File.open(path, 'wb') do |f|
+				image.write(f) { self.quality = 50 }
+			end
+		end
 	end
 
-	def self.get_user_roles(user_id)
-		roleids = self.get "role_id", "user_id = ?", user_id
-		roles = roleids.map do |ent| 
-			Role.find_by_id(ent["role_id"].to_i)
+	def self.get_relation(ah_id)
+		imgs = self.get "*", "auction_id = ?", ah_id
+		imgs.map! do |img|
+			self.new(img)
 		end
+		return imgs
 	end
 end
 

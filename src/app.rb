@@ -160,9 +160,6 @@ end
 
 post "/user/update" do
 	id = (get_current_user.admin? and params[:id]) ? params[:id].to_i : session[:userid]
-	p "##########################"
-	puts "id=#{id}"
-	p "##########################"
 
 	data = {
 		name: params["displayname"].chomp,
@@ -199,15 +196,23 @@ end
 
 post "/auctions" do
 	user_id = session[:userid]
+
 	title = params[:title]
 	description = params[:description]
 	init_price = params[:init_price].to_f
 	delta_time = params[:delta_time].to_i * 3600 # hours to seconds
 
-	# Select the category ids
+	# Create the auction
+	newid, resp = Auction.create user_id, title, description, init_price, delta_time
+
+	# Apply categories to auction 
 	category_choices = (params.select { |k, v| k.to_s.match(/^category-\d+/) }).map{ |k, v| v.to_i }
-	
-	newid, resp = Auction.create user_id, title, description, init_price, delta_time, category_choices
+
+	# Save auction images TODO: literally make this work
+	images = params[:images] 
+	p "########################"
+	#image = Magick::Image.from_blob(images.read)
+	p "########################"
 
 	if newid then
 		flash[:success] = "Auction posted!"
