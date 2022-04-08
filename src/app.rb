@@ -229,7 +229,9 @@ get "/auctions/:id" do
 	end
 end
 
-# Admin panel
+###############
+# Admin panel #
+###############
 get "/admin" do
 	flags = get_current_user.flags
 
@@ -463,7 +465,7 @@ get "/admin/categories/:id/edit" do
 	end
 end
 
-post "/admin/roles/:id/update" do
+post "/admin/categories/:id/update" do
 	id = params[:id].to_i
 	user = get_current_user
 	auth_denied unless user.permitted? :cateman
@@ -475,6 +477,6 @@ post "/admin/roles/:id/update" do
 	resp = Category.edit id, data
 
 	flash[:success] = "Updated category."
-	redirect "/admin/roles/#{id}/edit"
+	redirect "/admin/categories/#{id}/edit"
 end
 
