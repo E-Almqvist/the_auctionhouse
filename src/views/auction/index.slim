@@ -20,4 +20,5 @@
       ul
       - auctions.each do |auction|
         li
-          | #{auction["title"]}
+          a href="/auctions/#{auction["id"]}"
+            | #{auction["title"]}

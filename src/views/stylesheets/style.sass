@@ -156,8 +156,6 @@ a.button:hover
   font-size: 1rem
   font-weight: bold
   animation: fade-in .9s ease-in alternate
-  border-radius: $border_radius
-  background: $bg_clr
   transition: .1s opacity 
   overflow: hidden
 
@@ -167,12 +165,16 @@ a.button:hover
   &-error
     color: $fg_error
     padding: 8px
-    border: $border_size solid $green_clr
+    border: $border_size solid $red_clr
+    border-radius: $border_radius
+    background: $bg_clr
 
   &-success
     color: $green_clr
     padding: 8px
     border: $border_size solid $green_clr
+    border-radius: $border_radius
+    background: $bg_clr
 
 .flash:hover
   cursor: pointer
@@ -242,9 +244,6 @@ ul.list-container
     display: flex
 
 .form-container
-  display: flex
-  justify-content: center
-
   form
     display: flex
     flex-direction: column
@@ -254,6 +253,10 @@ ul.list-container
     width: 50rem
     max-width: 400px
     border-radius: .2rem
+
+    .checkbox-container
+      input[type=checkbox]
+        margin: 0 .5rem
 
     textarea
       background-color: $bg_dark_clr
@@ -408,13 +411,8 @@ ul.list-container
 
 
 #settings
-  .form-container
-    .error_msg
-      margin-bottom: .8rem
-      color: $red_clr
     form
       background-color: $bg_alt_clr
-      //border: $border_size solid $border_clr
 
       input[type=text]
         padding: 0 .2rem
@@ -440,6 +438,9 @@ ul.list-container
           margin-left: 1rem
 
 // Auctions
+#auctions_new
+  display: grid
+
 #auctions
   display: flex
   flex-direction: column

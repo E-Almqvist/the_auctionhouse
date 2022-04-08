@@ -47,7 +47,7 @@ MAX_TITLE_LEN = 32
 MIN_DESC_LEN = 0
 MAX_DESC_LEN = 512
 
-MIN_DELTA_TIME = 60*60 # 1 hour
+MIN_DELTA_TIME = 3600 # 1 hour
 
 # User constants
 AVATAR_SIZE = 1024 # width & height
