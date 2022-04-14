@@ -17,10 +17,11 @@
       label Description
       textarea name="description" cols="20" rows="5" title="Content length must be between #{MIN_DESC_LEN} and #{MAX_DESC_LEN} characters" pattern="#{DESC_REGEX_STR}" maxlength="#{MAX_DESC_LEN}" placeholder="Tell us about what you're selling!"
 
-      label Categories
-      - Category.get_all.each do |category|
-        .checkbox-container
-          input type="checkbox" name="category-#{category.id}" value="#{category.id}" 
-          label style="color: #{category.color};" = "#{category.name}"
+      - if Category.get_all.length > 0
+        label Categories
+        - Category.get_all.each do |category|
+          .checkbox-container
+            input type="checkbox" name="category-#{category.id}" value="#{category.id}" 
+            label style="color: #{category.color};" = "#{category.name}"
 
       input type="submit" value="Post"

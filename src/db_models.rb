@@ -341,6 +341,11 @@ class Auction < EntityModel
 	def images
 		Image.get_relation @id
 	end
+
+	def categories
+		data = Auction_Category_relation.get "category_id", "auction_id = ?", @id
+		data && data.map! { |category| Category.find_by_id category["category_id"]}
+	end
 end
 
 
