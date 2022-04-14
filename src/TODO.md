@@ -1,5 +1,4 @@
 # TODO
- - Auction posting 
  - Auction views
 ----------------
  - Auction searching at index

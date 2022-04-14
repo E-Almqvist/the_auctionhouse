@@ -187,7 +187,7 @@ get "/auctions" do
 	#price_rng = (params[:price_rng].split "-").map {|p| p.to_i}
 	isopen = params[:isopen]
 
-	auctions = Auction.search title#, categories, price_rng, isopen
+	auctions = Auction.search title #, categories, price_rng, isopen
 	serve :"auction/index", {auctions: auctions}
 end
 

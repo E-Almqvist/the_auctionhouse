@@ -1,3 +1,5 @@
-.content-container
-  h1 = auction.title
-  h2 = auction.description
+h1 = auction.title
+h2 = auction.description
+
+- auction.images.each do |img|
+    img src="#{img.url}"
