@@ -4,6 +4,7 @@ GEM
     bcrypt (3.1.16)
     colorize (0.8.1)
     ffi (1.15.5)
+    fileutils (1.6.0)
     multi_json (1.15.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
@@ -43,6 +44,7 @@ PLATFORMS
 DEPENDENCIES
   bcrypt
   colorize
+  fileutils (~> 1.6)
   redcarpet
   rmagick (~> 4.2)
   sassc
@@ -53,4 +55,4 @@ DEPENDENCIES
   sqlite3
 
 BUNDLED WITH
-   2.2.28
+   2.3.10

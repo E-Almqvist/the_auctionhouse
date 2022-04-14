@@ -1,5 +1,5 @@
 # TODO
- - Auction posting (single image)
+ - Auction posting 
  - Auction views
 ----------------
  - Auction searching at index
@@ -10,5 +10,4 @@
  - User reviews
 
 ## Refactor
- - Multiple images for auctions
  - Funds transfer logic for auctions?

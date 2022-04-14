@@ -299,11 +299,6 @@ class Auction < EntityModel
 	end
 
 	def self.create(user_id, title, description, init_price, delta_time) 
-		# Remove invalid categories
-# 		categories.select! do |id|
-# 			self.exists? id
-# 		end
-
 		# Validate the input
 		check, errorstr = self.validate_ah(title, description, init_price, delta_time)
 		return check, errorstr unless check
@@ -386,6 +381,8 @@ class Image < EntityModel
 	end
 
 	def self.save(imgdata, ah_id, order)
+		FileUtils.mkdir_p "./public/auctions/#{ah_id}"
+
 		data = {
 			auction_id: ah_id,
 			image_order: order,

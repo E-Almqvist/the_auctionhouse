@@ -13,6 +13,7 @@ require "bcrypt" # password digest
 # TODO: remove redcarpet dep
 require "redcarpet" # markdown renderer
 require "rmagick" # image manipulation
+require "fileutils" # file utils
 
 require_relative "config" # config stuff
 require_relative "debug" # debug methods
@@ -205,16 +206,21 @@ post "/auctions" do
 	# Create the auction
 	newid, resp = Auction.create user_id, title, description, init_price, delta_time
 
-	# Apply categories to auction 
-	category_choices = (params.select { |k, v| k.to_s.match(/^category-\d+/) }).map{ |k, v| v.to_i }
-
-	# Save auction images TODO: literally make this work
-	images = params[:images] 
-	p "########################"
-	#image = Magick::Image.from_blob(images.read)
-	p "########################"
-
 	if newid then
+		# Save auction images 
+		images = params[:images] 
+		images.each_with_index do |img, i|
+			Image.save img[:tempfile].read, newid, i 
+		end
+
+		# Apply categories to auction 
+		category_choices = (params.select { |k, v| k.to_s.match(/^category-\d+/) }).map{ |k, v| v.to_i }
+		category_choices.each do |catid|
+			if Category.exists? catid then
+				Auction_Category_relation.insert({auction_id: newid, category_id: catid})
+			end
+		end
+
 		flash[:success] = "Auction posted!"
 		redirect "/auctions/#{newid}"
 	else
