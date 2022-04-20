@@ -1,25 +1,27 @@
-#auction-view
-  - if auction.images.length >= 1
-    .slideshow-container
-      - auction.images.each do |image|
-        .slide-container
-          .numbertext
-            a.prev onclick="nextSlide(-1)" = "<"
-            | #{image.image_order+1}/#{auction.images.length}
-            a.next onclick="nextSlide(1)" = ">"
-          img src="#{image.url}" 
+.content-container#auction-view-container
+  #auction-view
+    - if auction.images.length >= 1
+      .slideshow-container
+        - auction.images.each do |image|
+          .slide-container
+            img src="#{image.url}" 
+            .numbertext
+              | #{image.image_order+1}/#{auction.images.length}
+
+        .next-container
+          a.prev onclick="nextSlide(-1)" = "<"
+          a.next onclick="nextSlide(1)" = ">"
+
+      .slideshow-button-container
+        - auction.images.each do |image|
+            span.dot onclick="setSlide(#{image.image_order})"
+
+    #auctioninfo.card
+      h2 = auction.title
+
+    ul.list-container#category-list
+      - auction.categories.each do |category|
+          p = category.name
 
 
-    .slideshow-button-container
-      - auction.images.each do |image|
-          span.dot onclick="setSlide(#{image.image_order})"
-
-  #auctioninfo.card
-    h2 = auction.title
-
-  ul.list-container#category-list
-    - auction.categories.each do |category|
-        p = category.name
-
-
-  script src="/js/slides.js" type="text/javascript"
+    script src="/js/slides.js" type="text/javascript"
