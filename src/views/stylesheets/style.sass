@@ -445,6 +445,54 @@ ul.list-container
   display: flex
   flex-direction: column
 
+
+#auction-view
+  display: grid
+  grid-template-columns: 1fr 2fr
+  grid-template-rows: 1fr 1fr
+  grid-template-areas: "im in" "de in"
+
+#auctioninfo
+  grid-area: in
+
+  h2
+    font-size: 1.8rem
+
+.slideshow-container
+  grid-area: im
+  margin: auto
+  .slide-container
+    padding: 1rem
+    .numbertext
+      text-align: center
+    img
+      margin: 0 auto
+      height: 500px
+      width: auto
+      max-width: 500px
+      object-fit: cover
+
+  .prev, .next 
+    cursor: pointer
+    position: absolute
+    top: 50%
+    width: auto
+    padding: 1px 16px
+    margin-top: -22px
+    color: $fg_clr
+    font-weight: bold
+    font-size: 18px
+    transition: 0.6s ease
+    border-radius: 0 3px 3px 0
+    user-select: none
+
+  .next 
+    right: 0
+    border-radius: 3px 0 0 3px
+
+  .prev:hover, .next:hover 
+    background-color: #0022
+
 // Animation keyframes
 @keyframes fade-in
   0%

@@ -1,9 +1,25 @@
-h1 = auction.title
-h2 = auction.description
+#auction-view
+  - if auction.images.length >= 1
+    .slideshow-container
+      - auction.images.each do |image|
+        .slide-container
+          .numbertext
+            a.prev onclick="nextSlide(-1)" = "<"
+            | #{image.image_order+1}/#{auction.images.length}
+            a.next onclick="nextSlide(1)" = ">"
+          img src="#{image.url}" 
 
-ul.list-container
-  - auction.categories.each do |category|
-      p = category.name
 
-- auction.images.each do |img|
-    img src="#{img.url}"
+    .slideshow-button-container
+      - auction.images.each do |image|
+          span.dot onclick="setSlide(#{image.image_order})"
+
+  #auctioninfo.card
+    h2 = auction.title
+
+  ul.list-container#category-list
+    - auction.categories.each do |category|
+        p = category.name
+
+
+  script src="/js/slides.js" type="text/javascript"

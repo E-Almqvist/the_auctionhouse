@@ -381,7 +381,7 @@ class Image < EntityModel
 	def initialize(data)
 		super data
 		@auction_id = data["auction_id"]
-		@image_order = data["image_order"]
+		@image_order = data["image_order"].to_i
 		@url = data["url"]
 	end
 
