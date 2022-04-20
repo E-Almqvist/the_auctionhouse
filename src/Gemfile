@@ -13,7 +13,6 @@ gem "slim"
 gem "sassc"
 gem "colorize"
 gem "bcrypt"
-gem "redcarpet"
 
 gem "rmagick", "~> 4.2"
 
