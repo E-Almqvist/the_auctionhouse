@@ -18,10 +18,19 @@
 
     #auctioninfo.card
       h2 = auction.title
+      ul.list-container#category-list
+        - auction.categories.each do |category|
+            p = category.name
+      
+      - if auction.bids.length >= 1
+        .bid-container 
+          - auctions.bids.each do |bid|
+            .bid
+              | BID
+      - else
+        p = "No bids! Be the first to bid on this item!"
 
-    ul.list-container#category-list
-      - auction.categories.each do |category|
-          p = category.name
+
 
 
     script src="/js/slides.js" type="text/javascript"

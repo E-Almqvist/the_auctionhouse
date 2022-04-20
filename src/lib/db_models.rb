@@ -346,6 +346,10 @@ class Auction < EntityModel
 		data = Auction_Category_relation.get "category_id", "auction_id = ?", @id
 		data && data.map! { |category| Category.find_by_id category["category_id"]}
 	end
+
+	def bids
+		return []
+	end
 end
 
 
