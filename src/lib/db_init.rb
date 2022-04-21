@@ -5,6 +5,7 @@ LOAD_MODELS = [
 	Role,
 	User_Role_relation,
 	Auction,
+	Bid,
 	Auction_Category_relation,
 	Category,
 	Image

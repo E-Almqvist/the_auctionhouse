@@ -352,6 +352,16 @@ class Auction < EntityModel
 	end
 end
 
+# Auction bids
+class Bid < EntityModel
+	attr_reader :amount, :auction_id, :user_id, :message
+	def initialize(data)
+		super data
+		@amount = data["amount"].to_f
+		# stuff
+	end
+end
+
 
 class Category < EntityModel
 	attr_reader :name, :color
