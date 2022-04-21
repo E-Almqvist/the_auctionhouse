@@ -338,6 +338,11 @@ class Auction < EntityModel
 		self.query q
 	end
 
+	def self.expired?(id)
+		ah = self.find_by_id id
+		ah && ah.expired?
+	end
+
 	def images
 		Image.get_relation @id
 	end
@@ -345,6 +350,10 @@ class Auction < EntityModel
 	def categories
 		data = Auction_Category_relation.get "category_id", "auction_id = ?", @id
 		data && data.map! { |category| Category.find_by_id category["category_id"]}
+	end
+
+	def expired?
+		Time.now.to_i > @end_time
 	end
 
 	def bids
@@ -358,8 +367,22 @@ class Bid < EntityModel
 	def initialize(data)
 		super data
 		@amount = data["amount"].to_f
-		# stuff
+		@auction_id = data["auction_id"].to_i
+		@user_id = data["user_id"].to_i
+		@message = data["message"]
 	end
+
+	def self.place(ahid, uid, amount, message)
+		# TODO: check if bid is greater than prev
+		payload = {
+			auction_id: ahid,
+			user_id: uid,
+			amount: amount,
+			message: message
+		}
+		self.insert(payload)
+	end
+
 end
 
 
