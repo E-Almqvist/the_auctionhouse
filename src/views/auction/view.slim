@@ -20,7 +20,7 @@
       h2 = auction.title
       ul.list-container#category-list
         - auction.categories.each do |category|
-            p = category.name
+            ul = category.name
       
       - if auction.bids.length >= 1
         .bid-container 

@@ -11,7 +11,6 @@ GEM
     rack (2.2.3)
     rack-protection (2.2.0)
       rack
-    redcarpet (3.5.1)
     rmagick (4.2.4)
     ruby2_keywords (0.0.5)
     sassc (2.4.0)
@@ -45,7 +44,6 @@ DEPENDENCIES
   bcrypt
   colorize
   fileutils (~> 1.6)
-  redcarpet
   rmagick (~> 4.2)
   sassc
   sinatra
