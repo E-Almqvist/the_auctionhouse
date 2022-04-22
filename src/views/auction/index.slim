@@ -11,8 +11,8 @@
           input type="range" name="price_rng"
 
           .checkbox-container
-            input type="checkbox" name="isopen" value="1" 
-            label Is Open?
+            input type="checkbox" name="expired" 
+            label Expired?
 
           input type="submit" value="Search"
     article
@@ -21,5 +21,8 @@
       ul
       - auctions.each do |auction|
         li
-          a href="/auctions/#{auction["id"]}"
-            | #{auction["title"]}
+          a href="/auctions/#{auction.id}"
+            | #{auction.title}
+            - if auction.end_time and auction.end_time - Time.now.to_i <= 0
+              span.red
+                |  [Expired]

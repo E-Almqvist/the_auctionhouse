@@ -1,5 +1,5 @@
 # TODO
- - Auction views
+ - Auction views 80%
 ----------------
  - Auction searching at index
  - Bidding
