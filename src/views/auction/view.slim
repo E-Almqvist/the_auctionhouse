@@ -16,8 +16,9 @@
         - auction.images.each do |image|
             span.dot onclick="setSlide(#{image.image_order})"
 
-    #auctioninfo.card
+    #auctioninfo
       h2 = auction.title
+      h3 = auction.description
       - if auction.categories.length > 0
         ul.list-container#category-list
           ul 
@@ -26,10 +27,10 @@
             ul style="color: #{category.color}" = category.name
 
       - if not auction.expired?
-        .card.border
+        div
           h3 
             | Current bid: 
-            span.green = "#{COINS_PREFIX}#{auction.current_bid}#{COINS_SUFFIX}"
+            span.green = "#{COINS_PREFIX}#{auction.current_bid.round 2}#{COINS_SUFFIX}"
           h3
             | Minimum bid factor: 
             span.gray = "#{((AH_BIDS_FACTOR-1)*100).round(2)}%"
@@ -43,4 +44,21 @@
         h3.red.tcenter
           | Auction Expired
 
+      #auctionbid.card.form-container
+        form action="/auctions/#{auction.id}/bids" method="post"
+          input type="number" name="amount" placeholder="#{auction.min_new_bid}" pattern="[0-9]+"
+          textarea name="message" cols="20" rows="2" title="Content length must be between #{MIN_MSG_LEN} and #{MAX_MSG_LEN} characters" pattern="#{MSG_REGEX_STR}" maxlength="#{MAX_MSG_LEN}" placeholder="Write a message for your bid!" 
+          input type="submit" value="Bid"
+
+    #auctionbid-container
+      h2 Bid History
+      - if auction.bids.length >= 1
+        ul.list-container.card-container
+          - auction.bids.reverse_each do |bid|
+            li
+              h3 
+                | #{User.find_by_id(bid.user_id).name} bid 
+                span
+                  | #{COINS_PREFIX}#{bid.amount.round 2}#{COINS_SUFFIX}
+              h4 = "#{bid.message}"
     script src="/js/slides.js" type="text/javascript"

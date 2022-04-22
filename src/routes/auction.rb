@@ -24,13 +24,20 @@ post "/auctions" do
 	description = params[:description]
 	init_price = params[:init_price].to_f
 	delta_time = params[:delta_time].to_i * 3600 # hours to seconds
+	images = params[:images] 
+
+	# Min image count check
+	if images.nil? or images.length < AH_MIN_IMAGES then
+		flash[:error] = AUCTION_ERRORS[:imagecount]
+		redirect "/auctions/new"
+	end
+	# 
 
 	# Create the auction
 	newid, resp = Auction.create user_id, title, description, init_price, delta_time
 
 	if newid then
 		# Save auction images 
-		images = params[:images] 
 		images.each_with_index do |img, i|
 			Image.save img[:tempfile].read, newid, i 
 		end

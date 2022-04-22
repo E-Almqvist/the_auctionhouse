@@ -33,12 +33,14 @@ LOGIN_ERRORS = {
 }
 
 # Auction stuff
-AH_BUYOUT_FACTOR = 1.8 
+AH_BUYOUT_FACTOR = 1.8 # min buyout factor
 AH_BIDS_FACTOR = 1.01 # min 1%
+AH_MIN_IMAGES = 1 # minimum images
 AUCTION_ERRORS = {
 	titlelen: "Title length must be between #{MIN_TITLE_LEN} and #{MAX_TITLE_LEN} characters!",
 	initprice: "The initial price must be at least #{MIN_INIT_PRICE}!",
 	deltatime: "Time span is too short! Must be at least one day!",
-	bidamount: "Bid amount must be at least #{((AH_BIDS_FACTOR-1)*100).round(2)}% greater than the highest bid!"
+	bidamount: "Bid amount must be at least #{((AH_BIDS_FACTOR-1)*100).round(2)}% greater than the highest bid!",
+	imagecount: "You need to submit at least #{AH_MIN_IMAGES} image(s)!"
 }
 

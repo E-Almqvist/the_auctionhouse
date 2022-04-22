@@ -455,21 +455,40 @@ ul.list-container
 #auction-view
   display: grid
   grid-template-columns: 1fr 1fr
-  grid-template-rows: 1fr 1fr
-  grid-template-areas: "im in" "de in"
+  grid-template-rows: 1fr 
+  grid-template-areas: "im in" "bi bi"
+
+#auctionbid-container
+  grid-area: bi
+  font-weight: normal
+
+  ul li
+    display: flex
+    flex-direction: column
+    border-bottom: $border_size solid $shadow_clr
+
+  h3
+    color: $fg_clr 
+    span
+      color: $green_clr
+  h4
+    color: $gray_clr
 
 #auctioninfo
   grid-area: in
   
-  .card
-    margin-top: 2rem
+  div
+    margin-top: 1.2rem
 
   h2
     padding: 0
     font-size: 1.8rem
 
   h3
-    font-size: 1.5rem
+    font-size: 1.2rem
+    font-weight: normal
+    span
+      font-weight: bold
 
   #category-list
     flex-direction: row
@@ -477,6 +496,7 @@ ul.list-container
     ul
       padding: 0 
       margin-right: 1rem
+
 
 .slideshow-container
   grid-area: im

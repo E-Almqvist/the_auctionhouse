@@ -7,6 +7,8 @@
 ----------------
  - Auction expiry (unable to bid after x time)
  - User reviews
+----------------
+ - Yardoc
 
 ## Refactor
  - Funds transfer logic for auctions?

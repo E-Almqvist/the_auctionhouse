@@ -368,10 +368,10 @@ class Auction < EntityModel
 			amount = left.to_i / count
 			if amount > 0 then
 				result << "#{amount}#{sym.to_s}"
-				puts "#{sym} #{count}, #{left} : #{amount} : #{result}"
 				left -= count*amount
 			end
 		end
+		result = result[0...2]
 		return result.join ", "
 	end
 
@@ -395,6 +395,12 @@ class Auction < EntityModel
 			return @init_price
 		end
 	end
+
+	def min_new_bid
+		max_bid = self.max_bid
+		amount = max_bid.nil? ? @init_price : max_bid.amount 
+		return amount * AH_BIDS_FACTOR 
+	end
 end
 
 # Auction bids
@@ -414,11 +420,10 @@ class Bid < EntityModel
 	end
 
 	def self.place(ahid, uid, amount, message)
-		ah = Auction.find_by_id
+		ah = Auction.find_by_id ahid
 		if not ah then return false, "Invalid auction" end
-		max_bid = ah.max_bid
 
-		if amount >= max_bid.amount * AH_BIDS_FACTOR then
+		if amount >= ah.min_new_bid then
 			payload = {
 				auction_id: ahid,
 				user_id: uid,
