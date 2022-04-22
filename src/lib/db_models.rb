@@ -286,7 +286,7 @@ class Auction < EntityModel
 		@user_id = data["user_id"].to_i
 		@title = data["title"]
 		@description = data["description"]
-		@init_price = data["init_price"].to_i
+		@init_price = data["price"].to_i
 		@start_time = data["start_time"].to_i
 		@end_time = data["end_time"].to_i
 	end
@@ -320,22 +320,23 @@ class Auction < EntityModel
 		self.insert data
 	end
 
-	def self.compose_query_filters(title=nil, categories=nil, price_rng=nil, isopen=nil)
+	def self.compose_query_filters(title=nil, categories=nil, price_rng=nil, expired=nil)
 		querystr = "SELECT * FROM Auction "
-		querystr += "WHERE " if title or categories or price_rng or isopen
+		querystr += "WHERE " if title or categories or price_rng or expired
 
 		filters = []
 		filters << "LIKE '%#{title}%'" if title
 		filters << "price BETWEEN #{price_rng[0]} AND #{price_rng[1]}" if price_rng && price_rng.length == 2
-		filters << "end_time > #{Time.now.to_i}" if !isopen.nil?
+		filters << "end_time < #{Time.now.to_i}" if !expired.nil?
 
 		querystr += filters.join " AND "
 		return querystr
 	end
 
-	def self.search(title=nil, categories=nil, price_rng=nil, isopen=nil)
-		q = self.compose_query_filters title, categories, price_rng, isopen	
-		self.query q
+	def self.search(title=nil, categories=nil, price_rng=nil, expired=nil)
+		q = self.compose_query_filters title, categories, price_rng, expired	
+		data = self.query(q) or []
+		data.map! {|dat| self.new(dat)}
 	end
 
 	def self.expired?(id)
