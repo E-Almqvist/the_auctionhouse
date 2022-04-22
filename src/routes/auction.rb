@@ -57,3 +57,23 @@ get "/auctions/:id" do
 		raise Sinatra::NotFound
 	end
 end
+
+post "/auctions/:id/bids" do
+	id = params[:id].to_i
+	auction_obj = Auction.find_by_id id
+
+	amount = params[:amount].to_f
+	message = params[:message]
+
+	if !auction_obj.nil? then
+		success, resp = auction_obj.place_bid( session[:userid], amount, message)
+		if success then
+			flash[:success] = "Placed bid."
+		else
+			flash[:error] = resp
+		end
+		redirect "/auctions/#{id}"
+	else
+		raise Sinatra::NotFound
+	end
+end

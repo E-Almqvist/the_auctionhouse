@@ -65,6 +65,14 @@ BIO_REGEX_STR = "{#{MIN_BIO_LEN},#{MAX_BIO_LEN}}"
 DESC_REGEX_STR = "{#{MIN_DESC_LEN},#{MAX_DESC_LEN}}"
 TITLE_REGEX_STR = "{#{MIN_TITLE_LEN},#{MAX_TITLE_LEN}}"
 
+TIME_FORMATS = {
+	w: 604800,
+	d: 86400,
+	h: 3600,
+	m: 60,
+	s: 1
+}
+
 
 # Routes that needs auth
 AUTH_ROUTES = %w[/settings /auction /user /admin]

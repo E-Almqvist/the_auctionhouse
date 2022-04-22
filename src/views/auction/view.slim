@@ -18,19 +18,29 @@
 
     #auctioninfo.card
       h2 = auction.title
-      ul.list-container#category-list
-        - auction.categories.each do |category|
-            ul = category.name
-      
-      - if auction.bids.length >= 1
-        .bid-container 
-          - auctions.bids.each do |bid|
-            .bid
-              | BID
+      - if auction.categories.length > 0
+        ul.list-container#category-list
+          ul 
+            | Categories:
+          - auction.categories.each do |category|
+            ul style="color: #{category.color}" = category.name
+
+      - if not auction.expired?
+        .card.border
+          h3 
+            | Current bid: 
+            span.green = "#{COINS_PREFIX}#{auction.current_bid}#{COINS_SUFFIX}"
+          h3
+            | Minimum bid factor: 
+            span.gray = "#{((AH_BIDS_FACTOR-1)*100).round(2)}%"
+          h3
+            | Buyout factor: 
+            span.gray = "#{((AH_BUYOUT_FACTOR-1)*100).round(2)}%"
+          h3
+            | Expires in: 
+            span.red = "#{auction.time_left_s}" 
       - else
-        p = "No bids! Be the first to bid on this item!"
-
-
-
+        h3.red.tcenter
+          | Auction Expired
 
     script src="/js/slides.js" type="text/javascript"

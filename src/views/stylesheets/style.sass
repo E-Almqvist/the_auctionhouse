@@ -15,6 +15,7 @@ $shadow_clr: $bg_dark_clr
 $border_clr: $bg_alt_clr
 $green_clr: #5cb85c
 $red_clr: #de2a1d
+$yellow_clr: #FFBF00
 $gray_clr: #888
 
 $special_clr: #4776C1
@@ -309,6 +310,8 @@ ul.list-container
   color: $green_clr
 .red
   color: $red_clr
+.yellow
+  color: $yellow_clr
 .gray
   color: $gray_clr
 
@@ -457,13 +460,23 @@ ul.list-container
 
 #auctioninfo
   grid-area: in
+  
+  .card
+    margin-top: 2rem
 
   h2
+    padding: 0
     font-size: 1.8rem
+
+  h3
+    font-size: 1.5rem
 
   #category-list
     flex-direction: row
     height: unset
+    ul
+      padding: 0 
+      margin-right: 1rem
 
 .slideshow-container
   grid-area: im

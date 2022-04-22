@@ -283,12 +283,12 @@ class Auction < EntityModel
 	attr_reader :user_id, :title, :description, :init_price, :start_time, :end_time
 	def initialize(data)
 		super data
-		@user_id = data["user_id"]
+		@user_id = data["user_id"].to_i
 		@title = data["title"]
 		@description = data["description"]
-		@init_price = data["init_price"]
-		@start_time = data["start_time"]
-		@end_time = data["end_time"]
+		@init_price = data["init_price"].to_i
+		@start_time = data["start_time"].to_i
+		@end_time = data["end_time"].to_i
 	end
 
 	def self.validate_ah(title, description, init_price, delta_time)
@@ -356,8 +356,43 @@ class Auction < EntityModel
 		Time.now.to_i > @end_time
 	end
 
+	def time_left
+		@end_time - Time.now.to_i
+	end
+
+	def time_left_s
+		left = self.time_left
+		result = []
+		TIME_FORMATS.each do |sym, count|
+			amount = left.to_i / count
+			if amount > 0 then
+				result << "#{amount}#{sym.to_s}"
+				puts "#{sym} #{count}, #{left} : #{amount} : #{result}"
+				left -= count*amount
+			end
+		end
+		return result.join ", "
+	end
+
 	def bids
-		return []
+		Bid.get_bids(@id)
+	end
+
+	def place_bid(uid, amount, message)
+		Bid.place(@id, uid, amount, message)
+	end
+
+	def max_bid 
+		max_bid = self.bids.max_by {|bid| bid.amount}
+	end
+
+	def current_bid
+		mbid = self.max_bid
+		if mbid != nil then
+			return mbid.amount
+		else
+			return @init_price
+		end
 	end
 end
 
@@ -372,15 +407,27 @@ class Bid < EntityModel
 		@message = data["message"]
 	end
 
+	def self.get_bids(ahid)
+		data = self.get "*", "auction_id = ?", ahid
+		data && data.map! {|dat| self.new(dat)}
+	end
+
 	def self.place(ahid, uid, amount, message)
-		# TODO: check if bid is greater than prev
-		payload = {
-			auction_id: ahid,
-			user_id: uid,
-			amount: amount,
-			message: message
-		}
-		self.insert(payload)
+		ah = Auction.find_by_id
+		if not ah then return false, "Invalid auction" end
+		max_bid = ah.max_bid
+
+		if amount >= max_bid.amount * AH_BIDS_FACTOR then
+			payload = {
+				auction_id: ahid,
+				user_id: uid,
+				amount: amount,
+				message: message
+			}
+			self.insert(payload)
+		else
+			return false, AUCTION_ERRORS[:bidamount]
+		end
 	end
 
 end
