@@ -24,7 +24,7 @@
           ul 
             | Categories:
           - auction.categories.each do |category|
-            ul style="color: #{category.color}" = category.name
+            ul style="color: #{category.color}; font-weight: bold" = category.name
 
       - if not auction.expired?
         div
