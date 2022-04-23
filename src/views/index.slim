@@ -9,31 +9,32 @@
       li
         a.button href="/auctions/new" = "Post Auction"
 
-  article
-    h1.tcenter.title
-      | Recent posts
+  - if Auction.get_all.length > 0
+    article
+      h1.tcenter.title
+        | Recent posts
 
-    article.post-container.card#posts
-      ul.list-container
-        - Auction.get_all.reverse[0..1].each do |auction|
-          li
-            a href="/auctions/#{auction.id}"
-              div style="background-image: url(#{auction.images[0].url})"
-              .info-container
-                h3
-                  | #{auction.title}
-                  - if auction.time_left > 0
-                    |  (
-                    span.red
-                      | #{auction.time_left_s}
-                    | )
-                  - if auction.end_time and auction.end_time - Time.now.to_i <= 0
-                    span.red
-                      |  [Expired]
-                h4
-                  | Posted by: #{auction.poster.name}
-                h4
-                  | #{COINS_PREFIX}#{auction.current_bid}#{COINS_SUFFIX}
-                p
-                  | #{auction.description}
+      article.post-container.card#posts
+        ul.list-container
+          - Auction.get_all.reverse[0..1].each do |auction|
+            li
+              a href="/auctions/#{auction.id}"
+                div style="background-image: url(#{auction.images[0].url})"
+                .info-container
+                  h3
+                    | #{auction.title}
+                    - if auction.time_left > 0
+                      |  (
+                      span.red
+                        | #{auction.time_left_s}
+                      | )
+                    - if auction.end_time and auction.end_time - Time.now.to_i <= 0
+                      span.red
+                        |  [Expired]
+                  h4
+                    | Posted by: #{auction.poster.name}
+                  h4
+                    | #{COINS_PREFIX}#{auction.current_bid}#{COINS_SUFFIX}
+                  p
+                    | #{auction.description}
 
