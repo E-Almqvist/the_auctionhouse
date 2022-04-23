@@ -322,10 +322,10 @@ class Auction < EntityModel
 
 	def self.compose_query_filters(title=nil, categories=nil, price_rng=nil, expired=nil)
 		querystr = "SELECT * FROM Auction "
-		querystr += "WHERE " if title or categories or price_rng or expired
+		querystr += "WHERE " if (title and title.length != 0) or categories or price_rng or expired
 
 		filters = []
-		filters << "LIKE '%#{title}%'" if title
+		filters << "title LIKE '%#{title}%'" if title and title.length != 0
 		filters << "price BETWEEN #{price_rng[0]} AND #{price_rng[1]}" if price_rng && price_rng.length == 2
 		filters << "end_time < #{Time.now.to_i}" if !expired.nil?
 

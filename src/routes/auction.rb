@@ -4,12 +4,10 @@ get "/auctions" do
 	#categories = (params[:categories].split ",").map {|id| id.to_i} 
 	#price_rng = (params[:price_rng].split "-").map {|p| p.to_i}
 	expired = params[:expired]
-	p "#####"
-	p expired
-	p "#####"
 
 	# TODO FIX THIS
 	auctions = Auction.search title #, categories, price_rng, expired
+	p auctions
 	serve :"auction/index", {auctions: auctions}
 end
 

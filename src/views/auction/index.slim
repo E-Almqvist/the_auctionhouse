@@ -1,6 +1,6 @@
 .content-container
   #auctions
-    aside
+    aside.card
       h2 Search Filters
       .form-container
         form action="/auctions" method="get"
@@ -15,14 +15,17 @@
             label Expired?
 
           input type="submit" value="Search"
-    article
-      h2 Results
+      a.button href="/auctions" = "Clear Filters"
 
-      ul
-      - auctions.each do |auction|
-        li
-          a href="/auctions/#{auction.id}"
-            | #{auction.title}
-            - if auction.end_time and auction.end_time - Time.now.to_i <= 0
-              span.red
-                |  [Expired]
+    article.card
+      h2 Results
+      ul.list-container
+        - auctions.each do |auction|
+          li
+            a href="/auctions/#{auction.id}"
+              div style="background-image: url(#{auction.images[0].url})"
+              h3
+                | #{auction.title}
+              - if auction.end_time and auction.end_time - Time.now.to_i <= 0
+                span.red
+                  |  [Expired]
