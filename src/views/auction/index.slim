@@ -8,7 +8,11 @@
           input type="search" name="title" placeholder="Keywords (ex: computer, teapot)"
 
           label Price range
-          input type="range" name="price_rng"
+          .range-container
+            label for="price-min" From:
+            input type="number" name="price-min" min="#{MIN_INIT_PRICE}" max="#{MAX_INIT_PRICE}"
+            label for="price-max" To:
+            input type="number" name="price-max" min="#{MIN_INIT_PRICE}" max="#{MAX_INIT_PRICE}"
 
           .checkbox-container
             input type="checkbox" name="expired" 

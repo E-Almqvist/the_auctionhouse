@@ -261,6 +261,18 @@ ul.list-container
     max-width: 400px
     border-radius: .2rem
 
+    .range-container
+      display: flex
+      flex-direction: row
+      align-items: center
+      label
+        opacity: .4
+        height: 2rem
+      input
+        margin: 0 1rem !important
+        width: 40%
+        height: 2rem
+
     .checkbox-container
       input[type=checkbox]
         margin: 0 .5rem
@@ -470,7 +482,6 @@ ul.list-container
 
       li
         margin-top: 1.2rem
-        padding: 2px
         border: $border_size solid $border_clr
         border-radius: $border_radius
         transition: .2s border
@@ -528,11 +539,16 @@ ul.list-container
     margin-top: 1.2rem
 
   h2
+    display: flex
+    font-size: 1.25rem
     padding: 0
-    font-size: 1.8rem
+
+    a.inlbutton
+      margin-left: 2rem 
+      font-weight: normal
 
   h3
-    font-size: 1.2rem
+    font-size: 1rem
     font-weight: normal
     span
       font-weight: bold

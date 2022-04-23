@@ -40,6 +40,7 @@ DB_PATH = "db/main.db"
 
 # Auction constants
 MIN_INIT_PRICE = 1
+MAX_INIT_PRICE = 1e9
 
 MIN_TITLE_LEN = 2
 MAX_TITLE_LEN = 32

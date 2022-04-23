@@ -16,8 +16,12 @@
         - auction.images.each do |image|
             span.dot onclick="setSlide(#{image.image_order})"
 
-    #auctioninfo
-      h2 = auction.title
+    #auctioninfo.card
+      h2
+        span
+          | #{auction.title}
+        a.inlbutton href="/auctions"
+          | [Go back]
       h3 = auction.description
       - if auction.categories.length > 0
         ul.list-container#category-list
@@ -50,7 +54,7 @@
           textarea name="message" cols="20" rows="2" title="Content length must be between #{MIN_MSG_LEN} and #{MAX_MSG_LEN} characters" pattern="#{MSG_REGEX_STR}" maxlength="#{MAX_MSG_LEN}" placeholder="Write a message for your bid!" 
           input type="submit" value="Bid"
 
-    #auctionbid-container
+    #auctionbid-container.card
       h2.tcenter Bid History
       - if auction.bids.length >= 1
         ul.list-container.card-container
