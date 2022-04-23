@@ -290,7 +290,7 @@ class Auction < EntityModel
 		@user_id = data["user_id"].to_i
 		@title = data["title"]
 		@description = data["description"]
-		@init_price = data["price"].to_i
+		@init_price = data["price"].to_f
 		@start_time = data["start_time"].to_i
 		@end_time = data["end_time"].to_i
 	end
@@ -348,6 +348,10 @@ class Auction < EntityModel
 		ah && ah.expired?
 	end
 
+	def poster
+		User.find_by_id @user_id
+	end
+
 	def images
 		Image.get_relation @id
 	end
@@ -394,9 +398,9 @@ class Auction < EntityModel
 	def current_bid
 		mbid = self.max_bid
 		if mbid != nil then
-			return mbid.amount
+			return mbid.amount.to_f
 		else
-			return @init_price
+			return @init_price.to_f
 		end
 	end
 

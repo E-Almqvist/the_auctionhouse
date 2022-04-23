@@ -18,6 +18,13 @@
             input type="checkbox" name="expired" 
             label Expired?
 
+          - if Category.get_all.length > 0
+            label Categories
+            - Category.get_all.each do |category|
+              .checkbox-container
+                input type="checkbox" name="category-#{category.id}" value="#{category.id}" 
+                label style="color: #{category.color};" = "#{category.name}"
+
           input type="submit" value="Search"
       a.button href="/auctions" = "Clear Filters"
 
@@ -39,6 +46,8 @@
                   - if auction.end_time and auction.end_time - Time.now.to_i <= 0
                     span.red
                       |  [Expired]
+                h4
+                  | Posted by: #{auction.poster.name}
                 h4
                   | #{COINS_PREFIX}#{auction.current_bid}#{COINS_SUFFIX}
                 p
