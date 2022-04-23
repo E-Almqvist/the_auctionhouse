@@ -17,6 +17,10 @@ class User < EntityModel
 		return @avatar_url
 	end
 
+	def auctions
+		Auction.get_all "user_id = ?", @id
+	end
+
 	def role
 		return Role.find_by_id( ROLES[:admin][:id] ).name if self.admin?
 

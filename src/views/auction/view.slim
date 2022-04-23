@@ -20,7 +20,7 @@
       h2
         span
           | #{auction.title}
-        a.inlbutton href="/auctions"
+        a.inlbutton href="javascript:history.back()"
           | [Go back]
       h3 = auction.description
       - if auction.categories.length > 0

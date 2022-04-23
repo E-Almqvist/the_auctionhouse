@@ -21,15 +21,25 @@
           input type="submit" value="Search"
       a.button href="/auctions" = "Clear Filters"
 
-    article.card
+    article.post-container.card
       h2 Results
       ul.list-container
         - auctions.each do |auction|
           li
             a href="/auctions/#{auction.id}"
               div style="background-image: url(#{auction.images[0].url})"
-              h3
-                | #{auction.title}
-              - if auction.end_time and auction.end_time - Time.now.to_i <= 0
-                span.red
-                  |  [Expired]
+              .info-container
+                h3
+                  | #{auction.title}
+                  - if auction.time_left > 0
+                    |  (
+                    span.red
+                      | #{auction.time_left_s}
+                    | )
+                  - if auction.end_time and auction.end_time - Time.now.to_i <= 0
+                    span.red
+                      |  [Expired]
+                h4
+                  | #{COINS_PREFIX}#{auction.current_bid}#{COINS_SUFFIX}
+                p
+                  | #{auction.description}

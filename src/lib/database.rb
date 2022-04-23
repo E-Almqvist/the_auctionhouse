@@ -114,13 +114,13 @@ class EntityModel
 		data && self.new(data)
 	end
 
-	def self.get_all_ids
-		ids = self.get "id"
+	def self.get_all_ids filter="", *args
+		ids = self.get "id", *args
 		ids.map! {|k, id| id.to_i}
 	end
 
-	def self.get_all
-		data = self.get "*"
+	def self.get_all filter="", *args
+		data = self.get "*", filter, *args
 		data && data.map! {|r| self.new(r)}
 	end
 end

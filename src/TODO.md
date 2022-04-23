@@ -1,5 +1,5 @@
 # TODO
- - Auction searching at index
+ - Auction searching at index 40%
  - Bidding 90% TODO: refactor
  - Recent posts (profile & index page)
 ----------------

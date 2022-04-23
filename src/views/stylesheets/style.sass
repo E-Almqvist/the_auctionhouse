@@ -426,10 +426,12 @@ ul.list-container
     max-height: 50rem
     width: 100%
 
-    .card-container
-      margin-bottom: 4rem
-      padding-bottom: 2rem
-
+    h3.tcenter
+      opacity: .4
+      font-weight: normal
+      margin: 42% 0
+      
+    
 
 #settings
     form
@@ -458,6 +460,11 @@ ul.list-container
         a
           margin-left: 1rem
 
+.info-container
+  display: flex
+  flex-direction: column
+  justify-content: center
+
 // Auctions
 #auctions
   display: flex
@@ -466,37 +473,11 @@ ul.list-container
   height: inherit
   width: 80%
   padding: 2rem
+  max-width: 70rem
 
   a.button
     border: $border_size solid $shadow_clr
     border-radius: $border_radius
-
-  article 
-    height: 90%
-    ul 
-      height: 100%
-
-      li:hover
-        border: $border_size solid $special_clr
-        cursor: pointer
-
-      li
-        margin-top: 1.2rem
-        border: $border_size solid $border_clr
-        border-radius: $border_radius
-        transition: .2s border
-        a
-          display: flex
-          text-decoration: none
-          color: $fg_clr
-          flex-direction: row
-          div
-            border-radius: $border_radius
-            width: 12rem
-            height: 8rem
-            background-repeat: no-repeat
-            background-position: center
-            background-size: cover
 
   aside
     width: 40rem
@@ -506,12 +487,58 @@ ul.list-container
         padding: 0
         width: inherit
 
+article.post-container
+  height: 90%
+  ul 
+    height: 100%
+
+    li:hover
+      border: $border_size solid $special_clr
+      cursor: pointer
+
+    li
+      margin-top: 1.2rem
+      border: $border_size solid $border_clr
+      border-radius: $border_radius
+      min-height: 8rem
+      height: 100%
+      transition: .2s border
+      a
+        display: grid
+        grid-template-rows: 1fr
+        grid-template-columns: 14rem 2fr 
+        grid-template-areas: "im in"
+        text-decoration: none
+        color: $fg_clr
+
+        .info-container
+          grid-area: in
+          margin-left: 1rem
+
+          h3
+            font-weight: normal
+
+          p
+            width: 30rem 
+            white-space: nowrap
+            text-overflow: ellipsis
+            overflow: hidden
+
+        div
+          grid-area: im
+          border-radius: $border_radius
+          height: 100%
+          background-repeat: no-repeat
+          background-position: center
+          background-size: cover
+
 #auctions_new
   display: grid
 
 
 #auction-view
   display: grid
+  max-width: 70rem
   grid-template-columns: 1fr 1fr
   grid-template-rows: 1fr 
   grid-template-areas: "im in" "bi bi"
