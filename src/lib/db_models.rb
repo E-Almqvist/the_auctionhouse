@@ -465,7 +465,7 @@ class Bid < EntityModel
 		if data then 
 			data.map! {|dat| self.new(dat)}
 			max_bid = data.max_by {|bid| bid.amount}
-			return amount - max_bid
+			return amount - max_bid.amount
 		else
 			return amount
 		end
