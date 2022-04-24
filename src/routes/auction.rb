@@ -75,7 +75,7 @@ post "/auctions/:id/bids" do
 	message = params[:message]
 
 	if !auction_obj.nil? then
-		success, resp = auction_obj.place_bid( session[:userid], amount, message)
+		success, resp = auction_obj.place_bid(session[:userid], amount, message)
 		if success then
 			flash[:success] = "Placed bid."
 		else

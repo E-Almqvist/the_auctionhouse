@@ -41,6 +41,8 @@ AUCTION_ERRORS = {
 	initprice: "The initial price must be at least #{MIN_INIT_PRICE}!",
 	deltatime: "Time span is too short! Must be at least one day!",
 	bidamount: "Bid amount must be at least #{((AH_BIDS_FACTOR-1)*100).round(2)}% greater than the highest bid!",
-	imagecount: "You need to submit at least #{AH_MIN_IMAGES} image(s)!"
+	imagecount: "You need to submit at least #{AH_MIN_IMAGES} image(s)!",
+	expired: "Auction has expired!",
+	cantafford: "You can not afford to bid that much!"
 }
 

@@ -427,21 +427,27 @@ class Bid < EntityModel
 		data && data.map! {|dat| self.new(dat)}
 	end
 
-	def self.place(ahid, uid, amount, message)
+	private def self.validate_bid(ahid, uid, amount, message)
 		ah = Auction.find_by_id ahid
-		if not ah then return false, "Invalid auction" end
+		return false, "Invalid auction" unless ah.is_a? Auction
+		return false, AUCTION_ERRORS[:expired] unless not ah.expired?
+		return false, AUCTION_ERRORS[:cantafford] unless User.find_by_id(uid).balance - amount >= 0
+		return false, AUCTION_ERRORS[:bidamount] unless amount >= ah.min_new_bid
+		return true, ""
+	end
 
-		if amount >= ah.min_new_bid then
+	def self.place(ahid, uid, amount, message)
+		check, resp = self.validate_bid(ahid, uid, amount, message)
+		if check then
 			payload = {
 				auction_id: ahid,
 				user_id: uid,
 				amount: amount,
 				message: message
 			}
-			self.insert(payload)
-		else
-			return false, AUCTION_ERRORS[:bidamount]
+			resp = self.insert(payload)
 		end
+		return check, resp
 	end
 
 end
