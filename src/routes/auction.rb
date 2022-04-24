@@ -1,4 +1,4 @@
-# Auction stuff
+# Auction index & searching page
 get "/auctions" do
 	title = params[:title] and params[:title] != "" ? params[:title].strip : nil
 	categories = params[:categories]
@@ -11,10 +11,17 @@ get "/auctions" do
 	serve :"auction/index", {auctions: auctions}
 end
 
+# Auction creation form
 get "/auctions/new" do
 	serve :"auction/new"
 end
 
+# Create an auction
+# @param [String] title
+# @param [String] description
+# @param [Float] init_price Initial price offering
+# @param [Integer] delta_time Auction duration in hours
+# @param [Array<Tempfile>] images 
 post "/auctions" do
 	user_id = session[:userid]
 
@@ -55,6 +62,8 @@ post "/auctions" do
 	end
 end
 
+# View auction
+# @param [Integer] id
 get "/auctions/:id" do
 	id = params[:id].to_i
 	auction = Auction.find_by_id id
@@ -66,6 +75,8 @@ get "/auctions/:id" do
 	end
 end
 
+# Edit auction form
+# @param [Integer] id
 get "/auctions/:id/edit" do
 	id = params[:id].to_i
 	auction = Auction.find_by_id id
@@ -81,6 +92,8 @@ get "/auctions/:id/edit" do
 	end
 end
 
+# Delete auction
+# @param [Integer] id
 get "/auctions/:id/delete" do
 	id = params[:id].to_i
 	auction = Auction.find_by_id id
@@ -99,6 +112,10 @@ get "/auctions/:id/delete" do
 	end
 end
 
+# Update auction credentials
+# @param [Integer] id
+# @param [String] title New title
+# @param [String] description New description
 post "/auctions/:id/update" do
 	id = params[:id].to_i
 	auction = Auction.find_by_id id
@@ -118,6 +135,10 @@ post "/auctions/:id/update" do
 	end
 end
 
+# Bid on an auction
+# @param [Integer] id Auction id
+# @param [Float] amount Must be  greater than the current highest bid (min 1%)
+# @param [String, nil] message
 post "/auctions/:id/bids" do
 	id = params[:id].to_i
 	auction = Auction.find_by_id id

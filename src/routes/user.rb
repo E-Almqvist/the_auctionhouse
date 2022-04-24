@@ -1,11 +1,15 @@
+# Login page for the user
 get "/login" do
 	serve :"user/login", layout: :empty
 end
 
+# Register page for the user
 get "/register" do
 	serve :"user/register", layout: :empty
 end
 
+# Profile for user
+# @param [Integer] id User id
 get "/profile/:id" do
 	id = params[:id].to_i
 	userobj = User.find_by_id id
@@ -17,6 +21,7 @@ get "/profile/:id" do
 	end
 end
 
+# Profile user for logged in user
 get "/profile" do 
 	if is_logged_in then
 		redirect "/profile/#{session[:userid]}"
@@ -25,8 +30,10 @@ get "/profile" do
 	end
 end
 
-# Reputation
 USER_REP_LIMIT ||= Hash.new(Hash.new(0))
+# Add or remove users reputation score
+# @param [Integer] id User id
+# @param [String] type Either "plus" or "minus"
 get "/user/rep/:id" do
 	if !is_logged_in then
 		session[:ret] = request.fullpath 
@@ -59,11 +66,16 @@ get "/user/rep/:id" do
 	end
 end
 
-# User stuff
+# Logged in users settings
 get "/settings" do
 	serve :"user/settings"
 end
 
+# Register user
+# @param [String] email
+# @param [String] name
+# @param [String] password
+# @param [String] password_confirm
 post "/register" do
 	email = params[:email]
 	name = params[:name]
@@ -81,6 +93,9 @@ post "/register" do
 	end
 end
 
+# Login user
+# @param [String] email
+# @param [String] password
 post "/login" do
 	email = params[:email].strip
 	password = params[:password].strip
@@ -95,12 +110,17 @@ post "/login" do
 	end
 end
 
+# Logout current user
 get "/logout" do 
 	session.clear
 	flash[:success] = "Successfully logged out!"
 	redirect "/"
 end
 
+# Update user credentials
+# @param [Integer] id (Only applied if logged in user is admin), otherwise it defaults to current session user
+# @param [String] displayname New user name
+# @param [String] bio_text New bio text
 post "/user/update" do
 	id = (get_current_user.admin? and params[:id]) ? params[:id].to_i : session[:userid]
 

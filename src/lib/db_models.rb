@@ -13,14 +13,18 @@ class User < EntityModel
 		@pw_hash = data["pw_hash"]
 	end
 
+	# Get user avatar url
 	def avatar
 		return @avatar_url
 	end
 
+	# Get all of the users auctions
 	def auctions
 		Auction.get_all "user_id = ?", @id
 	end
 
+	# Get the most dominant roles name
+	# @return [String] Role name
 	def role
 		return Role.find_by_id( ROLES[:admin][:id] ).name if self.admin?
 
@@ -32,47 +36,55 @@ class User < EntityModel
 		return ""
 	end
 
+	# Get all of the users role ids
+	# @see User#roles
+	# @return [Array<Integer>] Array of all the primary keys for the roles
 	def role_ids
 		User_Role_relation.get_user_roles_ids @id
 	end
 
+	# Get all of the users role ids
+	# @see User#role_ids
+	# @return [Array<Role>] Array of all the users role objects
 	def roles
 		User_Role_relation.get_user_roles @id
 	end
 
+	# Gets the reputation enum for the user
+	# @return [Integer] Reputation score enum
 	def rep_score
 		return BAD_REP if @reputation < 0
 		return GOOD_REP if @reputation > 0
 		return NEUTRAL_REP 
 	end
 
-	def bio_html
-		md_parser = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
-		md_parser.render @bio_text
-	end
-
+	# Reputation text for the user
+	# @return [String] Reputation score string
 	def reputation_text
 		sign = @reputation > 0 ? "+" : ""	
 		return "#{sign}#{@reputation}"
 	end
 
+	# Sets the users reputation to given value
+	# @see EntityModel#update
+	# @param [Integer] val The value
 	def reputation=(val)
 		val = val.clamp MIN_REP, MAX_REP
 		@reputation = val
 		User.update({reputation: val}, "id = ?", @id)
 	end
 
+	# Sets the users balance
+	# @see EntityModel#update
+	# @param [Float] val The value
 	def balance=(val)
 		val = val >= 0 ? val : 0
 		@balance = val
 		User.update({balance: val}, "id = ?", @id)
 	end
 
-	def reputation=(val)
-		@reputation = val
-		User.update({reputation: val}, "id = ?", @id)
-	end
-
+	# Updates the user credentials
+	# @see EntityModel#update
 	def update_creds(data)
 		# Validate input
 		return false, SETTINGS_ERRORS[:name_len] unless data[:name].length.between?(MIN_NAME_LEN, MAX_NAME_LEN)
@@ -86,12 +98,21 @@ class User < EntityModel
 		return true, nil
 	end
 
-	# Find user by email, same as above but for emails.
+	# Find user by email, same as EntityModel#find_by_id but for emails.
+	# @see EntityModel#query
+	# @see EntityModel#find_by_id
 	def self.find_by_email(email)
 		data = self.get("*", "email = ?", email).first
 		data && User.new(data)
 	end
 
+	# Verify user registration credentials
+	# @param [String] email The email
+	# @param [String] name The users name
+	# @param [String] password Password
+	# @param [String] password_confirm Password confirmation
+	# @return [Boolean] Failed?
+	# @return [String] Error message
 	def self.validate_register_creds(email, name, password, password_confirm)
 		# Field check
 		check_all_fields = email != "" && name != "" && password != "" && password_confirm != ""
@@ -117,12 +138,21 @@ class User < EntityModel
 		return true, ""
 	end
 
+	# Verify password
+	# @param [String] pw_hash Digested password 
+	# @param [String] password Password 
+	# @return [Boolean] Passwords are equal 
 	def self.validate_password(pw_hash, password)
 		BCrypt::Password.new(pw_hash) == password
 	end
 
 	# Register a new user
-	# Returns: success?, data
+	# @param [String] email Email
+	# @param [String] name Users name
+	# @param [String] password Password 
+	# @param [String] password_confirm Password confirm
+	# @return [Boolean] success?
+	# @return [String] Error string
 	def self.register(email, name, password, password_confirm)
 		check, errorstr = self.validate_register_creds(email, name, password, password_confirm)
 
@@ -142,7 +172,10 @@ class User < EntityModel
 	end
 
 	# Log in user
-	# Returns: success?, user id 
+	# @param [String] email Users email
+	# @param [String] password Users password
+	# @return [Boolean] Success? 
+	# @return [Integer] Users id 
 	def self.login(email, password)
 		user = self.find_by_email email # get the user info
 
@@ -154,8 +187,8 @@ class User < EntityModel
 		return true, user.id
 	end
 
-	# Get a users flags
-	# Returns: bitmap int thingie
+	# Get a users combined flags
+	# @return [Integer Bitmap] A bitmap of all the flags
 	def flags
 		flags = 0
 		self.roles.each do |role|
@@ -166,12 +199,15 @@ class User < EntityModel
 		return flags
 	end
 
+	# Check if user is an admin
+	# @return [Boolean]
 	def admin?
 		return self.flags[1] == 1
 	end
 
-	# Check if user has flags
-	# Returns: true or false depending whether the user has those flags
+	# Check if user is permitted with certian flag
+	# @param [Symbol] flag Flag symbol
+	# @return [Boolean] true or false depending whether the user has those flags
 	def permitted?(flag, *other_flags)
 		return true if self.admin?
 
@@ -183,10 +219,14 @@ class User < EntityModel
 		return self.flags & flag_mask == flag_mask
 	end
 
+	# Check if user is banned
+	# @return [Boolean]
 	def banned?
 		return self.flags[ PERM_LEVELS.keys.index(:banned) ] == 1
 	end
 
+	# Set users "banned" status
+	# @return [String] Error/info string
 	def banned=(b)
 		if b then
 			# Add the "banned" role
@@ -208,6 +248,7 @@ class Role < EntityModel
 		@flags = data["flags"]
 	end
 
+	# Check if role has a flag
 	def has_flag?(flag, *other_flags)
 		flag_mask = PERM_LEVELS[flag]
 
@@ -221,11 +262,18 @@ class Role < EntityModel
 		return @flags & flag_mask == flag_mask # f AND m = m => flags exists
 	end
 
+	# Find role by name
+	# @see EntityModel#find_by_id
+	# @return [Role] Role object
 	def self.find_by_name(name)
 		data = self.get("*", "name = ?", name).first
 		data && Role.new(data)
 	end
 
+	# Create a role
+	# @param [String] name Role name
+	# @param [Color String] color Role color in hex
+	# @param [Integer Bitmap] flags Flags bitmap
 	def self.create(name, color="#ffffff", flags=0)
 		return false, REGISTER_ERRORS[:name_len] unless name.length.between?(MIN_NAME_LEN, MAX_NAME_LEN)
 
@@ -251,6 +299,10 @@ class User_Role_relation < EntityModel
 		end
 	end
 
+	# Give role to user
+	# @param [Integer] user_id User id
+	# @param [Integer] role_id Role id
+	# @see EntityModel#insert
 	def self.give_role(user_id, role_id)
 		user = User.find_by_id user_id
 
@@ -263,6 +315,10 @@ class User_Role_relation < EntityModel
 		end
 	end
 
+	# Revoke role from user
+	# @param [Integer] user_id User id
+	# @param [Integer] role_id Role id
+	# @see EntityModel#delete
 	def self.revoke_role(user_id, role_id)
 		user = User.find_by_id user_id
 
@@ -271,6 +327,10 @@ class User_Role_relation < EntityModel
 		end
 	end
 
+	# Gets users role ids in an array
+	# @see User_Role_relation#get_user_roles
+	# @param [Integer] user_id User id
+	# @return [Array<Integer>] Role ids
 	def self.get_user_roles_ids(user_id)
 		ids = self.get "role_id", "user_id = ?", user_id
 		ids.map! do |ent|
@@ -278,6 +338,10 @@ class User_Role_relation < EntityModel
 		end
 	end
 	
+	# Gets users roles in an array
+	# @see User_Role_relation#get_user_roles_ids
+	# @param [Integer] user_id User id
+	# @return [Array<Role>] Roles 
 	def self.get_user_roles(user_id)
 		roleids = self.get_user_roles_ids user_id
 		roles = roleids.map do |id| 
@@ -300,6 +364,9 @@ class Auction < EntityModel
 		@end_time = data["end_time"].to_i
 	end
 
+	# Validates auction params
+	# @return [Boolean] Success?
+	# @return [String] Error string
 	def self.validate_ah(title, description, init_price, delta_time)
 		return false, AUCTION_ERRORS[:titlelen] unless title.length.between?(MIN_TITLE_LEN, MAX_TITLE_LEN)
 		return false, AUCTION_ERRORS[:initprice] unless init_price >= MIN_INIT_PRICE
@@ -308,6 +375,14 @@ class Auction < EntityModel
 		return true, ""
 	end
 
+	# Creates an auction post
+	# @param [Integer] user_id Posters id
+	# @param [String] title 
+	# @param [String] description
+	# @param [Float] init_price Initial price offering 
+	# @param [Integer] delta_time Auction duration in seconds
+	# @see EntityModel#insert
+	# @see Auction#validate_ah
 	def self.create(user_id, title, description, init_price, delta_time) 
 		# Validate the input
 		check, errorstr = self.validate_ah(title, description, init_price, delta_time)
@@ -330,6 +405,8 @@ class Auction < EntityModel
 		self.insert data
 	end
 
+	# Composes SQL query filters for the auction searching function
+	# @return [string] Query filters
 	def self.compose_query_filters(title=nil, categories=nil, min_price=nil, max_price=nil, expired=nil)
 		querystr = "SELECT * FROM Auction WHERE "
 		filters = []
@@ -366,17 +443,28 @@ class Auction < EntityModel
 		return querystr
 	end
 
+	# Searches the database for related auctions that fit the params
+	# @param [String] title
+	# @param [Array<Integer>] categories Category ids
+	# @param [Integer] min_price
+	# @param [Integer] max_price
+	# @param [Boolean] expired
+	# @return [Array<Auction>] Array of auctions
 	def self.search(title=nil, categories=nil, min_price=nil, max_price=nil, expired=nil)
 		q = self.compose_query_filters title, categories, min_price, max_price, expired	
 		data = self.query(q) 
 		data.map! {|dat| self.new(dat)}
 	end
 
+	# Checks if expired
+	# @return [Boolean]
 	def self.expired?(id)
 		ah = self.find_by_id id
 		ah && ah.expired?
 	end
 
+	# Edits auction title and description
+	# @see EntityModel#update
 	def edit(title, description)
 		return false, AUCTION_ERRORS[:titlelen] unless title.length.between?(MIN_TITLE_LEN, MAX_TITLE_LEN)
 		return false, AUCTION_ERRORS[:desclen] unless description.length.between?(MIN_DESC_LEN, MAX_DESC_LEN)
@@ -388,6 +476,7 @@ class Auction < EntityModel
 		Auction.update data, "id = ?", @id
 	end
 
+	# Deletes the auction
 	def delete 
 		FileUtils.rm_rf("./public/auctions/#{@id}") # delete all images
 
@@ -397,49 +486,74 @@ class Auction < EntityModel
 		Bid.delete "auction_id = ?", @id 
 	end
 
+	# Auction poster object
+	# @return [User]
 	def poster
 		User.find_by_id @user_id
 	end
 
+	# Auction images
+	# @return [Array<Image>]
 	def images
 		Image.get_relation @id
 	end
 
+	# Auctions category ids
+	# @see Auction#categories
+	# @return [Array<Integer>] Array of ids
 	def category_ids
 		data = Auction_Category_relation.get "category_id", "auction_id = ?", @id
 		data && data.map! {|category| category["category_id"].to_i}
 	end
 
+	# Auctions categories
+	# @see Auction#category_ids
+	# @return [Array<Category>] Array of categories
 	def categories
 		data = self.category_ids
 		data && data.map! { |catid| Category.find_by_id catid}
 	end
 
+	# @see Auction#expired?
 	def expired?
 		Time.now.to_i > @end_time
 	end
 
+	# Time left
+	# @return [Integer] Time left in seconds
 	def time_left
 		@end_time - Time.now.to_i
 	end
 
+	# Time left 
+	# @return [String] Formatted time string
 	def time_left_s
 		left = self.time_left
 		return format_time(left)
 	end
 
+	# Get auctions bids
+	# @return [Array<Bid>] Bids
 	def bids
 		Bid.get_bids(@id)
 	end
 
+	# Place bid on auction
+	# @param [Integer] uid Bidders id (user)
+	# @param [Float] amount 
+	# @param [String] message
+	# @see Bid#place 
 	def place_bid(uid, amount, message)
 		Bid.place(@id, uid, amount, message)
 	end
 
+	# Get the dominant bid object
+	# @return [Bid]
 	def max_bid 
 		max_bid = self.bids.max_by {|bid| bid.amount}
 	end
 
+	# Current bid
 	def current_bid
 		mbid = self.max_bid
 		if mbid != nil then
@@ -449,6 +563,7 @@ class Auction < EntityModel
 		end
 	end
 
+	# Minimum required new bid 
 	def min_new_bid
 		max_bid = self.max_bid
 		amount = max_bid.nil? ? @init_price : max_bid.amount 
@@ -467,35 +582,40 @@ class Bid < EntityModel
 		@message = data["message"]
 	end
 
+	# Gets auctions bids
 	def self.get_bids(ahid)
 		data = self.get "*", "auction_id = ?", ahid
 		data && data.map! {|dat| self.new(dat)}
 	end
 
+	# Get users bids
 	def self.get_user_bids(uid)
 		data = self.get "*", "user_id = ?", uid
 		data && data.map! {|dat| self.new(dat)}
 	end
 
+	# Users bids active amount
 	def self.get_user_active_amount(uid)
 		bids = self.get_user_bids uid
 		return bids.sum {|bid| bid.amount}
 	end
 
+	# How much more the users new bid is from their last bid
+	# @return [Float] 
 	def self.get_delta_amount(ahid, uid, amount)
 		data = self.get "*", "auction_id = ? AND user_id = ?", ahid, uid
 		if data and data.length > 0 then 
 			data.map! {|dat| self.new(dat)}
 			max_bid = data.max_by {|bid| bid.amount}
-			p "sgiodfhgiodfhioghoi"
-			p data
-			p "sgiodfhgiodfhioghoi"
 			return amount - max_bid.amount
 		else
 			return amount
 		end
 	end
 
+	# Validate a new bid
+	# @return [Boolean] Success?
+	# @return [String] Error message
 	def self.validate_bid(ahid, uid, amount, message)
 		ah = Auction.find_by_id ahid
 		return false, "Invalid auction" unless ah.is_a? Auction
@@ -506,6 +626,15 @@ class Bid < EntityModel
 		return true, ""
 	end
 
+	# Place a new bid
+	# @param [Integer] ahid Auction id
+	# @param [Integer] uid User id
+	# @param [Float] amount
+	# @param [String] message
+	# @see EntityModel#insert
+	# @see Bid#validate_bid 
+	# @return [Boolean] Success?
+	# @return [String, Hash] Error message or insert query data
 	def self.place(ahid, uid, amount, message)
 		check, resp = self.validate_bid(ahid, uid, amount, message)
 		if check then
@@ -535,6 +664,8 @@ class Category < EntityModel
 		@color = data["color"]
 	end
 
+	# Create a new category
+	# @see EntityModel#insert
 	def self.create(name, color)
 		data = {
 			name: name,
@@ -552,6 +683,8 @@ class Auction_Category_relation < EntityModel
 		@category_id = data["category_id"]
 	end
 
+	# Get all auctions that have the specified category
+	# @return [Array<Integer>] Auction ids
 	def self.category_auction_ids(catid)
 		ids = self.get "auction_id", "category_id = ?", catid	
 		ids && ids.map! {|id| id["auction_id"].to_i}
@@ -568,6 +701,10 @@ class Image < EntityModel
 		@url = data["url"]
 	end
 
+	# Save an image to the DB and disk
+	# @param [Image Data] imgdata
+	# @param [Integer] ah_id Auction id
+	# @param [Integer] order Image order on the auction page
 	def self.save(imgdata, ah_id, order)
 		FileUtils.mkdir_p "./public/auctions/#{ah_id}"
 
@@ -588,6 +725,8 @@ class Image < EntityModel
 		end
 	end
 
+	# Gets the auction image relation
+	# @return [Array<Image>] Auction images
 	def self.get_relation(ah_id)
 		imgs = self.get "*", "auction_id = ?", ah_id
 		imgs.map! do |img|

@@ -38,6 +38,10 @@ not_found do
 	serve :"404"
 end
 
+# Return a flash with some error message
+# @param [String] msg Message
+# @param [Integer] status HTTP Status Code
+# @param [String] ret Return route 
 def auth_denied(msg=AUTH_ERRORS[:denied], status=403, ret=back)
 	session[:status] = status
 	session[:ret] = ret
@@ -45,18 +49,26 @@ def auth_denied(msg=AUTH_ERRORS[:denied], status=403, ret=back)
 	redirect ret
 end
 
+# Wrapper for auth_denied when something goes wrong
+# @see #auth_denied
 def no_go_away(ret=back)
 	auth_denied "No! GO AWAY!", 403, ret
 end
 
+# Banned response
+# @see #auth_denied
 def banned(ret=back)
 	auth_denied "You are banned!", 403, ret
 end
 
+# Error response
+# @see #auth_denied
 def error(ret=back)
 	auth_denied "Internal server error.", 500, ret
 end
 
+# Ratelimit response
+# @see #auth_denied
 def ratelimit(delta_time, ret="/")
 	auth_denied "You must wait #{format_time(delta_time)} to do that again!", 429, ret
 end
