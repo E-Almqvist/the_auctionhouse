@@ -1,0 +1,87 @@
+GIT
+  remote: https://github.com/chrisb/yard-sinatra
+  revision: 226e048f615bdf068e65010d47f8cb143fd08865
+  specs:
+    yard-sinatra (2.0.0.beta)
+      activesupport
+      yard (~> 0.7)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport (7.0.2.3)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      tzinfo (~> 2.0)
+    bcrypt (3.1.17)
+    colorize (0.8.1)
+    concurrent-ruby (1.1.10)
+    ffi (1.15.5)
+    fileutils (1.6.0)
+    i18n (1.10.0)
+      concurrent-ruby (~> 1.0)
+    minitest (5.15.0)
+    multi_json (1.15.0)
+    mustermann (1.1.1)
+      ruby2_keywords (~> 0.0.1)
+    psych (4.0.3)
+      stringio
+    rack (2.2.3)
+    rack-protection (2.2.0)
+      rack
+    rdoc (6.4.0)
+      psych (>= 4.0.0)
+    rmagick (4.2.5)
+    ruby2_keywords (0.0.5)
+    sassc (2.4.0)
+      ffi (~> 1.9)
+    sinatra (2.2.0)
+      mustermann (~> 1.0)
+      rack (~> 2.2)
+      rack-protection (= 2.2.0)
+      tilt (~> 2.0)
+    sinatra-contrib (2.2.0)
+      multi_json
+      mustermann (~> 1.0)
+      rack-protection (= 2.2.0)
+      sinatra (= 2.2.0)
+      tilt (~> 2.0)
+    sinatra-flash (0.3.0)
+      sinatra (>= 1.0.0)
+    sinatra-reloader (1.0)
+      sinatra-contrib
+    slim (4.1.0)
+      temple (>= 0.7.6, < 0.9)
+      tilt (>= 2.0.6, < 2.1)
+    sqlite3 (1.4.2)
+    stringio (3.0.1)
+    temple (0.8.2)
+    tilt (2.0.10)
+    tzinfo (2.0.4)
+      concurrent-ruby (~> 1.0)
+    webrick (1.7.0)
+    yard (0.9.27)
+      webrick (~> 1.7.0)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  bcrypt
+  colorize
+  fileutils (~> 1.6)
+  rdoc (~> 6.4)
+  rmagick (~> 4.2)
+  sassc
+  sinatra
+  sinatra-flash (~> 0.3.0)
+  sinatra-reloader
+  slim
+  sqlite3
+  webrick (~> 1.7)
+  yard (~> 0.9.27)
+  yard-sinatra!
+
+BUNDLED WITH
+   2.3.10

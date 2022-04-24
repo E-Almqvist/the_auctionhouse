@@ -1,3 +1,7 @@
 src/db/
-src/vendor/
+vendor/
 src/public/auctions/
+/.yardoc/
+/_yardoc/
+/doc/
+/rdoc/
