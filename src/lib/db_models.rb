@@ -462,10 +462,13 @@ class Bid < EntityModel
 
 	def self.get_delta_amount(ahid, uid, amount)
 		data = self.get "*", "auction_id = ?, user_id = ?", ahid, uid
-		data && data.map! {|dat| self.new(dat)}
-
-		p data
-		return amount
+		if data then 
+			data.map! {|dat| self.new(dat)}
+			max_bid = data.max_by {|bid| bid.amount}
+			return amount - max_bid
+		else
+			return amount
+		end
 	end
 
 	def self.validate_bid(ahid, uid, amount, message)
