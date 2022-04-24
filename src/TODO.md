@@ -1,5 +1,4 @@
 # TODO
- - Yardoc 50%
  - Film
 
 ## Refactor

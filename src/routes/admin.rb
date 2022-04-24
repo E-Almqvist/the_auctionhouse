@@ -1,6 +1,8 @@
 ###############
 # Admin panel #
 ###############
+
+# Admin panel
 get "/admin" do
 	flags = get_current_user.flags
 
@@ -17,7 +19,9 @@ get "/admin" do
 	serve :"admin/index", {flags: flags, data: data}
 end
 
-# ADMIN USER MANAGEMENT
+# Ban user
+# @param [Integer] id
+# @see User#banned=
 get "/admin/users/:id/ban" do
 	auth_denied unless get_current_user.admin?
 	id = params[:id].to_i
@@ -30,6 +34,9 @@ get "/admin/users/:id/ban" do
 	redirect back
 end
 
+# Unban user
+# @param [Integer] id
+# @see User#banned=
 get "/admin/users/:id/unban" do
 	auth_denied unless get_current_user.admin?
 	id = params[:id].to_i
@@ -42,6 +49,8 @@ get "/admin/users/:id/unban" do
 	redirect back
 end
 
+# Edit user credentials
+# @param [Integer] id
 get "/admin/users/:id/edit" do
 	auth_denied unless get_current_user.admin?
 	id = params[:id].to_i
@@ -50,6 +59,9 @@ get "/admin/users/:id/edit" do
 	serve :"admin/users/edit", {user: user}
 end
 
+# Give role to user
+# @param [Integer] user_id User id
+# @param [Integer] role_id Role id
 post "/admin/users/rolegive" do
 	user = get_current_user
 	auth_denied unless user.permitted?(:roleman)
@@ -69,6 +81,9 @@ post "/admin/users/rolegive" do
 	end
 end
 
+# Revoke role from user
+# @param [Integer] user_id User id
+# @param [Integer] role_id Role id
 post "/admin/users/rolerevoke" do
 	user = get_current_user
 	auth_denied unless user.permitted?(:roleman)
@@ -86,7 +101,10 @@ post "/admin/users/rolerevoke" do
 	end
 end
 
-
+# Set users money
+# @param [Integer] id
+# @param [Float] money
+# @see User#balance=
 post "/admin/users/setmoney" do
 	user = get_current_user
 	auth_denied unless user.permitted? :moneyman
@@ -102,6 +120,9 @@ post "/admin/users/setmoney" do
 	redirect back
 end
 
+# Set users reputation score
+# @param [Integer] id
+# @param [Float] reputation
 post "/admin/users/setreputation" do
 	user = get_current_user
 	auth_denied unless user.admin? 
@@ -118,19 +139,23 @@ post "/admin/users/setreputation" do
 end
 
 # ADMIN ROLE MANAGEMENT
+
+# Role check for id
 def role_check(id)
 	no_go_away if ROLE_IDS.include? id
 	auth_denied unless get_current_user.permitted? :roleman
 end
 
+# Create role
+# @param [String] name 
+# @param [String] color Hex color
+# @param [Integer Bitmap] flags
 post "/admin/roles" do
 	user = get_current_user
 	auth_denied unless user.permitted? :roleman
 
 	name = params[:name]
 	color = params[:color]
-	flags = params[:flags]
-
 	flags = params[:flags].to_i
 	flags = verify_flags(flags, user.flags)
 
@@ -143,6 +168,8 @@ post "/admin/roles" do
 	redirect back
 end
 
+# Delete role
+# @param [Integer] id
 get "/admin/roles/:id/delete" do
 	id = params[:id].to_i
 	role_check id
@@ -153,6 +180,8 @@ get "/admin/roles/:id/delete" do
 	redirect back
 end
 
+# Edit role form
+# @param [Integer] id
 get "/admin/roles/:id/edit" do
 	id = params[:id].to_i
 	role_check id
@@ -165,6 +194,7 @@ get "/admin/roles/:id/edit" do
 	end
 end
 
+# Very user flags for operation
 def verify_flags(flags, userflags)
 	# TODO: check if this actually works
 	# should work in practise but who knows
@@ -173,6 +203,11 @@ def verify_flags(flags, userflags)
 	return newflags
 end
 
+# Update role
+# @param [Integer] id
+# @param [String] name New name
+# @param [String] color New hex color
+# @param [Integer Bitmap] flags 
 post "/admin/roles/:id/update" do
 	id = params[:id].to_i
 	user = get_current_user
@@ -194,6 +229,10 @@ end
 
 
 # ADMIN CATEGORY MANAGEMENT
+
+# Create category
+# @param [String] name 
+# @param [String] color Hex color string
 post "/admin/categories" do
 	user = get_current_user
 	auth_denied unless user.permitted? :cateman
@@ -210,6 +249,8 @@ post "/admin/categories" do
 	redirect back
 end
 
+# Delete a category
+# @param [Integer] id
 get "/admin/categories/:id/delete" do
 	id = params[:id].to_i
 	user = get_current_user
@@ -221,6 +262,8 @@ get "/admin/categories/:id/delete" do
 	redirect back
 end
 
+# Edit category form
+# @param [Integer] id
 get "/admin/categories/:id/edit" do
 	id = params[:id].to_i
 	user = get_current_user
@@ -234,6 +277,10 @@ get "/admin/categories/:id/edit" do
 	end
 end
 
+# Update category
+# @param [Integer] id
+# @param [String] name New name
+# @param [String] color New hex color
 post "/admin/categories/:id/update" do
 	id = params[:id].to_i
 	user = get_current_user
