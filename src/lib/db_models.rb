@@ -350,7 +350,7 @@ class Auction < EntityModel
 				if ah_ids == [] then
 					ah_ids = Auction_Category_relation.category_auction_ids(catid) # first time then include all
 				else
-					ah_ids |= Auction_Category_relation.category_auction_ids(catid) # union
+					ah_ids |= Auction_Category_relation.category_auction_ids(catid) # do union for all ids (prevent dupes)
 				end
 			end
 			filters << "id IN (#{ah_ids.join(", ")})" # check if the auction id is any of the ids calculated above

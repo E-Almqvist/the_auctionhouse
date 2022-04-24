@@ -43,28 +43,28 @@
 
     #posts.card
       h2 Recent posts
-      - if user.auctions.length > 0
-        article.post-container.card
-            ul.list-container
-              - user.auctions.reverse.each do |auction|
-                li
-                  a href="/auctions/#{auction.id}"
-                    div style="background-image: url(#{auction.images[0].url})"
-                    .info-container
-                      h3
-                        | #{auction.title}
-                        - if auction.time_left > 0
-                          |  (
-                          span.red
-                            | #{auction.time_left_s}
-                          | )
-                        - if auction.end_time and auction.end_time - Time.now.to_i <= 0
-                          span.red
-                            |  [Expired]
-                      h4
-                        | #{COINS_PREFIX}#{auction.current_bid}#{COINS_SUFFIX}
-                      p
-                        | #{auction.description}
-      - else
-         h3.tcenter No activity yet...
+      article.post-container.card
+        - if user.auctions.length > 0
+          ul.list-container
+            - user.auctions.reverse.each do |auction|
+              li
+                a href="/auctions/#{auction.id}"
+                  div style="background-image: url(#{auction.images[0].url})"
+                  .info-container
+                    h3
+                      | #{auction.title}
+                      - if auction.time_left > 0
+                        |  (
+                        span.red
+                          | #{auction.time_left_s}
+                        | )
+                      - if auction.end_time and auction.end_time - Time.now.to_i <= 0
+                        span.red
+                          |  [Expired]
+                    h4
+                      | #{COINS_PREFIX}#{auction.current_bid}#{COINS_SUFFIX}
+                    p
+                      | #{auction.description}
+        - else
+           h3.tcenter No activity yet...
 

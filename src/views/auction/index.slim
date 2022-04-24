@@ -10,9 +10,9 @@
           label Price range
           .range-container
             label for="price-min" From:
-            input type="number" name="min_price" value="#{params[:min_price].to_f >= 0 ? params[:min_price] : ""}" min="#{MIN_INIT_PRICE}" max="#{MAX_INIT_PRICE}"
+            input type="number" name="min_price" value="#{params[:min_price]}" min="#{MIN_INIT_PRICE}" max="#{MAX_INIT_PRICE}"
             label for="price-max" To:
-            input type="number" name="max_price" value="#{params[:min_price].to_f >= 0 ? params[:min_price] : ""}" min="#{MIN_INIT_PRICE}" max="#{MAX_INIT_PRICE}"
+            input type="number" name="max_price" value="#{params[:min_price]}" min="#{MIN_INIT_PRICE}" max="#{MAX_INIT_PRICE}"
 
           .checkbox-container
             input type="checkbox" name="expired" checked=("checked" if params[:expired] == "on")
@@ -29,25 +29,29 @@
 
     article.post-container.card
       h2 Results
-      ul.list-container
-        - auctions.each do |auction|
-          li
-            a href="/auctions/#{auction.id}"
-              div style="background-image: url(#{auction.images[0].url})"
-              .info-container
-                h3
-                  | #{auction.title}
-                  - if auction.time_left > 0
-                    |  (
-                    span.red
-                      | #{auction.time_left_s}
-                    | )
-                  - if auction.end_time and auction.end_time - Time.now.to_i <= 0
-                    span.red
-                      |  [Expired]
-                h4
-                  | Posted by: #{auction.poster.name}
-                h4
-                  | #{COINS_PREFIX}#{auction.current_bid}#{COINS_SUFFIX}
-                p
-                  | #{auction.description}
+      
+      - if auctions.length > 0
+        ul.list-container
+          - auctions.each do |auction|
+            li
+              a href="/auctions/#{auction.id}"
+                div style="background-image: url(#{auction.images[0].url})"
+                .info-container
+                  h3
+                    | #{auction.title}
+                    - if auction.time_left > 0
+                      |  (
+                      span.red
+                        | #{auction.time_left_s}
+                      | )
+                    - if auction.end_time and auction.end_time - Time.now.to_i <= 0
+                      span.red
+                        |  [Expired]
+                  h4
+                    | Posted by: #{auction.poster.name}
+                  h4
+                    | #{COINS_PREFIX}#{auction.current_bid}#{COINS_SUFFIX}
+                  p
+                    | #{auction.description}
+      - else
+        h3.tcenter No results :(
