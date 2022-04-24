@@ -22,6 +22,11 @@
           | #{auction.title}
         a.inlbutton href="javascript:history.back()"
           | [Go back]
+      h3
+        | Posted by: 
+        a href="/profile/#{auction.poster.id}"
+          | #{auction.poster.name}
+      br
       h3 = auction.description
       - if auction.categories.length > 0
         ul.list-container#category-list
