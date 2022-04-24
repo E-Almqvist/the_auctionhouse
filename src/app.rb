@@ -58,7 +58,7 @@ def error(ret=back)
 end
 
 def ratelimit(delta_time, ret="/")
-	auth_denied "Doing that a bit too fast... Please try again in #{delta_time} seconds.", 429, ret
+	auth_denied "You are doing that a bit too fast... Please try again in #{delta_time}s.", 429, ret
 end
 
 before do 
@@ -94,10 +94,6 @@ end
 
 get "/" do
 	serve :index
-end
-
-get "/404" do
-	serve :"404"
 end
 
 # Require all routes
