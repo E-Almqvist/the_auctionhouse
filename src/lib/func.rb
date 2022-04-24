@@ -11,6 +11,19 @@ def get_current_user
 	session[:userid] && User.find_by_id(session[:userid])
 end
 
+def format_time(seconds)
+	result = []
+	TIME_FORMATS.each do |sym, count|
+		amount = seconds.to_i / count
+		if amount > 0 then
+			result << "#{amount}#{sym.to_s}"
+			seconds -= count*amount
+		end
+	end
+	result = result[0...2]
+	return result.join ", "
+end
+
 # Serve templates
 def serve(template, locals={}, layout: :layout)
 	locals[:session_user] = get_current_user unless !is_logged_in

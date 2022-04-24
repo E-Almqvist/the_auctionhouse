@@ -1,6 +1,4 @@
 # TODO
- - Ratelimiting
- - User reviews (+rep / -rep)
  - Yardoc 50%
  - Film
 

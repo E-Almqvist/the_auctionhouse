@@ -58,7 +58,7 @@ def error(ret=back)
 end
 
 def ratelimit(delta_time, ret="/")
-	auth_denied "You are doing that a bit too fast... Please try again in #{delta_time}s.", 429, ret
+	auth_denied "You must wait #{format_time(delta_time)} to do that again!", 429, ret
 end
 
 before do 
@@ -69,7 +69,7 @@ before do
 		RATE_LIMIT_ROUTES.each do |t, cfg|
 			if request.path_info.start_with?(*cfg[:routes]) then
 				dt = Time.now.to_i - RATE_LIMITS[t][request.ip]
-				ratelimit(dt) unless dt > cfg[:time] # send a rate limit response if rate limited
+				ratelimit cfg[:time] - dt, back unless dt > cfg[:time] # send a rate limit response if rate limited
 				RATE_LIMITS[t][request.ip] = Time.now.to_i
 			end
 		end

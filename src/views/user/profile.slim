@@ -38,8 +38,14 @@
         - else
           h3.gray = user.reputation_text
         h4 Based on user reviews
-        a.button href="/profile/#{user.id}/rep"
-          | + Write a review
+
+        - unless user.id == session[:userid]
+          span
+            a.button.green href="/user/rep/#{user.id}?type=plus"
+              | +rep
+            | /
+            a.button.red href="/user/rep/#{user.id}?type=minus"
+              | -rep
 
     #posts.card
       h2 Recent posts

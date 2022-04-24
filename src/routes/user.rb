@@ -26,10 +26,34 @@ get "/profile" do
 end
 
 # Reputation
-get "/profile/:id/rep" do
-	userobj = User.find_by_id params[:id].to_i
-	if userobj then
-		serve :"user/rep", {user: userobj} 
+USER_REP_LIMIT ||= Hash.new(Hash.new(0))
+get "/user/rep/:id" do
+	if !is_logged_in then
+		session[:ret] = request.fullpath 
+		session[:status] = 403
+		flash[:error] = AUTH_ERRORS[:needed] 
+		redirect "/login"
+	end
+	
+
+	user = User.find_by_id params[:id].to_i
+	if user then
+		redirect "/profile/#{user.id}" unless params[:type]
+		auth_denied "You can not give yourself reputation points!" if user.id == session[:userid]
+
+		# Check the delta time and if we can ±rep again
+		dt = Time.now.to_i - USER_REP_LIMIT[session[:userid]][user.id]
+		ratelimit USER_REP_LIMIT_TIME - dt, "/profile/#{user.id}" unless dt > USER_REP_LIMIT_TIME
+
+		# Update rate limit
+		USER_REP_LIMIT[session[:userid]][user.id] = Time.now.to_i
+
+		# Add to user rep
+		delta = params[:type] == "plus" ? 1 : -1
+		user.reputation += delta
+
+		flash[:success] = "Gave '#{user.name.strip}' #{delta > 0 ? "+" : ""}#{delta} rep"
+		redirect "/profile/#{user.id}"
 	else
 		raise Sinatra::NotFound
 	end

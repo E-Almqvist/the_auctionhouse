@@ -81,15 +81,18 @@ TIME_FORMATS = {
 # Routes that needs auth
 AUTH_ROUTES = %w[/settings /auction /user /admin]
 
+# Limit for +rep/-rep
+USER_REP_LIMIT_TIME = 86400 # 1 day
+
 # Rate limits in seconds for each route category
 RATE_LIMIT_ROUTES = {
 	user: {
 		routes: %w[/user /settings /register /login /logout],
-		time: 1
+		time: 2
 	},
 	auction: {
 		routes: %w[/auctions],
-		time: 1
+		time: 2
 	}
 }
 

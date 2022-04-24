@@ -68,6 +68,11 @@ class User < EntityModel
 		User.update({balance: val}, "id = ?", @id)
 	end
 
+	def reputation=(val)
+		@reputation = val
+		User.update({reputation: val}, "id = ?", @id)
+	end
+
 	def update_creds(data)
 		# Validate input
 		return false, SETTINGS_ERRORS[:name_len] unless data[:name].length.between?(MIN_NAME_LEN, MAX_NAME_LEN)
@@ -420,16 +425,7 @@ class Auction < EntityModel
 
 	def time_left_s
 		left = self.time_left
-		result = []
-		TIME_FORMATS.each do |sym, count|
-			amount = left.to_i / count
-			if amount > 0 then
-				result << "#{amount}#{sym.to_s}"
-				left -= count*amount
-			end
-		end
-		result = result[0...2]
-		return result.join ", "
+		return format_time(left)
 	end
 
 	def bids
