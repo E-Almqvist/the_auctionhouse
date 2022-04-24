@@ -66,7 +66,9 @@
           - auction.bids.reverse_each do |bid|
             li
               h3 
-                | #{User.find_by_id(bid.user_id).name} bid 
+                a.inlbutton.gray href="/profile/#{bid.user_id}"
+                  | #{User.find_by_id(bid.user_id).name.strip}
+                |  bid 
                 span
                   | #{COINS_PREFIX}#{bid.amount.round 2}#{COINS_SUFFIX}
               h4 = "#{bid.message}"

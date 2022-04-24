@@ -20,10 +20,9 @@
 
           - if Category.get_all.length > 0
             label Categories
-            - Category.get_all.each do |category|
-              .checkbox-container
-                input type="checkbox" name="category-#{category.id}" value="#{category.id}" 
-                label style="color: #{category.color};" = "#{category.name}"
+            select.card.border multiple="" name="categories[]"
+              - Category.get_all.each do |category|
+                  option value="#{category.id}" selected=("selected" if params[:categories]&.include? category.id) style="color: #{category.color};" #{category.name}
 
           input type="submit" value="Search"
       a.button href="/auctions" = "Clear Filters"

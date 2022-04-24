@@ -1,13 +1,12 @@
 # Auction stuff
 get "/auctions" do
 	title = params[:title]
-	#categories = (params[:categories].split ",").map {|id| id.to_i} 
-	#price_rng = (params[:price_rng].split "-").map {|p| p.to_i}
-	expired = params[:expired]
+	categories = params[:categories]
+	min_price = params[:min_price]
+	max_price = params[:max_price]
+	expired = params[:expired] == "on"
 
-	# TODO FIX THIS
-	auctions = Auction.search title #, categories, price_rng, expired
-	p auctions
+	auctions = Auction.search title, categories, min_price, max_price, expired
 	serve :"auction/index", {auctions: auctions}
 end
 

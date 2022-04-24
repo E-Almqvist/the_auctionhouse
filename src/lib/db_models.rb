@@ -427,7 +427,25 @@ class Bid < EntityModel
 		data && data.map! {|dat| self.new(dat)}
 	end
 
-	private def self.validate_bid(ahid, uid, amount, message)
+	def self.get_user_bids(uid)
+		data = self.get "*", "user_id = ?", uid
+		data && data.map! {|dat| self.new(dat)}
+	end
+
+	def self.get_user_active_amount(uid)
+		bids = self.get_user_bids uid
+		return bids.sum {|bid| bid.amount}
+	end
+
+	def self.get_delta_amount(ahid, uid, amount)
+		data = self.get "*", "auction_id = ?, user_id = ?", ahid, uid
+		data && data.map! {|dat| self.new(dat)}
+
+		p data
+		return amount
+	end
+
+	def self.validate_bid(ahid, uid, amount, message)
 		ah = Auction.find_by_id ahid
 		return false, "Invalid auction" unless ah.is_a? Auction
 		return false, AUCTION_ERRORS[:expired] unless not ah.expired?
@@ -439,6 +457,11 @@ class Bid < EntityModel
 	def self.place(ahid, uid, amount, message)
 		check, resp = self.validate_bid(ahid, uid, amount, message)
 		if check then
+			# Deduct delta amount from balance
+			delta_amount = self.get_delta_amount(ahid, uid, amount)
+			user = User.find_by_id uid
+			user.balance -= delta_amount
+
 			payload = {
 				auction_id: ahid,
 				user_id: uid,
@@ -449,7 +472,6 @@ class Bid < EntityModel
 		end
 		return check, resp
 	end
-
 end
 
 
