@@ -1,9 +1,10 @@
 # Auction stuff
 get "/auctions" do
-	title = params[:title]
+	title = params[:title] and params[:title] != "" ? params[:title].strip : nil
 	categories = params[:categories]
-	min_price = params[:min_price]
-	max_price = params[:max_price]
+	categories.map! {|catid| catid.to_i} unless categories.nil?
+	min_price = params[:min_price].to_f > 0 ? params[:min_price].to_f : nil
+	max_price = params[:max_price].to_f > 0 ? params[:max_price].to_f : nil
 	expired = params[:expired] == "on"
 
 	auctions = Auction.search title, categories, min_price, max_price, expired

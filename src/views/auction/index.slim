@@ -5,24 +5,24 @@
       .form-container
         form action="/auctions" method="get"
           label Keywords
-          input type="search" name="title" placeholder="Keywords (ex: computer, teapot)"
+          input type="search" name="title" placeholder="ex: computer, teapot"
 
           label Price range
           .range-container
             label for="price-min" From:
-            input type="number" name="price-min" min="#{MIN_INIT_PRICE}" max="#{MAX_INIT_PRICE}"
+            input type="number" name="min_price" value="#{params[:min_price].to_f >= 0 ? params[:min_price] : ""}" min="#{MIN_INIT_PRICE}" max="#{MAX_INIT_PRICE}"
             label for="price-max" To:
-            input type="number" name="price-max" min="#{MIN_INIT_PRICE}" max="#{MAX_INIT_PRICE}"
+            input type="number" name="max_price" value="#{params[:min_price].to_f >= 0 ? params[:min_price] : ""}" min="#{MIN_INIT_PRICE}" max="#{MAX_INIT_PRICE}"
 
           .checkbox-container
-            input type="checkbox" name="expired" 
+            input type="checkbox" name="expired" checked=("checked" if params[:expired] == "on")
             label Expired?
 
           - if Category.get_all.length > 0
             label Categories
-            select.card.border multiple="" name="categories[]"
+            select multiple="" name="categories[]"
               - Category.get_all.each do |category|
-                  option value="#{category.id}" selected=("selected" if params[:categories]&.include? category.id) style="color: #{category.color};" #{category.name}
+                option value="#{category.id}" selected=("selected" if params[:categories] and params[:categories].include?(category.id.to_s)) style="color: #{category.color};" #{category.name}
 
           input type="submit" value="Search"
       a.button href="/auctions" = "Clear Filters"

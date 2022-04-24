@@ -324,22 +324,45 @@ class Auction < EntityModel
 		self.insert data
 	end
 
-	def self.compose_query_filters(title=nil, categories=nil, price_rng=nil, expired=nil)
-		querystr = "SELECT * FROM Auction "
-		querystr += "WHERE " if (title and title.length != 0) or categories or price_rng or expired
-
+	def self.compose_query_filters(title=nil, categories=nil, min_price=nil, max_price=nil, expired=nil)
+		querystr = "SELECT * FROM Auction WHERE "
 		filters = []
+
+		# Title filter
 		filters << "title LIKE '%#{title}%'" if title and title.length != 0
-		filters << "price BETWEEN #{price_rng[0]} AND #{price_rng[1]}" if price_rng && price_rng.length == 2
-		filters << "end_time < #{Time.now.to_i}" if !expired.nil?
+
+		# Price filters
+		if min_price and max_price then
+			filters << "price BETWEEN #{min_price} AND #{max_price}" 
+		elsif min_price then
+			filters << "price >= #{min_price}" 
+		elsif max_price then
+			filters << "price <= #{max_price}" 
+		end
+
+		# Time filter
+		filters << "end_time #{ expired == true ? "<" : ">" } #{Time.now.to_i}" 
+
+		# Categories filter
+		if categories then
+			ah_ids = []
+			categories.each do |catid|
+				if ah_ids == [] then
+					ah_ids = Auction_Category_relation.category_auction_ids(catid) # first time then include all
+				else
+					ah_ids |= Auction_Category_relation.category_auction_ids(catid) # union
+				end
+			end
+			filters << "id IN (#{ah_ids.join(", ")})" # check if the auction id is any of the ids calculated above
+		end
 
 		querystr += filters.join " AND "
 		return querystr
 	end
 
-	def self.search(title=nil, categories=nil, price_rng=nil, expired=nil)
-		q = self.compose_query_filters title, categories, price_rng, expired	
-		data = self.query(q) or []
+	def self.search(title=nil, categories=nil, min_price=nil, max_price=nil, expired=nil)
+		q = self.compose_query_filters title, categories, min_price, max_price, expired	
+		data = self.query(q) 
 		data.map! {|dat| self.new(dat)}
 	end
 
@@ -498,6 +521,11 @@ class Auction_Category_relation < EntityModel
 		super data
 		@auction_id = data["auction_id"]
 		@category_id = data["category_id"]
+	end
+
+	def self.category_auction_ids(catid)
+		ids = self.get "auction_id", "category_id = ?", catid	
+		ids && ids.map! {|id| id["auction_id"].to_i}
 	end
 end
 
