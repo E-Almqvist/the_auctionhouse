@@ -32,18 +32,7 @@ end
 enable :sessions
 db_init
 
-before do 
-	route_auth_needed = request.path_info.start_with?(*AUTH_ROUTES)
-
-	if !is_logged_in && route_auth_needed then
-		session[:ret] = request.fullpath # TODO: return the user to the previous route
-		session[:status] = 403
-		flash[:error] = AUTH_ERRORS[:needed] 
-		redirect "/login"
-	elsif route_auth_needed && get_current_user.banned?
-		banned
-	end
-end
+RATE_LIMITS ||= Hash.new(Hash.new(0))
 
 not_found do 
 	serve :"404"
@@ -66,6 +55,36 @@ end
 
 def error(ret=back)
 	auth_denied "Internal server error.", 500, ret
+end
+
+def ratelimit(delta_time, ret="/")
+	auth_denied "Doing that a bit too fast... Please try again in #{delta_time} seconds.", 429, ret
+end
+
+before do 
+	# Ratelimiting
+	# check if route contains any of the protected ones
+	# and if it is a POST request (dont care about GETs)
+	if request.path_info.start_with?(*RATE_LIMIT_ROUTES_ALL) and request.request_method == "POST" then 
+		RATE_LIMIT_ROUTES.each do |t, cfg|
+			if request.path_info.start_with?(*cfg[:routes]) then
+				dt = Time.now.to_i - RATE_LIMITS[t][request.ip]
+				ratelimit(dt) unless dt > cfg[:time] # send a rate limit response if rate limited
+				RATE_LIMITS[t][request.ip] = Time.now.to_i
+			end
+		end
+	end
+
+	# Authentication check
+	route_auth_needed = request.path_info.start_with?(*AUTH_ROUTES)
+	if !is_logged_in && route_auth_needed then
+		session[:ret] = request.fullpath # TODO: return the user to the previous route
+		session[:status] = 403
+		flash[:error] = AUTH_ERRORS[:needed] 
+		redirect "/login"
+	elsif route_auth_needed && get_current_user.banned?
+		banned
+	end
 end
 
 # Routes

@@ -383,6 +383,15 @@ class Auction < EntityModel
 		Auction.update data, "id = ?", @id
 	end
 
+	def delete 
+		FileUtils.rm_rf("./public/auctions/#{@id}") # delete all images
+
+		Auction.delete "id = ?", @id # delete the actual post entry
+		Auction_Category_relation.delete "auction_id = ?", @id
+		Image.delete "auction_id = ?", @id
+		Bid.delete "auction_id = ?", @id 
+	end
+
 	def poster
 		User.find_by_id @user_id
 	end

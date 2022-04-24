@@ -1,6 +1,6 @@
 # TODO
- - Post editing & deleting
- - User reviews
+ - Ratelimiting
+ - User reviews (+rep / -rep)
  - Yardoc 50%
  - Film
 

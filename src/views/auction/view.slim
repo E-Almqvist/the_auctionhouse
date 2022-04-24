@@ -20,6 +20,7 @@
       h2
         span
           | #{auction.title}
+      h3
         - if auction.user_id == session_user.id or session_user.admin?
           a.inlbutton href="/auctions/#{auction.id}/edit"
             | [Edit]

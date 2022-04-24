@@ -23,13 +23,12 @@ post "/auctions" do
 	init_price = params[:init_price].to_f
 	delta_time = params[:delta_time].to_i * 3600 # hours to seconds
 	images = params[:images] 
-
+	
 	# Min image count check
 	if images.nil? or images.length < AH_MIN_IMAGES then
 		flash[:error] = AUCTION_ERRORS[:imagecount]
 		redirect "/auctions/new"
 	end
-	# 
 
 	# Create the auction
 	newid, resp = Auction.create user_id, title, description, init_price, delta_time
@@ -91,12 +90,9 @@ get "/auctions/:id/delete" do
 		auth_denied unless auction.user_id == session[:userid] or get_current_user.admin?
 
 		# Delete everything related in the db
-		Auction.delete "id = ?", id
-		Auction_Category_relation.delete "auction_id = ?", id
-		Bid.delete "auction_id = ?", id 
+		auction.delete 
 
 		flash[:success] = "Removed post."
-
 		redirect "/auctions"
 	else
 		raise Sinatra::NotFound

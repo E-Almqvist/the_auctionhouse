@@ -5,7 +5,7 @@
       .form-container
         form action="/auctions" method="get"
           label Title
-          input type="search" name="title" placeholder="ex: 'teapot'"
+          input type="search" name="title" placeholder="ex: 'teapot'" value="#{params[:title]}"
 
           label Price range
           .range-container
@@ -25,7 +25,7 @@
                 option value="#{category.id}" selected=("selected" if params[:categories] and params[:categories].include?(category.id.to_s)) style="color: #{category.color};" = "#{category.name}" 
 
           input type="submit" value="Search"
-      a.button href="/auctions" = "Clear Filters"
+        a.button href="/auctions" = "Clear Filters"
 
     article.post-container.card
       h2 Results

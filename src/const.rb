@@ -78,7 +78,22 @@ TIME_FORMATS = {
 	s: 1
 }
 
-
 # Routes that needs auth
 AUTH_ROUTES = %w[/settings /auction /user /admin]
 
+# Rate limits in seconds for each route category
+RATE_LIMIT_ROUTES = {
+	user: {
+		routes: %w[/user /settings /register /login /logout],
+		time: 1
+	},
+	auction: {
+		routes: %w[/auctions],
+		time: 1
+	}
+}
+
+RATE_LIMIT_ROUTES_ALL = [] # precompile all of the protected routes
+RATE_LIMIT_ROUTES.each do |t, cfg|
+	RATE_LIMIT_ROUTES_ALL += cfg[:routes]
+end

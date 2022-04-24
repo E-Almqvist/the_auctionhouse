@@ -474,7 +474,7 @@ ul.list-container
   display: flex
   flex-direction: row
   justify-content: center
-  height: inherit
+  height: 90%
   max-width: 70rem
 
   a.button
@@ -482,10 +482,14 @@ ul.list-container
     border-radius: $border_radius
 
   aside.card
+    display: flex
+    //justify-content: center
+    flex-direction: column 
     width: 20rem
     margin-right: 4rem 
-    margin-top: 4rem
     .form-container
+      background: $bg_alt_clr
+      padding: 8px
       form
         padding: 0
         width: inherit
@@ -543,7 +547,6 @@ article.post-container
 
 #auctions_new
   display: grid
-
 
 #auction-view
   display: grid
