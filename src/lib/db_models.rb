@@ -299,6 +299,7 @@ class Auction < EntityModel
 		return false, AUCTION_ERRORS[:titlelen] unless title.length.between?(MIN_TITLE_LEN, MAX_TITLE_LEN)
 		return false, AUCTION_ERRORS[:initprice] unless init_price >= MIN_INIT_PRICE
 		return false, AUCTION_ERRORS[:deltatime] unless delta_time >= MIN_DELTA_TIME
+		return false, AUCTION_ERRORS[:desclen] unless description.length.between?(MIN_DESC_LEN, MAX_DESC_LEN)
 		return true, ""
 	end
 
@@ -371,6 +372,17 @@ class Auction < EntityModel
 		ah && ah.expired?
 	end
 
+	def edit(title, description)
+		return false, AUCTION_ERRORS[:titlelen] unless title.length.between?(MIN_TITLE_LEN, MAX_TITLE_LEN)
+		return false, AUCTION_ERRORS[:desclen] unless description.length.between?(MIN_DESC_LEN, MAX_DESC_LEN)
+
+		data = {
+			title: title,
+			description: description
+		}
+		Auction.update data, "id = ?", @id
+	end
+
 	def poster
 		User.find_by_id @user_id
 	end
@@ -379,9 +391,14 @@ class Auction < EntityModel
 		Image.get_relation @id
 	end
 
-	def categories
+	def category_ids
 		data = Auction_Category_relation.get "category_id", "auction_id = ?", @id
-		data && data.map! { |category| Category.find_by_id category["category_id"]}
+		data && data.map! {|category| category["category_id"].to_i}
+	end
+
+	def categories
+		data = self.category_ids
+		data && data.map! { |catid| Category.find_by_id catid}
 	end
 
 	def expired?
@@ -462,9 +479,12 @@ class Bid < EntityModel
 
 	def self.get_delta_amount(ahid, uid, amount)
 		data = self.get "*", "auction_id = ? AND user_id = ?", ahid, uid
-		if data then 
+		if data and data.length > 0 then 
 			data.map! {|dat| self.new(dat)}
 			max_bid = data.max_by {|bid| bid.amount}
+			p "sgiodfhgiodfhioghoi"
+			p data
+			p "sgiodfhgiodfhioghoi"
 			return amount - max_bid.amount
 		else
 			return amount
@@ -475,6 +495,7 @@ class Bid < EntityModel
 		ah = Auction.find_by_id ahid
 		return false, "Invalid auction" unless ah.is_a? Auction
 		return false, AUCTION_ERRORS[:expired] unless not ah.expired?
+		return false, AUCTION_ERRORS[:ownerbid] unless uid != ah.user_id
 		return false, AUCTION_ERRORS[:cantafford] unless User.find_by_id(uid).balance - amount >= 0
 		return false, AUCTION_ERRORS[:bidamount] unless amount >= ah.min_new_bid
 		return true, ""

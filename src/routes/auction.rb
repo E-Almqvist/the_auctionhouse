@@ -58,10 +58,65 @@ end
 
 get "/auctions/:id" do
 	id = params[:id].to_i
-	auction_obj = Auction.find_by_id id
+	auction = Auction.find_by_id id
 
-	if !auction_obj.nil? then
-		serve :"auction/view", {auction: auction_obj}	
+	if !auction.nil? then
+		serve :"auction/view", {auction: auction}	
+	else
+		raise Sinatra::NotFound
+	end
+end
+
+get "/auctions/:id/edit" do
+	id = params[:id].to_i
+	auction = Auction.find_by_id id
+
+	if !auction.nil? then
+		auth_denied "You can not edit expired auctions!" if auction.expired?
+		auth_denied unless auction.user_id == session[:userid] or get_current_user.admin?
+
+		flash[:success] = "Updated post."
+		serve :"auction/edit", {auction: auction}	
+	else
+		raise Sinatra::NotFound
+	end
+end
+
+get "/auctions/:id/delete" do
+	id = params[:id].to_i
+	auction = Auction.find_by_id id
+
+	if !auction.nil? then
+		auth_denied "You can not delete expired auctions!" if auction.expired?
+		auth_denied unless auction.user_id == session[:userid] or get_current_user.admin?
+
+		# Delete everything related in the db
+		Auction.delete "id = ?", id
+		Auction_Category_relation.delete "auction_id = ?", id
+		Bid.delete "auction_id = ?", id 
+
+		flash[:success] = "Removed post."
+
+		redirect "/auctions"
+	else
+		raise Sinatra::NotFound
+	end
+end
+
+post "/auctions/:id/update" do
+	id = params[:id].to_i
+	auction = Auction.find_by_id id
+
+	if !auction.nil? then
+		auth_denied "You can not edit expired auctions!" if auction.expired?
+		auth_denied unless auction.user_id == session[:userid] or get_current_user.admin?
+
+		new_title = params[:title].strip
+		new_desc = params[:description].strip
+		
+		auction.edit new_title, new_desc
+
+		redirect "/auctions/#{id}"
 	else
 		raise Sinatra::NotFound
 	end
@@ -69,13 +124,13 @@ end
 
 post "/auctions/:id/bids" do
 	id = params[:id].to_i
-	auction_obj = Auction.find_by_id id
+	auction = Auction.find_by_id id
 
 	amount = params[:amount].to_f
 	message = params[:message]
 
-	if !auction_obj.nil? then
-		success, resp = auction_obj.place_bid(session[:userid], amount, message)
+	if !auction.nil? then
+		success, resp = auction.place_bid(session[:userid], amount, message)
 		if success then
 			flash[:success] = "Placed bid."
 		else

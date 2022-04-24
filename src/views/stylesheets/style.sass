@@ -157,7 +157,7 @@ a.button:hover
 .flash
   position: fixed
   text-align: center
-  top: 4rem
+  top: 5rem
   left: 50%
   transform: translateX(-50%)
   font-size: 1rem
@@ -185,7 +185,7 @@ a.button:hover
 
 .flash:hover
   cursor: pointer
-  opacity: .5
+  opacity: .76
 
 img.avatar, img.avatar_big
   background: $bg_clr
@@ -310,6 +310,13 @@ ul.list-container
       font-family: $font_stack
       font-size: 1.2rem
       padding: .2rem 1rem
+    
+    input:disabled
+      color: $shadow_clr
+      background: $bg_alt_clr
+
+    input:disabled:hover
+      cursor: not-allowed !important
 
     input[type=file]
       padding: 0
@@ -319,7 +326,7 @@ ul.list-container
       background: $bg_clr
       transition: color .2s
 
-    input[type=submit]:hover
+    input[type=submit]:hover:not(:disabled)
       opacity: .8
       color: $special_clr
       cursor: pointer
@@ -543,7 +550,7 @@ article.post-container
   max-width: 70rem
   grid-template-columns: 1fr 1fr
   grid-template-rows: 1fr 
-  grid-template-areas: "im in" "bi bi"
+  grid-template-areas: "im in" "bi in"
 
 #auctionbid-container
   grid-area: bi
@@ -563,7 +570,13 @@ article.post-container
 
 #auctioninfo
   grid-area: in
+  padding-left: 1rem
   
+  #auctionbid
+    align-items: unset
+    form
+      padding: 0
+
   div
     margin-top: 1.2rem
 

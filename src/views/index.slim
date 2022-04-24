@@ -9,14 +9,14 @@
       li
         a.button href="/auctions/new" = "Post Auction"
 
-  - if Auction.get_all.length > 0
+  - if Auction.search(nil, nil, nil, nil, false).length > 0
     article
       h1.tcenter.title
         | Recent posts
 
       article.post-container.card#posts
         ul.list-container
-          - Auction.get_all.reverse[0..1].each do |auction|
+          - Auction.search(nil, nil, nil, nil, false).reverse[0..1].each do |auction|
             li
               a href="/auctions/#{auction.id}"
                 div style="background-image: url(#{auction.images[0].url})"

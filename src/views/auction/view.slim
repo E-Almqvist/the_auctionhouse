@@ -20,6 +20,9 @@
       h2
         span
           | #{auction.title}
+        - if auction.user_id == session_user.id or session_user.admin?
+          a.inlbutton href="/auctions/#{auction.id}/edit"
+            | [Edit]
         a.inlbutton href="javascript:history.back()"
           | [Go back]
       h3
@@ -44,9 +47,6 @@
             | Minimum bid factor: 
             span.gray = "#{((AH_BIDS_FACTOR-1)*100).round(2)}%"
           h3
-            | Buyout factor: 
-            span.gray = "#{((AH_BUYOUT_FACTOR-1)*100).round(2)}%"
-          h3
             | Expires in: 
             span.red = "#{auction.time_left_s}" 
 
@@ -54,7 +54,7 @@
           form action="/auctions/#{auction.id}/bids" method="post"
             input type="number" name="amount" placeholder="#{auction.min_new_bid}" pattern="[0-9]+"
             textarea name="message" cols="20" rows="2" title="Content length must be between #{MIN_MSG_LEN} and #{MAX_MSG_LEN} characters" pattern="#{MSG_REGEX_STR}" maxlength="#{MAX_MSG_LEN}" placeholder="Write a message for your bid!" 
-            input type="submit" value="Bid"
+            input type="submit" value="Bid" disabled=("disabled" if session_user.id == auction.user_id)
       - else
         h1.red
           | Auction Expired

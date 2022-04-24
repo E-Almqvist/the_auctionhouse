@@ -49,7 +49,7 @@ not_found do
 	serve :"404"
 end
 
-def auth_denied(msg=AUTH_ERRORS[:denied], status=403, ret="/")
+def auth_denied(msg=AUTH_ERRORS[:denied], status=403, ret=back)
 	session[:status] = status
 	session[:ret] = ret
 	flash[:error] = msg

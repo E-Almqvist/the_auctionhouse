@@ -1,10 +1,8 @@
 # TODO
- - Post editing
+ - Post editing & deleting
  - User reviews
  - Yardoc 50%
-----------------
- - Remove bids
- - Remove posts
+ - Film
 
 ## Refactor
  - Funds transfer logic for auctions?

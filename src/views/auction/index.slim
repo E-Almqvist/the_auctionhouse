@@ -4,8 +4,8 @@
       h2 Search Filters
       .form-container
         form action="/auctions" method="get"
-          label Keywords
-          input type="search" name="title" placeholder="ex: computer, teapot"
+          label Title
+          input type="search" name="title" placeholder="ex: 'teapot'"
 
           label Price range
           .range-container
@@ -22,7 +22,7 @@
             label Categories
             select multiple="" name="categories[]"
               - Category.get_all.each do |category|
-                option value="#{category.id}" selected=("selected" if params[:categories] and params[:categories].include?(category.id.to_s)) style="color: #{category.color};" #{category.name}
+                option value="#{category.id}" selected=("selected" if params[:categories] and params[:categories].include?(category.id.to_s)) style="color: #{category.color};" = "#{category.name}" 
 
           input type="submit" value="Search"
       a.button href="/auctions" = "Clear Filters"
@@ -54,4 +54,4 @@
                   p
                     | #{auction.description}
       - else
-        h3.tcenter No results :(
+        h3.tcenter No results found... 

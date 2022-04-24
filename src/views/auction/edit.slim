@@ -1,0 +1,13 @@
+.content-container
+  h1 Edit Auction "#{auction.title}"
+  .form-container
+    form#auction_new action="/auctions/#{auction.id}/update" method="post" 
+      label Title
+      input type="text" name="title" placeholder="Title" pattern="#{TITLE_REGEX_STR}" value="#{auction.title}"
+
+      label Description
+      textarea name="description" cols="20" rows="5" title="Content length must be between #{MIN_DESC_LEN} and #{MAX_DESC_LEN} characters" pattern="#{DESC_REGEX_STR}" maxlength="#{MAX_DESC_LEN}" placeholder="Tell us about what you're selling!" = "#{auction.description}"
+
+      input type="submit" value="Update"
+
+  a.inlbutton.red href="/auctions/#{auction.id}/delete" [DELETE]
