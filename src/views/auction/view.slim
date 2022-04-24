@@ -49,15 +49,17 @@
           h3
             | Expires in: 
             span.red = "#{auction.time_left_s}" 
+
+        #auctionbid.card.form-container
+          form action="/auctions/#{auction.id}/bids" method="post"
+            input type="number" name="amount" placeholder="#{auction.min_new_bid}" pattern="[0-9]+"
+            textarea name="message" cols="20" rows="2" title="Content length must be between #{MIN_MSG_LEN} and #{MAX_MSG_LEN} characters" pattern="#{MSG_REGEX_STR}" maxlength="#{MAX_MSG_LEN}" placeholder="Write a message for your bid!" 
+            input type="submit" value="Bid"
       - else
-        h3.red.tcenter
+        h1.red
           | Auction Expired
 
-      #auctionbid.card.form-container
-        form action="/auctions/#{auction.id}/bids" method="post"
-          input type="number" name="amount" placeholder="#{auction.min_new_bid}" pattern="[0-9]+"
-          textarea name="message" cols="20" rows="2" title="Content length must be between #{MIN_MSG_LEN} and #{MAX_MSG_LEN} characters" pattern="#{MSG_REGEX_STR}" maxlength="#{MAX_MSG_LEN}" placeholder="Write a message for your bid!" 
-          input type="submit" value="Bid"
+
 
     #auctionbid-container.card
       h2.tcenter Bid History
