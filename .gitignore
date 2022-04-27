@@ -1,5 +1,6 @@
 src/db/
 vendor/
+.bundle/
 src/public/auctions/
 /.yardoc/
 /_yardoc/

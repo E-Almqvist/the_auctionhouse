@@ -15,7 +15,7 @@ class EntityModel
 	# Initializes the table on startup 
 	# @return [void]
 	def self.init_table
-		sql_file = "sql/tables/#{self.name}.sql"
+		sql_file = File.dirname(__FILE__) + "/../sql/tables/#{self.name}.sql"
 
 		begin
 			q = File.read sql_file # get SQL script
