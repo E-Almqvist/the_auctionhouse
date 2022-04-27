@@ -20,10 +20,11 @@ gem "sinatra-flash", "~> 0.3.0"
 
 gem "fileutils", "~> 1.6"
 
-gem "webrick", "~> 1.7"
 
 gem "yard-sinatra", github: "chrisb/yard-sinatra"
 
 gem "yard", "~> 0.9.27"
 
 gem "rdoc", "~> 6.4"
+
+gem "puma", "~> 5.6"

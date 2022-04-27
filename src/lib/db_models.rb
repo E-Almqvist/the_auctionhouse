@@ -706,7 +706,7 @@ class Image < EntityModel
 	# @param [Integer] ah_id Auction id
 	# @param [Integer] order Image order on the auction page
 	def self.save(imgdata, ah_id, order)
-		FileUtils.mkdir_p "./public/auctions/#{ah_id}"
+		FileUtils.mkdir_p File.dirname(__FILE__) + "/../public/auctions/#{ah_id}"
 
 		data = {
 			auction_id: ah_id,
@@ -718,7 +718,7 @@ class Image < EntityModel
 		if newid then
 			image = Magick::Image.from_blob(imgdata).first
 			image.format = "PNG"
-			path = "./public/auctions/#{ah_id}/#{order}.png"
+			path = File.dirname(__FILE__) + "/../public/auctions/#{ah_id}/#{order}.png"
 			File.open(path, 'wb') do |f|
 				image.write(f) { self.quality = 50 }
 			end

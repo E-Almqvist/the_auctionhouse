@@ -1,5 +1,5 @@
 def get_random_subtitle
-	subtitles = File.readlines "misc/subtitles.txt"
+	subtitles = File.readlines(File.dirname(__FILE__) + "/../misc/subtitles.txt")
 	subtitles.sample.chomp
 end
 

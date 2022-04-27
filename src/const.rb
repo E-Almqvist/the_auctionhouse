@@ -36,7 +36,7 @@ ROLE_IDS = []
 ROLES.each {|_, role| ROLE_IDS << role[:id]}
 
 # DB stuff
-DB_PATH = "db/main.db"
+DB_PATH = File.dirname(__FILE__) + "/db/main.db"
 
 # Auction constants
 MIN_INIT_PRICE = 1

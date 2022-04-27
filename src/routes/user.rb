@@ -131,7 +131,7 @@ post "/user/update" do
 
 	if params[:image] then
 		imgdata = params[:image][:tempfile] 
-		save_image imgdata.read, "./public/avatars/#{id}.png" # save the image
+		save_image imgdata.read, File.dirname(__FILE__) + "/../public/avatars/#{id}.png" # save the image
 		data[:avatar_url] = "/avatars/#{id}.png" # update image path
 	end
 
