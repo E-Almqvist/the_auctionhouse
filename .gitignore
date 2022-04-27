@@ -1,4 +1,4 @@
-src/db/
+src/db/main.db
 vendor/
 .bundle/
 src/public/auctions/
